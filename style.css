@@ -1,0 +1,191 @@
+body  {
+  background-color:rgb(28,28,28);
+  font-family: "Segoe UI Light";
+  margin:0px;
+  color: rgb(235,235,235);
+  overflow-x: hidden;
+}
+
+.bg {
+  background-image: url();
+  opacity: 0;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: -100;
+  margin-bottom: 0;
+  padding: 0;
+  transition: all 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.bgblur {
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(4px);
+  position: absolute;
+  z-index: -99;
+  background-color: rgba(0, 0, 0, 0.295);
+}
+
+h1 {
+  font-style: italic;
+  font-weight: 50;
+  font-size: 2.3rem;
+  padding-top:2rem;
+  padding-left:2rem;
+  margin:0px;
+}
+h2 {
+  font-size: 1.9rem;
+  color: rgb(215,215,215);
+  font-weight: 600;
+  letter-spacing: 0.65rem;
+  margin-left: 1.5rem;
+  animation: fade_in 0.4s cubic-bezier(0.075, 0.82, 0.165, 1) 0s 1;
+  animation-fill-mode: backwards;
+}
+h3 {
+  font-size: 3.6rem;
+  margin: 0rem;
+  padding-top:1rem;
+  padding-left:2rem;
+  padding-right:4rem;
+  color:#5c6266;
+  letter-spacing: 0.65rem;
+  font-weight: 50;
+  animation: fade_in 0.4s cubic-bezier(0.075, 0.82, 0.165, 1) 0s 1;
+  animation-fill-mode: backwards;
+}
+
+.link {
+  animation: fade_in 0.4s cubic-bezier(0.075, 0.82, 0.165, 1) 0s 1;
+  animation-fill-mode: backwards;
+}
+
+small {font-size: 1.4rem;
+font-family: "consolas";
+font-style: italic;
+color:#e9984d;
+}
+sb {font-size:0.8rem;}
+p {font-size: 1.5rem;}
+pre {
+  font-size: 1.45rem;
+  line-height:0.35rem;
+  font-family: "consolas";
+}
+
+a:link { text-decoration: none; color : inherit; border: 0px; outline-style: none;}
+a:active { text-decoration: underline;text-decoration-thickness:2px; color : inherit; border: 0px; outline-style: none;}
+a:visited { text-decoration: none; color : inherit; border: 0px; outline-style: none;}
+a:hover { 
+  text-decoration: underline;
+  text-decoration-thickness:2px; 
+  color : inherit; 
+  border: 0px; 
+  outline-style: none; 
+  text-shadow: 1px 1px 5px rgba(255, 166, 0, 0.5);
+  transition: text-shadow 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+a:focus { outline: none;outline-style: none;}
+
+td, th {
+  font-size: 2.3rem;
+  text-align:center;
+  color: rgb(215,215,215);
+}
+
+.boxes {
+  display: grid;
+  grid-gap: 0px;
+  grid-template-columns: 34rem 50rem;
+  align-content: center;
+  border:none;
+}
+
+.box {
+border: none;
+}
+
+.top-bar {
+  text-align: center;
+  padding-left: 1.2rem;
+  padding-right: 1.2rem;
+  padding-top: 1rem;
+  padding-bottom: 1.2rem;
+  font-family: "leelawadee ui";
+  font-weight: bold;
+  font-size: 1.4rem;
+  border-left:solid 2px rgb(63,63,63);
+  background-color: rgb(31,31,31);
+}
+
+.project {
+  font-size: 2.6rem;
+  color: rgb(215,215,215);
+  font-weight: 600;
+  letter-spacing: 0.6rem;
+  padding-left:0.65rem;
+  border-bottom: 2px solid rgb(150,150,150);
+  padding-top:2.6rem;
+}
+
+.project2 {
+  font-size: 1.8rem;
+  color: rgb(215,215,215);
+  font-weight: 600;
+  letter-spacing: 0.6rem;
+  padding-left:0.65rem;
+  border-bottom: 2px solid rgb(150,150,150);
+  padding-top:2.6rem;
+}
+
+.project-table {
+  margin-left:30%;
+  margin-right: auto;
+  margin-top:2rem;
+}
+
+.xentable {
+  width:auto;
+  margin-left:auto;
+  margin-right:auto;
+  margin-top:1.4rem;
+}
+
+@keyframes fade_in {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  10% {
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes crabby {
+  0% {
+    right: -50%;
+  }
+
+  100% {
+    right: 1em;
+  }
+}
+
+@keyframes title {
+  0% {
+    transform: translateY(-4em);
+  }
+
+  100% {
+    transform: translateY(0em);
+  }
+}
