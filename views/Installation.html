@@ -1,0 +1,94 @@
+<div style="margin:20%;margin-top:0rem;margin-bottom:2rem;">
+    <h5 id="TextSize1"> Installation </h5>
+    <p> Half-Life 2 and Episode Two mods have different ways of installation, and some of them have some custom versions
+        used only for speedrunning. This section will explain the most common methods, and the exceptions will be
+        mentioned under the mods’ own sections. Note that this guide is solely for Windows, there is no guarantee for
+        Mac and Linux working with these methods. </p>
+
+    <h5> Steam </h5>
+    <div style="display:flex;">
+        <p>Steam mods are the easiest to install. Search up the mod from the Steam store, and press the green “Install
+            now” button under the preview images and videos. After that, you can launch the game from your Steam
+            library.</p>
+        <img src="SteamInstallButton.png" style="width:235px;height:67px;margin-top:2rem;margin-left:1rem;">
+    </div>
+
+    <h5> Source / Episodic Unpack </h5>
+
+    <p> Some of the mods need <b>Free OoB movement</b> for the fastest route possible. This is not possible with
+        Steampipe versions, so we need to downgrade the mods to older version of the game. Both Source Unpack and
+        Episodic Unpack can be downloaded from <a href="https://wiki.sourceruns.org/wiki/Source_Unpack"
+            style="color:#8888ff">here</a>. </p>
+    <p> After you’ve downloaded the corresponding pack for your mod, there are two different ways you can proceed,
+        depending on the mod:</p>
+    <p id="TextSize2">1. Move the mod folder inside the Unpack folder. After that, copy <b>Half Life 2.bat</b> or
+        <b>Start Episode 2.bat</b>. Edit the bat and change the <b>-game</b> to the name of the mod’s folder (for
+        example -game “Exit 2”) -- Delete the mod’s own bin folder if it exists.</p>
+    <p id="TextSize2">2. Combine these folders into the ep2 or hl2 folder and replace: maps, models, materials, scenes,
+        sound and particles . Launch the game with either <b>Half Life 2.bat</b> or <b>Start Episode 2.bat</b>.</p>
+    <p style="font-size:1.2rem;color:orange;margin-top:-1.5rem;margin-left:1.5rem;">! Note: It is recommended to backup
+        the ep2 or hl2 folder in case something goes wrong</p>
+
+    <div style="display:flex;">
+        <img src="UnpackFolderExample.png" style="width:512px;height:308px;margin-right:1rem;">
+        <p>The folder should look something like this for Method 1, note the <b>Exit 2 folder</b> and <b>Exit 2.bat</b>
+        </p>
+    </div>
+
+    <h5>Sourcemods folder</h5>
+
+    <p>Download the mod, and move the mod to the sourcemods folder. The sourcemods folder is located at
+        <b>Steam\steamapps\sourcemods</b> - if you don’t have one, create it. You should see only one folder per mod
+        inside the sourcemods folder and multiple files/folders inside that one. This means that be sure you <u>don’t
+            have</u> e.g. <b>sourcemods\icemod\icemod</b></p>
+
+    <h1 style="font-size:2rem;">Extra step for SDK 2013 mods:</h1>
+    <p>If the mod tells you to have SDK 2013 as “upcoming”, this is what you have to do:</p>
+    <p id="TextSize2">1. Install Source SDK Base 2013 Singleplayer</p>
+    <p id="TextSize2">2. Go to your Steam library</p>
+    <p id="TextSize2">3. Right-click your Source SDK Base 2013 Singleplayer and select properties</p>
+    <p id="TextSize2">4. Select Betas</p>
+    <p id="TextSize2">5. Change the Select the beta you would like to opt into: into upcoming - upcoming</p>
+
+    <h1 style="font-size:2rem;">Save stutter fix for 2013 SDK mods</h1>
+    <p> If you are experiencing save stuttering and game freezes occasionally when saving, then install Source SDK 2013
+        Multiplayer from the Tools section in Steam, then take FileSystem_Stdio.dll from <b>steamapps\common\Source SDK
+            Base 2013 Multiplayer\bin</b> and put it in <b>steamapps\common\Source SDK Base 2013 Singleplayer\bin</b>
+    </p>
+
+    <h1 style="font-size:2rem;">Fixing the mods that got broken after Steampipe</h1>
+    <p>Within the mods folder, there’s a file called gameinfo.txt - open it, remove everything from the SearchPaths
+        section (keep the curly brackets as is) and replace them with these if it's a mod for HL2:</p>
+    <pre>			game_lv			hl2/hl2_lv.vpk</pre>
+    <pre>			game+mod		hl2/hl2_sound_vo_english.vpk</pre>
+    <pre>			game+mod		hl2/hl2_pak.vpk</pre>
+    <pre>			game	|all_source_engine_paths|hl2/hl2_textures.vpk</pre>
+    <pre>			game	|all_source_engine_paths|hl2/hl2_sound_misc.vpk</pre>
+    <pre>			game	|all_source_engine_paths|hl2/hl2_misc.vpk</pre>
+    <pre>			platform  |all_source_engine_paths|platform/platform_misc.vpk</pre>
+    <pre>			mod+mod_write+default_write_path	|gameinfo_path|..</pre>
+    <pre>			game+game_write	hl2</pre>
+    <pre>			gamebin			hl2/bin</pre>
+    <pre>			game	|all_source_engine_paths|hl2</pre>
+    <pre>			platform	|all_source_engine_paths|platform</pre>
+    <p> If the mod is for EP2, replace the SearchPaths section with these instead:
+    <pre>            		game+mod |gameinfo_path|.</pre>
+    <pre>			platform |gameinfo_path|.</pre>
+    <pre>			game_lv hl2/hl2_lv.vpk</pre>
+    <pre>			game+mod ep2/ep2_english.vpk</pre>
+    <pre>			game+mod ep2/ep2_pak.vpk</pre>
+    <pre>			game |all_source_engine_paths|episodic/ep1_english.vpk</pre>
+    <pre>			game |all_source_engine_paths|episodic/ep1_pak.vpk</pre>
+    <pre>			game |all_source_engine_paths|hl2/hl2_english.vpk</pre>
+    <pre>			game |all_source_engine_paths|hl2/hl2_pak.vpk</pre>
+    <pre>			game |all_source_engine_paths|hl2/hl2_textures.vpk</pre>
+    <pre>			game |all_source_engine_paths|hl2/hl2_sound_vo_english.vpk</pre>
+    <pre>			game |all_source_engine_paths|hl2/hl2_sound_misc.vpk</pre>
+    <pre>			game |all_source_engine_paths|hl2/hl2_misc.vpk</pre>
+    <pre>			platform |all_source_engine_paths|platform/platform_misc.vpk</pre>
+    <pre>			mod+mod_write+default_write_path |gameinfo_path|.</pre>
+    <pre>			game+game_write |gameinfo_path|.</pre>
+    <pre>			gamebin episodic/bin</pre>
+    <pre>			game |all_source_engine_paths|episodic</pre>
+    <pre>			game |all_source_engine_paths|hl2</pre>
+    <pre>			platform |all_source_engine_paths|platform</pre>
