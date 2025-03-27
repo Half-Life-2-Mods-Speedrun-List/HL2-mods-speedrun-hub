@@ -1,5 +1,8 @@
+-- Active: 1743102853420@@localhost@5432@hl2
+DROP TABLE IF EXISTS mods;
+
 CREATE TABLE "speedruns" (
-  "id" integer PRIMARY KEY,
+  "speedrun_id" SERIAL PRIMARY KEY,
   "user_id" integer,
   "title" text,
   "category_id" integer,
@@ -7,15 +10,15 @@ CREATE TABLE "speedruns" (
 );
 
 CREATE TABLE "users" (
-  "id" integer PRIMARY KEY,
-  "username" varchar,
+  "user_id" SERIAL PRIMARY KEY,
+  "username" varchar(100) unique not null,
   "speedrun_id" integer,
   "email" varchar,
-  "password" varchar
+  "password" varchar(255) not null
 );
 
 CREATE TABLE "votes" (
-  "id" integer PRIMARY KEY,
+  "vote_id" SERIAL PRIMARY KEY,
   "difficulty" integer,
   "optimization" integer,
   "enjoyment" integer,
@@ -25,12 +28,12 @@ CREATE TABLE "votes" (
 );
 
 CREATE TABLE "categories" (
-  "id" integer PRIMARY KEY,
+  "category_id" SERIAL PRIMARY KEY,
   "name" text
 );
 
 CREATE TABLE "world_records" (
-  "id" integer PRIMARY KEY,
+  "wr_id" SERIAL PRIMARY KEY,
   "user_id" integer,
   "runner_name" text,
   "category_id" integer,
@@ -38,11 +41,14 @@ CREATE TABLE "world_records" (
   "record_time" integer
 );
 
-CREATE TABLE "mods" (
-  "id" integer PRIMARY KEY,
-  "category_id" integer,
-  "download_links" text
+CREATE TABLE mods (
+  mod_id SERIAL PRIMARY KEY,
+  mod_name text,
+  category_id integer,
+  download_links text
 );
+
+
 
 ALTER TABLE "speedruns" ADD CONSTRAINT "speedruns" FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
