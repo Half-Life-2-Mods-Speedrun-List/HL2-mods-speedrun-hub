@@ -178,3 +178,45 @@ border: none;
   border-bottom: 1px solid #333;
   width:auto;
 }
+
+
+
+
+.loginForm {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 4rem;
+  width: 22rem;
+  padding-top: 0rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border: 2px solid #333;
+  background: rgb(20,20,20);
+}
+
+.loginDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loginDiv > label {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.loginDiv > button {
+  margin-top: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+/* Make loginForm and its content larger for mobile */
+@media only screen and (max-width: 1280px) {
+  .loginForm {
+    width: 60%;
+  }
+  p, label, input, div, button {
+    font-size: 1.5em;
+  }
+}
