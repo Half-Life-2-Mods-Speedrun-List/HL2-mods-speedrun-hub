@@ -13,8 +13,9 @@ CREATE TABLE "users" (
   "user_id" SERIAL PRIMARY KEY,
   "username" varchar(100) unique not null,
   "speedrun_id" integer,
-  "email" varchar,
-  "password" varchar(255) not null
+  "email" varchar (255) unique,
+  "password" varchar(255) not null,
+  "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE "votes" (
