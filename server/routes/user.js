@@ -1,3 +1,17 @@
+
+
+ // Erikin versio, pidetään vielä ja poistetaan kun muutokset on tehty
+
+
+
+
+
+
+
+
+
+
+
 const { query } = require("../helpers/db.js")
 const express = require("express")
 const jwt = require("jsonwebtoken")
@@ -17,7 +31,7 @@ userRouter.post("/login", async (req, res) => {
     
     try {
         console.log("user")
-        const { username, password } = req.body
+        const { username, password, email } = req.body
 
         console.log(username, password)
         if (!username || !password) {
@@ -25,7 +39,7 @@ userRouter.post("/login", async (req, res) => {
         }
 
         const userFromDb = await query(
-            'SELECT * FROM users WHERE username = $1', [username]
+            'SELECT * FROM users WHERE username = $1 OR email = $2', [username, email]
         )
 
         if (userFromDb.rowCount === 0) {

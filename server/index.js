@@ -18,21 +18,21 @@ app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
 app.use("/mods", modRouter)
-app.use("/user", userRouter)
 app.use("/auth", authRouter)
+app.use("/user", userRouter)
 
 
 app.get('/', (req, res) => {
     res.send('change the address to find content');
+});
+
+async function startServer() {
+  await connectDB();
+
+  const port = process.env.PORT || 3001;
+  app.listen(port, function() {
+    console.log(`Server is running on ${port}`);
   });
-
-  async function startServer() {
-    await connectDB();
-
-    const port = process.env.PORT || 3001;
-    app.listen(port, function() {
-      console.log(`Server is running on ${port}`);
-    });
-  }
+}
 
 startServer();

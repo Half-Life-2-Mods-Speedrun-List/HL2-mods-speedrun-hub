@@ -5,12 +5,12 @@
   <title>Half-Life 2 Mods</title>
   <link rel="icon" type="image/x-icon" href="xendev.ico">
   <link rel="stylesheet" href="/styles/style.css">
-  <scrip src="../js/Login.js"></script>
-</head>
-<body>
 
-<form method="post" action="http://localhost:3001/user/login" class="loginForm" onsubmit="handleLogin" >
-  <div class =loginDiv>
+</head>
+
+<body>
+<form class="loginForm" id="loginForm" >
+  <div class="loginDiv">
     <p>Login</p>
     <label for="text"><b>Username or Email</b></label>
     <input type="text" placeholder="Username / Email" name="username" required>
@@ -23,11 +23,6 @@
     <div>Don't have an account? <a href="/views/Register.html" id="Orange">Register</a>.</div>
   </div>
 </form>
-<script>
-  function handleLogin() {
-    // nothing here yet
-  }
-
-</script>
+<script src="../js/Forms.js"></script>
 </body>
 </html>
