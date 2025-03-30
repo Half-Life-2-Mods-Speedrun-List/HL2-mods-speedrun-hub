@@ -4,18 +4,19 @@ const jwt = require("jsonwebtoken")
 const { compare, hash } = require("bcrypt")
 const { verifyToken } = require("../helpers/verifyToken.js")
 
-
 const userRouter = express.Router()
 
 
 
 const generateToken = (user)=>{
-    return jwt.sign({ users_id: user.user_id, username: user.username }, process.env.JWT_SECRET_KEY, {expiresIn: '2h'});
+    console.log(process.env.JWT_SECRET_KEY);
+    return jwt.sign({ username: user.username }, process.env.JWT_SECRET_KEY, {expiresIn: '2h'});
 }
 
 userRouter.post("/login", async (req, res) => {
     
     try {
+        console.log("user")
         const { username, password } = req.body
 
         console.log(username, password)
@@ -49,7 +50,6 @@ userRouter.post("/login", async (req, res) => {
             httpOnly: true,
         });
         res.status(200).json({
-            users_id: user.user_id,
             username: user.username,
             accessToken,
         })
