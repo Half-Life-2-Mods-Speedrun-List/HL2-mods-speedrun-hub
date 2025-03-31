@@ -20,12 +20,15 @@ const getMods = () => {
         mods.forEach(mod => {
             console.log(mod)
             renderMod(mod)
-            document.body.appendChild(div)
+            
         })
+        document.body.appendChild(div)
     }).catch((error) => {
         alert(error)
     })
 }
 
+
+modifications.getModsWithCategories()
 getMods()
 

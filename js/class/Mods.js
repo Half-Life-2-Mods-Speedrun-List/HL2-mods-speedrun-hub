@@ -1,12 +1,14 @@
 
 import { Mod } from "./Mod.js"
+import { setEndpoint } from "../Utils.js"
 
 class Mods {
     #mods = []
     #backend_url = ""
+    #modsWithCategories = []
 
     constructor(url, endpoint = "/mods") {
-        this.#backend_url = new URL(endpoint, url).href
+        this.#backend_url = setEndpoint(endpoint, url)
     }
 
     getMods = () => {
@@ -32,6 +34,14 @@ class Mods {
             const mod = new Mod(element.mod_id, element.mod_name)
             this.#mods.push(mod)
         });
+    }
+
+    getModsWithCategories = async () => {
+        this.#backend_url = setEndpoint("/mods/categories", this.#backend_url)
+        try {
+            const response = await fetch(this.#backend_url)
+            const json = await response.json()
+        }
     }
 }
 

@@ -1,5 +1,6 @@
 -- Active: 1743102853420@@localhost@5432@hl2
 DROP TABLE IF EXISTS mods;
+DROP TABLE IF EXISTS categories;
 
 CREATE TABLE "speedruns" (
   "speedrun_id" SERIAL PRIMARY KEY,
@@ -30,7 +31,7 @@ CREATE TABLE "votes" (
 
 CREATE TABLE "categories" (
   "category_id" SERIAL PRIMARY KEY,
-  "name" text
+  "category_name" text
 );
 
 CREATE TABLE "world_records" (
@@ -51,7 +52,7 @@ CREATE TABLE mods (
 
 
 
-ALTER TABLE "speedruns" ADD CONSTRAINT "speedruns" FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+ALTER TABLE "speedruns" ADD CONSTRAINT "speedruns" FOREIGN KEY ("user_id") REFERENCES "users" ("user_id");
 
 ALTER TABLE "votes" ADD CONSTRAINT "votes" FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
@@ -63,4 +64,4 @@ ALTER TABLE "world_records" ADD CONSTRAINT "world_records" FOREIGN KEY ("speedru
 
 ALTER TABLE "world_records" ADD CONSTRAINT "world_recods" FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
-ALTER TABLE "mods" ADD CONSTRAINT "mods" FOREIGN KEY ("category_id") REFERENCES "categories" ("id");
+ALTER TABLE "mods" ADD CONSTRAINT "mods" FOREIGN KEY ("category_id") REFERENCES "categories" ("category_id");

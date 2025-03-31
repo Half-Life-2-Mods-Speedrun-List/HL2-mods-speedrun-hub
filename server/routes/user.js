@@ -47,7 +47,7 @@ userRouter.post("/login", async (req, res) => {
         })
     } catch (error) {
         console.log(error)
-        return res.status(400).json({ error: "Something went wrong with logging in"})
+        return res.status(400).json({ error: error})
     }
     
 })
