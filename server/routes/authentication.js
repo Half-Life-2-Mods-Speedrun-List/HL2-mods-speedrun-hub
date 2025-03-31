@@ -1,6 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-const { pool } = require("../index.js");
+const { pool } = require("../helpers/db.js");
 
 const authRouter = express.Router()
 
@@ -23,6 +23,7 @@ authRouter.post("/register", async(req, res) => {
             'INSERT INTO users (email, password, username) VALUES ($1, $2, $3) RETURNING *',
             [email, hashedPassword, username]
             );
+            console.log("New user created:", newUser.rows[0]);
             res.status(200).json({message: "New user registered"})
         } catch (error) {
             console.error("Error registering user", error);
