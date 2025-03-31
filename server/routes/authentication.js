@@ -1,6 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-const { pool } = require("../helpers/db.js");
+const { query } = require("../helpers/db.js");
 
 const authRouter = express.Router()
 

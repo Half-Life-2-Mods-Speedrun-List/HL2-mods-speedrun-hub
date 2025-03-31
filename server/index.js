@@ -27,7 +27,6 @@ app.get('/', (req, res) => {
 });
 
 async function startServer() {
-  await connectDB();
 
   const port = process.env.PORT || 3001;
   app.listen(port, function() {

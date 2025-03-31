@@ -1,17 +1,3 @@
-
-
- // Erikin versio, pidetään vielä ja poistetaan kun muutokset on tehty
-
-
-
-
-
-
-
-
-
-
-
 const { query } = require("../helpers/db.js")
 const express = require("express")
 const jwt = require("jsonwebtoken")
@@ -19,8 +5,6 @@ const { compare, hash } = require("bcrypt")
 const { verifyToken } = require("../helpers/verifyToken.js")
 
 const userRouter = express.Router()
-
-
 
 const generateToken = (user)=>{
     console.log(process.env.JWT_SECRET_KEY);
