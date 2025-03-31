@@ -19,10 +19,5 @@ const timeout = (context) => {
           
   }
 
-const setEndpoint = (endpoint, baseUrl) => {
-    const newEndpoint = new URL (endpoint, baseUrl).href
-    return newEndpoint
-    
-}
 
-export { timeout, setEndpoint }
+export { timeout, }
