@@ -39,7 +39,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
       }
   } catch (error) {
       console.error("Error:", error);
-      alert("An error occurred. Please try again.");
+      alert("An error occurred.");
   }
 });
 
