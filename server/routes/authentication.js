@@ -1,7 +1,12 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
+<<<<<<< HEAD
 const { pool } = require("../helpers/db.js");
 
+=======
+const { pool } = require("../index.js");
+const { query } = require("../helpers/db.js")
+>>>>>>> f08c035 (Completed login and registration)
 const authRouter = express.Router()
 
 authRouter.post("/register", async(req, res) => {
@@ -9,7 +14,7 @@ authRouter.post("/register", async(req, res) => {
     const { email, password, username } = req.body;
 
         try {
-        const result = await pool.query('SELECT * FROM users WHERE email=$1 OR username=$2', [email, username]);
+        const result = await query('SELECT * FROM users WHERE email=$1 OR username=$2', [email, username]);
 
         // if users are returned
         if (result.rows.length > 0) {
@@ -19,7 +24,7 @@ authRouter.post("/register", async(req, res) => {
         // password hashing with bcrypt
         const hashedPassword = await bcrypt.hash(password, 10);
         // new user to db
-        const newUser = await pool.query(
+        const newUser = await query(
             'INSERT INTO users (email, password, username) VALUES ($1, $2, $3) RETURNING *',
             [email, hashedPassword, username]
             );

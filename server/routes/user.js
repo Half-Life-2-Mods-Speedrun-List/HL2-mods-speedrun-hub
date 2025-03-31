@@ -48,15 +48,9 @@ userRouter.post("/login", async (req, res) => {
 
         const user = userFromDb.rows[0]
         
-        // if (!await compare(password, user.password)) {
-        //     return res.status(401).json({ error: "Passwords do not match"})
-        // } 
-        // 
-        // !!!USE THIS WHEN PASSWORD IS HASHED!!!
-
-        if (password !== user.password) {
-            return res.status(401).json({ error: "Password do not match"})
-        }
+        if (!await compare(password, user.password)) {
+            return res.status(401).json({ error: "Passwords do not match"})
+        } 
 
         const accessToken = generateToken(user)
 
