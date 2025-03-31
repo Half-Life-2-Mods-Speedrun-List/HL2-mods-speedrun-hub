@@ -1,12 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-<<<<<<< HEAD
 const { pool } = require("../helpers/db.js");
 
-=======
-const { pool } = require("../index.js");
-const { query } = require("../helpers/db.js")
->>>>>>> f08c035 (Completed login and registration)
 const authRouter = express.Router()
 
 authRouter.post("/register", async(req, res) => {
