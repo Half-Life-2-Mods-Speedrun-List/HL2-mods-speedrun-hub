@@ -1,7 +1,7 @@
 
 const timeout = (context) => {
     const successDiv = document.createElement("div")
-          successDiv.textContent= context +" successfull"
+          successDiv.textContent= context +" successful"
           successDiv.style.position ="fixed";
           successDiv.style.top = "10%";
           successDiv.style.left = "50%";
