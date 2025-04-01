@@ -45,8 +45,16 @@ CREATE TABLE "world_records" (
 CREATE TABLE mods (
   mod_id SERIAL PRIMARY KEY,
   mod_name text,
-  category_id integer,
+  category_id integer, --> onko turha, yhdellä modillahan on monta kategoriaa?
   download_links text
+);
+
+CREATE TABLE mod_category (
+  mod_id integer NOT NULL, 
+  category_id integer NOT NULL,
+  PRIMARY KEY (mod_id, category_id),
+  FOREIGN KEY (mod_id) REFERENCES mods(mod_id),
+  FOREIGN KEY (category_id) REFERENCES categories(category_id)
 );
 
 
