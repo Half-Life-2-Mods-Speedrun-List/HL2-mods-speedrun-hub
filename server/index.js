@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser")
 const { modRouter } = require("./routes/mod.js")
 const { userRouter } = require("./routes/user.js")
 const { connectDB } = require("./helpers/db.js");
+const { categoryRouter } = require("./routes/category.js")
 const { newModRouter } = require('./routes/newmod.js');
 
 const app = express()
@@ -23,6 +24,7 @@ app.use("/mods", modRouter)
 app.use("/newmod", newModRouter)
 app.use("/auth", authRouter)
 app.use("/user", userRouter)
+app.use("/categories", categoryRouter)
 
 
 app.get('/', (req, res) => {
