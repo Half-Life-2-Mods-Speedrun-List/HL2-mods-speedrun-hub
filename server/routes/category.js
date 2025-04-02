@@ -1,6 +1,6 @@
 const express = require("express");
 const { createCategory } = require("../helpers/gameCategoryModel.js");
-const router = express.Router();
+const categoryRouter = express.Router();
 
 const addCategory = async (req, res) => {
     try {
@@ -23,6 +23,6 @@ const addCategory = async (req, res) => {
 }
 
 // saving the mod's id to the URL-path :mod_id
-router.post("/mods/:mod_id/categories", addCategory);
+categoryRouter.post("/mods/:mod_id/categories", addCategory);
 
-module.exports = router;
+module.exports = { categoryRouter };

@@ -1,17 +1,5 @@
 const pool = require("./db.js");
 
-/* category creation to categories table
-
-const createCategory = async (name) => {
-    const result = await pool.query(
-        "INSERT INTO categories (name) VALUES ($1) RETURNING *",
-        [name]
-    );
-    return result.rows[0];
-}; */
-
-// combining categories and mods
-
 const createCategory = async (name, mod_id) => {
     const client = await pool.connect();
     try {
@@ -29,9 +17,10 @@ const createCategory = async (name, mod_id) => {
             "INSERT INTO mod_category (mod_id, category_id) VALUES ($1, $2)",
             [mod_id, categoryId]
         )
-        await client.query("COMMIT")
+        await client.query("COMMIT") // commit saves data to database
         return {id: categoryId, name};
     } catch (error) {
+    // if there's error with the query, rollback cancels all previous actions
         await client.query("ROLLBACK")
         throw error;
     } finally {

@@ -3,11 +3,12 @@ document.getElementById("createMod").addEventListener("submit", async function(e
     const mod_name = document.getElementById("modName").value;
 
     try {
-      const response = await fetch("http://localhost:3001/newmod/newmod", {
+      const response = await fetch("http://127.0.0.1:3001/newmod/newmod", {
         method: "POST",
         headers: {
           "Content-Type": "application/json" 
         },
+        credentials: "include", // Include cookies in the request
         body: JSON.stringify({ mod_name })
       });
 

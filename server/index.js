@@ -7,13 +7,15 @@ const cookieParser = require("cookie-parser")
 const { modRouter } = require("./routes/mod.js")
 const { userRouter } = require("./routes/user.js")
 const { connectDB } = require("./helpers/db.js");
+const { categoryRouter } = require("./routes/category.js")
 const { newModRouter } = require('./routes/newmod.js');
-const categoryRouter = require("./routes/category.js")
+>>>>>>>>> Temporary merge branch 2
 
 const app = express()
 
 app.use(cookieParser())
 app.use(cors({
+  origin: "http://127.0.0.1:5500",
   credentials: true,
 }))
 app.use(express.json())

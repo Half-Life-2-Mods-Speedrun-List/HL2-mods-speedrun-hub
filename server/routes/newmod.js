@@ -1,14 +1,15 @@
 const express = require("express");
 const { query } = require("../helpers/db.js");
-// const { verifyToken } = require("../helpers/verifyToken.js");
+const { verifyToken } = require("../helpers/verifyToken.js");
 
 const newModRouter = express.Router()
 
 
-/* Waiting for fix
+
 
 const fetchUserId = async (req, res, next) => {
     try {
+        console.log("Fetching user_id for username:", req.user.username);
         const user = req.user.username;
         const userFromDb = await query(
             'SELECT * FROM users WHERE username = $1', [user]
@@ -18,20 +19,19 @@ const fetchUserId = async (req, res, next) => {
             return res.status(401).json({ error: "Invalid credentials" });
         }
 
-        req.user_id = userFromDb.rows[0].id;
+        req.user_id = userFromDb.rows[0].user_id;
+        console.log("Fetched user_id:", req.user_id);
         next();
     } catch (error) {
         console.error("Error fetching user_id:", error);
         return res.status(500).json({ error: "Failed to fetch user_id" });
     }
 };
-*/
 
-// newModRouter.post("/newmod", verifyToken, fetchUserId, async (req, res) => {
-newModRouter.post("/newmod", async (req, res) => {
+
+newModRouter.post("/newmod", verifyToken, fetchUserId, async (req, res) => {
     const { mod_name } = req.body;
-//  const user_id = req.user_id;
-    const user_id = 1; // Hard-coded for now until actual code works
+    const user_id = req.user_id;
 
         try {
         const result = await query('SELECT * FROM mods WHERE mod_name=$1', [mod_name]);
