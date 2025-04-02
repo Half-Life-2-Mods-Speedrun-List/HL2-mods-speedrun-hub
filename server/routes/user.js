@@ -40,14 +40,19 @@ userRouter.post("/login", async (req, res) => {
 
         res.cookie("access_token", accessToken, {
             httpOnly: true,
+            secure: false,
+            sameSite: "lax",
+            path: "/",
+            maxAge: 2 * 60 * 60 * 1000, // 2 hours
         });
+        console.log("Cookie maxAge set to:", 2 * 60 * 60 * 1000);
         res.status(200).json({
             username: user.username,
             accessToken,
         })
     } catch (error) {
         console.log(error)
-        return res.status(400).json({ error: "Something went wrong with logging in"})
+        return res.status(400).json({ error: error})
     }
     
 })
@@ -57,6 +62,8 @@ userRouter.get("/profile", verifyToken, async (req, res) => {
         message: "Hello profile",
     })
 })
+
+
 
 module.exports = {
     userRouter

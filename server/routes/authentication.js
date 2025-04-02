@@ -7,7 +7,7 @@ const authRouter = express.Router()
 authRouter.post("/register", async(req, res) => {
     // input values
     const { email, password, username } = req.body;
-
+        console.log("started registering")
         try {
         const result = await query('SELECT * FROM users WHERE email=$1 OR username=$2', [email, username]);
 

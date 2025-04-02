@@ -4,34 +4,48 @@ import { Mod } from "./Mod.js"
 class Mods {
     #mods = []
     #backend_url = ""
+    #modsWithCategories = []
 
     constructor(url, endpoint = "/mods") {
-        this.#backend_url = new URL(endpoint, url).href
+        this.#backend_url = new URL (endpoint, url).href
     }
 
-    getMods = () => {
+    getMods = async () => {
         console.log("Fetching from URL:", this.#backend_url);
-
-        return new Promise(async(resolve, reject) => {
-            fetch(this.#backend_url)
-            
-            .then((response) => response.json())
-            .then((json) => {
-                this.#readJson(json)
-                resolve(this.#mods)
-            }, (error) => {
-                reject(error)
-            })
+        try {
+            const response = await fetch(this.#backend_url);
+            const json = await response.json();
+            this.#readJson(json, this.#mods, (data) => new Mod(data.mod_id, data.mod_name));
             console.log(this.#mods)
-        })
-        
+            return this.#mods;
+            
+        } catch (error) {
+            console.error(error)
+        }
     }
 
-    #readJson = (modsAsJson) => {
-        modsAsJson.forEach(element => {
-            const mod = new Mod(element.mod_id, element.mod_name)
-            this.#mods.push(mod)
+    #readJson = (jsonArray, targetArray, mappingFunction) => {
+        targetArray.length = 0; 
+        jsonArray.forEach((element) => {
+            targetArray.push(mappingFunction(element));
         });
+    }
+
+
+    getModsWithCategories = async () => {
+        const endpoint = new URL("/mods/categories", this.#backend_url).href;
+        try {
+            const response = await fetch(endpoint)
+            const json = await response.json()
+            this.#readJson(json, this.#modsWithCategories, (data) => ({
+                id: data.mod_id,
+                name: data.mod_name,
+                category: data.category_name,
+            }));
+            return this.#modsWithCategories;
+        } catch {
+            console.error(error)
+        }
     }
 }
 

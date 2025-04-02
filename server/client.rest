@@ -1,5 +1,5 @@
 ### Login with valid credentials 
-POST http://localhost:3001/user/login HTTP/1.1
+POST http://127.0.0.1:3001/user/login HTTP/1.1
 Content-Type: application/json
 
 { 
@@ -8,11 +8,11 @@ Content-Type: application/json
     "password":"mies" 
 }
 ### protected route, for example profile
-GET http://localhost:3001/user/profile HTTP/1.1
+GET http://127.0.0.1:3001/user/profile HTTP/1.1
 Content-Type: application/json
 
 ### register
-POST http://localhost:3001/auth/register HTTP/1.1
+POST http://127.0.0.1:3001/auth/register HTTP/1.1
 Content-Type: application/json
 
 { 
@@ -20,3 +20,8 @@ Content-Type: application/json
     "username":"user3", 
     "password":"mies" 
 }
+
+### GET mods that have categories
+
+GET http://127.0.0.1:3001/mods/categories HTTP/1.1
+Content-Type: application/json
