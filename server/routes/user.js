@@ -40,7 +40,12 @@ userRouter.post("/login", async (req, res) => {
 
         res.cookie("access_token", accessToken, {
             httpOnly: true,
+            secure: false,
+            sameSite: "lax",
+            path: "/",
+            maxAge: 2 * 60 * 60 * 1000, // 2 hours
         });
+        console.log("Cookie maxAge set to:", 2 * 60 * 60 * 1000);
         res.status(200).json({
             username: user.username,
             accessToken,
@@ -59,25 +64,6 @@ userRouter.get("/profile", verifyToken, async (req, res) => {
 })
 
 
-// Trying to get user_id from the database, not working yet
-userRouter.get("/user_id", verifyToken, async (req, res) => {
-    try {
-        const user = req.user.username
-        const userFromDb = await query(
-            'SELECT * FROM users WHERE username = $1', [user]
-        )
-        if (userFromDb.rowCount === 0) {
-            return res.status(401).json({ error: "Invalid credentials"})
-        }
-        const user_id = userFromDb.rows[0].id
-        res.status(200).json({
-            user_id: user_id,
-        })
-    } catch (error) {
-        console.log(error)
-        return res.status(400).json({ error: error})
-    }
-});
 
 module.exports = {
     userRouter

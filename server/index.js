@@ -13,6 +13,7 @@ const app = express()
 
 app.use(cookieParser())
 app.use(cors({
+  origin: "http://127.0.0.1:5500",
   credentials: true,
 }))
 app.use(express.json())
