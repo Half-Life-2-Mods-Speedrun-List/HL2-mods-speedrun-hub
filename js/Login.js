@@ -7,9 +7,10 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
   const data = Object.fromEntries(formData.entries());
 
   try {
-      const response = await fetch("http://localhost:3001/user/login", {
+      const response = await fetch("http://127.0.0.1:3001/user/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: "include", // Include cookies in the request
           body: JSON.stringify(data)
       });
 
