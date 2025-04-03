@@ -9,8 +9,9 @@ const addCategory = async (req, res) => {
         // mod's id should come directly from url
         const {mod_id} = req.params
 
+        // user authetication check
         if(!req.user) {
-            return res.status(401).json({ error: "Unauthorized user"});
+            return res.status(401).json({ error: "Unauthorized user. Please log in/register to add category."});
         }
 
         console.log(req.body);
