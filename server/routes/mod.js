@@ -2,6 +2,8 @@ const { query } = require("../helpers/db.js")
 const express = require("express")
 const { verifyToken } = require("../helpers/verifyToken.js");
 const modRouter = express.Router()
+const fs = require('fs');
+const path = require('path');
 
 modRouter.get("/", async (req, res) => {
     try {
@@ -67,6 +69,14 @@ modRouter.post("/newmod", verifyToken, fetchUserId, async (req, res) => {
             'INSERT INTO mods (mod_name, user_id) VALUES ($1, $2) RETURNING *',
             [mod_name, user_id]
             );
+            // regex to remove spaces and special characters from mod_name
+            const fileModName = mod_name.replace(/[^a-zA-Z0-9]/g, "_");
+            // new modfication as a file
+            const filePath = path.join(__dirname, "../../mods", `${fileModName}.html`);
+            // fileContent is going to be what will be inside the mod page
+            // TODO: create a template for the mod page
+            const fileContent = "This will be inside the mod page.";
+            fs.writeFileSync(filePath, fileContent);
             console.log("New mod created:", newMod.rows[0]);
             res.status(200).json({message: "New mod created: " + mod_name});
         } catch (error) {
