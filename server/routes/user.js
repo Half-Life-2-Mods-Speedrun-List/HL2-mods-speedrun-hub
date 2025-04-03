@@ -40,8 +40,8 @@ userRouter.post("/login", async (req, res) => {
 
         res.cookie("access_token", accessToken, {
             httpOnly: true,
-            secure: false,
-            sameSite: "lax",
+            secure: true,
+            sameSite: "None",
             path: "/",
             maxAge: 2 * 60 * 60 * 1000, // 2 hours
         });

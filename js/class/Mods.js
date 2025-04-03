@@ -43,7 +43,7 @@ class Mods {
                 category: data.category_name,
             }));
             return this.#modsWithCategories;
-        } catch {
+        } catch (error) {
             console.error(error)
         }
     }

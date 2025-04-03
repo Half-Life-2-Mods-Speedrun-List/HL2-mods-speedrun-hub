@@ -46,7 +46,6 @@ CREATE TABLE "world_records" (
 CREATE TABLE mods (
   mod_id SERIAL PRIMARY KEY,
   mod_name text,
-  category_id integer, --> onko turha, yhdellä modillahan on monta kategoriaa?
   download_links text
 );
 

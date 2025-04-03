@@ -1,4 +1,4 @@
-const BACKEND_ROOT_URL = "http://127.0.0.1:3001"
+const BACKEND_ROOT_URL = "http://localhost:3001"
 import { Mods } from "./class/Mods.js"
 
 const modifications = new Mods(BACKEND_ROOT_URL)
@@ -30,7 +30,7 @@ const getMods = () => {
         })
         document.body.appendChild(div)
     }).catch((error) => {
-        alert(error)
+        console.log(error)
     })
 }
 modifications.getModsWithCategories().then(data => console.log("Mods with categories:", data));
