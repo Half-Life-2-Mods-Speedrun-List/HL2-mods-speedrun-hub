@@ -16,7 +16,7 @@ class Mods {
             const response = await fetch(this.#backend_url);
             const json = await response.json();
             this.#readJson(json, this.#mods, (data) => new Mod(data.mod_id, data.mod_name));
-            console.log(this.#mods)
+            
             return this.#mods;
             
         } catch (error) {

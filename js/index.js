@@ -10,7 +10,6 @@ let modsWithCategories = new Set()
 const renderMod = (mod) => {
     const h4 = document.createElement("h4")
     h4.textContent = mod.getText()
-    console.log(modsWithCategories)
     if (modsWithCategories.has(mod.getId())) {
         h4.style.color = "orange"
     }
@@ -19,20 +18,20 @@ const renderMod = (mod) => {
     
 }
 
-const getMods = () => {
-    modifications.getModsWithCategories()
-    .then(data => data.forEach(obj => modsWithCategories.add(obj.id)))
+const getMods = async () => {
+    try {
+        const modsWithCategoriesData = await modifications.getModsWithCategories();
+        modsWithCategoriesData.forEach(obj => modsWithCategories.add(obj.id));
 
-    modifications.getMods().then((mods) => {
+        const mods = await modifications.getMods();
         mods.forEach(mod => {
-            renderMod(mod)
-            
-        })
+            renderMod(mod);
+        });
         document.body.appendChild(div)
-    }).catch((error) => {
+    } catch (error) {
         console.log(error)
-    })
+    }
 }
-modifications.getModsWithCategories().then(data => console.log("Mods with categories:", data));
+
 getMods()
 
