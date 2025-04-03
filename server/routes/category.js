@@ -1,12 +1,17 @@
 const express = require("express");
 const { createCategory } = require("../helpers/gameCategoryModel.js");
 const categoryRouter = express.Router();
+const { verifyToken } = require("../helpers/verifyToken.js")
 
 const addCategory = async (req, res) => {
     try {
         const {name} = req.body;
         // mod's id should come directly from url
         const {mod_id} = req.params
+
+        if(!req.user) {
+            return res.status(401).json({ error: "Unauthorized user"});
+        }
 
         console.log(req.body);
 
@@ -23,6 +28,6 @@ const addCategory = async (req, res) => {
 }
 
 // saving the mod's id to the URL-path :mod_id
-categoryRouter.post("/mods/:mod_id/categories", addCategory);
+categoryRouter.post("/mods/:mod_id/categories", verifyToken, addCategory);
 
 module.exports = { categoryRouter };
