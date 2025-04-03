@@ -29,7 +29,8 @@ const createCategory = async (name, mod_id) => {
     } catch (error) {
     // if there's error with the query, rollback cancels all previous actions
         await client.query("ROLLBACK")
-        throw error;
+        console.error("Error creating category:", error.message);
+        throw new Error("Failed to create category")
     } finally {
         client.release();
     }
