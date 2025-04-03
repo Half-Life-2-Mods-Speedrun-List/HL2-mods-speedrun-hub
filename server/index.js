@@ -9,7 +9,6 @@ const { userRouter } = require("./routes/user.js")
 const { connectDB } = require("./helpers/db.js");
 const { categoryRouter } = require("./routes/category.js")
 const { newModRouter } = require('./routes/newmod.js');
->>>>>>>>> Temporary merge branch 2
 
 const app = express()
 
@@ -25,7 +24,7 @@ app.use("/mods", modRouter)
 app.use("/newmod", newModRouter)
 app.use("/auth", authRouter)
 app.use("/user", userRouter)
-app.use("/categories", categoryRouter)
+app.use("/mods", categoryRouter)
 
 
 app.get('/', (req, res) => {
