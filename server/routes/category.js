@@ -1,5 +1,6 @@
 const express = require("express");
 const { createCategory } = require("../helpers/gameCategoryModel.js");
+const { query } = require("../helpers/db.js");
 const categoryRouter = express.Router();
 
 const addCategory = async (req, res) => {
@@ -24,5 +25,22 @@ const addCategory = async (req, res) => {
 
 // saving the mod's id to the URL-path :mod_id
 categoryRouter.post("/mods/:mod_id/categories", addCategory);
+
+categoryRouter.get("/categories/:mod_id", async (req, res) => {
+    const { mod_id}  = req.params
+    try {
+        const result = await query(
+            `SELECT c.category_id, c.category_name
+            FROM categories c 
+            INNER JOIN mod_category mc ON mc.category_id = c.category_id
+            WHERE mc.mod_id = $1;`, 
+            [mod_id]
+        )
+        const rows = result.rows ? result.rows : []
+        res.status(200).json(rows)
+    } catch (error) {
+        res.status(500).json({error: "server error"})
+    }
+})
 
 module.exports = { categoryRouter };
