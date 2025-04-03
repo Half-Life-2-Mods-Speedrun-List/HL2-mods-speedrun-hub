@@ -1,5 +1,5 @@
 import { timeout } from "./Utils.js"
-
+const backendUrl = "http://localhost:3001"
 document.getElementById("registerForm").addEventListener("submit", async function(event) {
   event.preventDefault(); 
 
@@ -7,7 +7,7 @@ document.getElementById("registerForm").addEventListener("submit", async functio
   const data = Object.fromEntries(formData.entries());
 
   try {
-      const response = await fetch("http://127.0.0.1:3001/auth/register", {
+      const response = await fetch(backendUrl + "/auth/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)

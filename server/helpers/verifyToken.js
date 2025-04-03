@@ -9,7 +9,7 @@ const verifyToken = (req, res, next) => {
     } 
     try {
         console.log("validating token..")
-        const validToken = jwt.verify(accessToken, secretKey, )
+        const validToken = jwt.verify(accessToken, secretKey)
         console.log(validToken)
         if (validToken) {
             req.authenticated = true

@@ -46,7 +46,10 @@ CREATE TABLE "world_records" (
 CREATE TABLE mods (
   mod_id SERIAL PRIMARY KEY,
   mod_name text,
-  download_links text
+  download_links text,
+  user_id INTEGER,
+  FOREIGN KEY (user_id) REFERENCES "users"("user_id")
+
 );
 
 CREATE TABLE mod_category (
@@ -71,4 +74,4 @@ ALTER TABLE "world_records" ADD CONSTRAINT "world_records" FOREIGN KEY ("speedru
 
 ALTER TABLE "world_records" ADD CONSTRAINT "world_recods" FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
-ALTER TABLE "mods" ADD CONSTRAINT "mods" FOREIGN KEY ("category_id") REFERENCES "categories" ("category_id");
+ALTER TABLE "mods" ADD CONSTRAINT "user_id" FOREIGN KEY ("user_id") REFERENCES "users" ("user_id");

@@ -1,18 +1,20 @@
+const backendUrl = "http://localhost:3001"
 document.getElementById("createMod").addEventListener("submit", async function(event) {
   event.preventDefault(); 
     const mod_name = document.getElementById("modName").value;
-
+    console.log(mod_name)
     try {
-      const response = await fetch("http://127.0.0.1:3001/newmod/newmod", {
+      const response = await fetch(backendUrl + "/mods/newmod", {
         method: "POST",
         headers: {
           "Content-Type": "application/json" 
         },
         credentials: "include", // Include cookies in the request
-        body: JSON.stringify({ mod_name })
+        body: JSON.stringify({mod_name: mod_name })
       });
 
       const data = await response.json();
+      console.log
       document.getElementById("message").innerText = data.message;
       document.getElementById("message").style.color = "rgb(235,235,235)";
 

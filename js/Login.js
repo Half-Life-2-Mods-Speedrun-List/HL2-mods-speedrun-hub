@@ -1,5 +1,5 @@
 import { timeout } from "./Utils.js"
-
+const backendUrl = "http://localhost:3001"
 document.getElementById("loginForm").addEventListener("submit", async function(event) {
   event.preventDefault(); 
 
@@ -7,7 +7,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
   const data = Object.fromEntries(formData.entries());
 
   try {
-      const response = await fetch("http://localhost:3001/user/login", {
+      const response = await fetch(backendUrl + "/user/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include", // Include cookies in the request
