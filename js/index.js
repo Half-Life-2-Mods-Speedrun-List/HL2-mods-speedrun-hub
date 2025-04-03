@@ -13,9 +13,19 @@ const renderMod = (mod) => {
     if (modsWithCategories.has(mod.getId())) {
         h4.style.color = "orange"
     }
-
+    h4.addEventListener("click",() => changePage(mod.getId()))
     div.appendChild(h4)
     
+}
+
+const changePage = (modId) => {
+    console.log(modId)
+    let url = new URL("http://localhost:5500/views/Mod.html") 
+    url.searchParams.append("id", modId)  
+    window.location.href = url.toString()
+
+    
+
 }
 
 const getMods = async () => {
