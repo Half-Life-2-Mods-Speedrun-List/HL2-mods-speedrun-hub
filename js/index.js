@@ -1,4 +1,4 @@
-const BACKEND_ROOT_URL = "http://127.0.0.1:3001"
+const BACKEND_ROOT_URL = "http://localhost:3001"
 import { Mods } from "./class/Mods.js"
 
 const modifications = new Mods(BACKEND_ROOT_URL)
@@ -19,20 +19,20 @@ const renderMod = (mod) => {
     
 }
 
-const getMods = () => {
-    modifications.getModsWithCategories()
-    .then(data => data.forEach(obj => modsWithCategories.add(obj.id)))
+const getMods = async () => {
+    try {
+        const modsWithCategoriesData = await modifications.getModsWithCategories();
+        modsWithCategoriesData.forEach(obj => modsWithCategories.add(obj.id));
 
-    modifications.getMods().then((mods) => {
+        const mods = await modifications.getMods();
         mods.forEach(mod => {
-            renderMod(mod)
-            
-        })
+            renderMod(mod);
+        });
         document.body.appendChild(div)
-    }).catch((error) => {
-        alert(error)
-    })
+    } catch (error) {
+        console.log(error)
+    }
 }
-modifications.getModsWithCategories().then(data => console.log("Mods with categories:", data));
+
 getMods()
 
