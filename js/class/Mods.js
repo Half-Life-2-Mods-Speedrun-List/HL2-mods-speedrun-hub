@@ -47,6 +47,33 @@ class Mods {
             console.error(error)
         }
     }
+
+
+    // add category to mod
+    createCategory = async (modId, categoryName) => {
+        const endpoint = new URL(`/mods/${modId}/categories`, this.#backend_url).href;
+        const data = { category_name: categoryName };
+
+    try {
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to create category");
+        }
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error("Error creating category:", error)
+        throw error;
+    }
+    }
 }
+
 
 export { Mods }
