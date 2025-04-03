@@ -5,6 +5,13 @@ const createCategory = async (name, mod_id) => {
     try {
         await client.query("BEGIN");
 
+        // check if category already exists
+        const existingCategory = await client.query('SELECT * FROM categories WHERE name=$1', [name]);
+
+        if (existingCategory.rows.length > 0) {
+            throw new Error ("Category already exists")
+        }
+
         // adding category to categories-table
         const categoryResult = await client.query(
             "INSERT INTO categories (name) VALUES ($1) RETURNING *",
