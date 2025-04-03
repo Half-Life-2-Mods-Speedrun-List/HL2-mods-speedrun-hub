@@ -15,7 +15,7 @@ const timeout = (context) => {
 
           setTimeout(() => {
             window.location.href = "/views/Mods.html"; 
-          }, 5500)
+          }, 2000)
           
   }
 
