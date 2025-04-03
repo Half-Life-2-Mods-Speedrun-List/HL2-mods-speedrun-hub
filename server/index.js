@@ -24,7 +24,7 @@ app.use("/mods", modRouter)
 app.use("/newmod", newModRouter)
 app.use("/auth", authRouter)
 app.use("/user", userRouter)
-app.use("/categories", categoryRouter)
+app.use("/mods", categoryRouter)
 
 
 app.get('/', (req, res) => {
