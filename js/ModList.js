@@ -20,7 +20,7 @@ const renderMod = (mod) => {
 
 const changePage = (modId) => {
     console.log(modId)
-    let url = new URL("http://localhost:5500/views/Mod.html") 
+    let url = new URL("http://localhost:5500/views/ModPage.html") 
     url.searchParams.append("id", modId)  
     window.location.href = url.toString()
 

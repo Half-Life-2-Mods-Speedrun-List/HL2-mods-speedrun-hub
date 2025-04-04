@@ -51,7 +51,7 @@ class Mods {
 
     // add category to mod
     createCategory = async (modId, categoryName) => {
-        const endpoint = new URL(`/mods/${modId}/categories`, this.#backend_url).href;
+        const endpoint = new URL(`/categories/${modId}`, this.#backend_url).href;
         const data = { category_name: categoryName };
 
     try {
