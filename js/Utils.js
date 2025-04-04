@@ -14,7 +14,7 @@ const timeout = (context) => {
           document.body.appendChild(successDiv)
 
           setTimeout(() => {
-            window.location.href = "/views/Mods.html"; 
+            window.location.href = "/views/ModList.html"; 
           }, 1000)
           
   }
