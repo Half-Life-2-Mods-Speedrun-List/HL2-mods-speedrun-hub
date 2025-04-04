@@ -19,12 +19,12 @@ Content-Type: application/json
 }
 
 ### GET mods that have categories
-GET http://127.0.0.1:3001/mods/categories HTTP/1.1
+GET http://127.0.0.1:3001/categories/1 HTTP/1.1
 Content-Type: application/json
 
 ### Add categories to mods
-POST http://127.0.0.1:3001/mods/1/categorie HTTP/1.1
+POST http://127.0.0.1:3001/categories/2 HTTP/1.1
 Content-Type: application/json
 {
-    "name": "0% runs"
+    "name": "2% runs"
 }

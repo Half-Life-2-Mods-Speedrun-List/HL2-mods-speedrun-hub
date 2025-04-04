@@ -22,7 +22,7 @@ app.use(express.urlencoded({extended: false}))
 app.use("/mods", modRouter)
 app.use("/auth", authRouter)
 app.use("/user", userRouter)
-app.use("/mods", categoryRouter)
+app.use("/categories", categoryRouter)
 
 
 app.get('/', (req, res) => {

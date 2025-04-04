@@ -1,5 +1,5 @@
 const express = require("express");
-const { createCategory } = require("../helpers/gameCategoryModel.js");
+const { createCategory } = require("../models/gameCategoryModel.js");
 const { query } = require("../helpers/db.js");
 const categoryRouter = express.Router();
 const { verifyToken } = require("../helpers/verifyToken.js")
@@ -30,9 +30,9 @@ const addCategory = async (req, res) => {
 }
 
 // saving the mod's id to the URL-path :mod_id
-categoryRouter.post("/mods/:mod_id/categories", verifyToken, addCategory);
+categoryRouter.post("/:mod_id", verifyToken, addCategory);
 
-categoryRouter.get("/categories/:mod_id", async (req, res) => {
+categoryRouter.get("/:mod_id", async (req, res) => {
     const { mod_id}  = req.params
     try {
         const result = await query(
@@ -45,7 +45,7 @@ categoryRouter.get("/categories/:mod_id", async (req, res) => {
         const rows = result.rows ? result.rows : []
         res.status(200).json(rows)
     } catch (error) {
-        res.status(500).json({error: "server error"})
+        res.status(500).json({error: "server error", error})
     }
 })
 

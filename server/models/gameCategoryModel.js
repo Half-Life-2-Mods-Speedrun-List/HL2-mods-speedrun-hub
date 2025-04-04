@@ -1,4 +1,4 @@
-const pool = require("./db.js");
+const pool = require("../helpers/db.js");
 
 const createCategory = async (name, mod_id) => {
     const client = await pool.connect();
