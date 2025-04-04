@@ -14,6 +14,14 @@ class Mod {
     getText() {
         return this.#text
     }
+
+    get mod_id() {
+        return this.#id;
+    }
+
+    get mod_name() {
+        return this.#text;
+    }
 }
 
 export { Mod }
