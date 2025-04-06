@@ -23,6 +23,7 @@ const openDb = () => {
         port: process.env.POSTGRES_PORT,
         ssl: process.env.SSL
     })
+    console.log("Database pool created:", pool)
     return pool;
 }
 
