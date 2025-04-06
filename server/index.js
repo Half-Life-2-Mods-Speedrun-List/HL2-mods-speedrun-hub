@@ -13,7 +13,7 @@ const app = express()
 
 app.use(cookieParser())
 app.use(cors({
-  origin: ["http://127.0.0.1:5500","http://localhost:5500"],
+  origin: ["http://127.0.0.1:5500","http://localhost:5500", "http://127.0.0.1:3000"],
   credentials: true,
 }))
 app.use(express.json())
@@ -22,7 +22,7 @@ app.use(express.urlencoded({extended: false}))
 app.use("/mods", modRouter)
 app.use("/auth", authRouter)
 app.use("/user", userRouter)
-app.use("/categories", categoryRouter)
+app.use("/mods/:mod_id/categories", categoryRouter)
 
 
 app.get('/', (req, res) => {
