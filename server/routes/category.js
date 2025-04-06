@@ -6,17 +6,22 @@ const { verifyToken } = require("../helpers/verifyToken.js")
 
 const addCategory = async (req, res) => {
     try {
+        console.log(req.body);
         const {name} = req.body;
         // mod's id should come directly from url
         const {mod_id} = req.params
 
+        // TEMPORARILY COMMENTED OUT USER AUTHENTICATION FOR TESTING
         // user authetication check
-        if(!req.user) {
+        /*if(!req.user) {
             return res.status(401).json({ error: "Unauthorized user. Please log in/register to add category."});
+        }*/
+
+        const modExists = await query('SELECT * FROM mods WHERE mod_id = $1', [mod_id])
+        if (modExists.rowCount === 0 ) {
+            return res.status(404).json({error: `Mod with ID ${mod_id} not found`})
         }
-
-        console.log(req.body);
-
+        
         if (!name) {
             return res.status(400).json({ error:"Category name is required"});
         }
@@ -30,10 +35,12 @@ const addCategory = async (req, res) => {
 }
 
 // saving the mod's id to the URL-path :mod_id
-categoryRouter.post("/:mod_id", verifyToken, addCategory);
+// TEMPORARILY COMMENTED OUT USER AUTHENTICATION FOR TESTING
+//categoryRouter.post("/:mod_id", verifyToken, addCategory);
+categoryRouter.post("/:mod_id", addCategory);
 
 categoryRouter.get("/:mod_id", async (req, res) => {
-    const { mod_id}  = req.params
+    const {mod_id}  = req.params
     try {
         const result = await query(
             `SELECT c.category_id, c.category_name
