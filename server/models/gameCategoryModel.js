@@ -1,39 +1,42 @@
 const pool = require("../helpers/db.js");
 
 const createCategory = async (name, mod_id) => {
-    const client = await pool.connect();
+    console.log("Creating category with name:", name, "and mod_id", mod_id)
+    
     try {
-        await client.query("BEGIN");
+        console.log("Starting transaction")
+        await pool.query("BEGIN");
 
         // check if category already exists
-        const existingCategory = await client.query('SELECT * FROM categories WHERE name=$1', [name]);
+        const existingCategory = await pool.query('SELECT * FROM categories WHERE category_name=$1', [name]);
+        console.log("Existing categories:", existingCategory.rows)
 
         if (existingCategory.rows.length > 0) {
             throw new Error ("Category already exists")
         }
 
         // adding category to categories-table
-        const categoryResult = await client.query(
-            "INSERT INTO categories (name) VALUES ($1) RETURNING *",
+        console.log("Inserting new category")
+        const categoryResult = await pool.query(
+            "INSERT INTO categories (category_name) VALUES ($1) RETURNING *",
             [name]
         );
         const categoryId = categoryResult.rows[0].category_id;
+        console.log("Inserting into mod_category table with modId:", mod_id, "and with categoryId", categoryId)
 
         // adding to mod_category table
-        await client.query(
+        await pool.query(
             "INSERT INTO mod_category (mod_id, category_id) VALUES ($1, $2)",
             [mod_id, categoryId]
         )
-        await client.query("COMMIT") // commit saves data to database
+        await pool.query("COMMIT") // commit saves data to database
         return {id: categoryId, name};
     } catch (error) {
     // if there's error with the query, rollback cancels all previous actions
-        await client.query("ROLLBACK")
-        console.error("Error creating category:", error.message);
-        throw new Error("Failed to create category")
-    } finally {
-        client.release();
-    }
+        await pool.query("ROLLBACK")
+        console.error("Error creating category:", error);
+        throw new Error(`Failed to create category: ${error.message}`)
+    } 
 };
 
 module.exports = { createCategory };
