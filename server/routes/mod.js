@@ -2,12 +2,10 @@ const { query } = require("../helpers/db.js")
 const express = require("express")
 const { verifyToken } = require("../helpers/verifyToken.js");
 const modRouter = express.Router()
-const fs = require('fs');
-const path = require('path');
 
 modRouter.get("/", async (req, res) => {
     try {
-        const result = await query('select mod_id, mod_name from mods')
+        const result = await query('SELECT mod_id, mod_name FROM mods')
         rows = result.rows ? result.rows : [] //this is done to make sure it is not null, as that would crash the backend
         res.status(200).json(rows)
     } catch(error) {
@@ -30,6 +28,7 @@ modRouter.get("/categories", async (req, res) => {
     }
 })
 
+/* TEMPORARILY COMMENTED OUT USER AUTHENTICATION FOR TESTING
 const fetchUserId = async (req, res, next) => {
     try {
         console.log("Fetching user_id for username:", req.user.username);
@@ -49,11 +48,13 @@ const fetchUserId = async (req, res, next) => {
         console.error("Error fetching user_id:", error);
         return res.status(500).json({ error: "Failed to fetch user_id" });
     }
-};
+};*/
 
-
-modRouter.post("/newmod", verifyToken, fetchUserId, async (req, res) => {
+// modRouter.post("/newmod", verifyToken, fetchUserId, async (req, res) => {
+modRouter.post("/newmod", async (req, res) => {
     console.log("trying to add a new mod...")
+    console.log("Request body:", req.body)
+
     const { mod_name } = req.body;
     const user_id = req.user_id;
 
