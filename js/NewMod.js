@@ -14,12 +14,16 @@ document.getElementById("createMod").addEventListener("submit", async function(e
       });
 
       const data = await response.json();
-      console.log
       document.getElementById("message").innerText = data.message;
       document.getElementById("message").style.color = "rgb(235,235,235)";
 
+    // appending modId to url and redirecting to ModPage.html  
       if (response.ok) {
           console.log("A new mod created: " + mod_name, data);
+          let modId = data.mod_id
+          let url = new URL("http://localhost:5500/views/ModPage.html")
+          url.searchParams.append("id", modId)
+          window.location.href = url.toString()
       } else {
           console.error("Error:", data.message);
           document.getElementById("message").style.color = "red";
