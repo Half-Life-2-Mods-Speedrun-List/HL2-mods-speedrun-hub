@@ -23,7 +23,6 @@ Content-Type: application/json
 
 ### GET mods that have categories
 GET http://127.0.0.1:3001/categories/1 HTTP/1.1
-
 Content-Type: application/json
 
 ### Add categories to mods
@@ -33,3 +32,7 @@ Content-Type: application/json
 {
     "name": "2% runs"
 }
+
+####
+GET http://127.0.0.1:3001/wr-history/1 HTTP/1.1
+Content-Type: application/json
