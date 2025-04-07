@@ -41,6 +41,7 @@ h1, h2, h3, h4, h5, h6 {
     font-size:4.5rem;
     text-align:left;
     font-weight:400;
+    font-style: italic;
 }
 
 p, span, label, input, textarea {
