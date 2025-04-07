@@ -5,6 +5,18 @@ document.getElementById("registerForm").addEventListener("submit", async functio
 
   const formData = new FormData(this);
   const data = Object.fromEntries(formData.entries());
+  const password = document.querySelector("input[name='password']").value;
+  const confirmPassword = document.querySelector("input[name='confirmPassword']").value;
+  const errorMessage = document.getElementById("passwordError");
+
+  if (password !== confirmPassword) {
+    errorMessage.textContent = "Passwords do not match.";
+    errorMessage.style.fontSize = "1em";
+    return;
+} else {
+    errorMessage.textContent = "";
+    errorMessage.style.fontSize = "0em";
+}
 
   try {
       const response = await fetch(backendUrl + "/auth/register", {
