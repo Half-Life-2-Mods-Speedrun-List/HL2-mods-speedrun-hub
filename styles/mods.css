@@ -65,7 +65,7 @@ pre {
   text-align: center;
 }
 h4 {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   color: #ddd;
   text-align: center;
   margin:0.6rem;
@@ -112,8 +112,28 @@ td, th {
 
 .gridlist {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  align-content: center;
+  grid-template-columns: repeat(auto-fill, minmax(22%, 1fr));
+  gap: 0;
+  width: 100%;
+}
+
+.gridlist > h4 {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: center;
+}
+
+@media only screen and (max-width: 1280px) {
+  .gridlist {
+    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+  }
+}
+
+@media only screen and (max-width: 960px) {
+  .gridlist {
+    grid-template-columns: repeat(auto-fill, minmax(45%, 1fr));
+  }
 }
 
 .box {

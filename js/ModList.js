@@ -10,8 +10,10 @@ let modsWithCategories = new Set()
 const renderMod = (mod) => {
     const h4 = document.createElement("h4")
     h4.textContent = mod.getText()
+    h4.title = mod.getText()
     if (modsWithCategories.has(mod.getId())) {
         h4.style.color = "orange"
+        h4.style.cursor = "pointer"
     }
     h4.addEventListener("click",() => changePage(mod.getId()))
     div.appendChild(h4)
