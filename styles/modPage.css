@@ -1,0 +1,119 @@
+.container {
+    width: auto;
+    margin: auto;
+    padding: 20;
+    padding-top: 2rem;
+    background: linear-gradient(rgb(40,40,40) 0%, rgb(28,28,28) 10%);
+}
+  
+body {
+    background-color: rgb(28, 28, 28);
+    color: rgb(200, 200, 200);
+    font-family: "Segoe UI Light", sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.line {
+    border-bottom: 1px solid #333;
+    width: auto;
+  }
+
+.xentable {
+    width:auto;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:0rem;
+    margin-bottom:0rem;
+    cursor: pointer;
+  }
+  
+
+h1, h2, h3, h4, h5, h6 {
+    color: rgb(220, 220, 220);
+}
+
+#modName {
+    color: white;
+    margin-top: 0rem;
+    margin-bottom:2.5rem;
+    margin-left: 1rem;
+    font-size:4.5rem;
+    text-align:left;
+    font-weight:400;
+}
+
+p, span, label, input, textarea {
+    color: rgb(200, 200, 200);
+}
+
+td {
+    padding:1.2rem;
+    color:orange;
+    font-size:2rem;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {text-decoration: underline 1.5px;}
+
+/* I don't really see the use of this box-div?
+.box {
+    background-color: rgb(40, 40, 40);
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+}*/
+
+.category-div {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    width: auto;
+    padding-top: 1rem;
+    padding-bottom: 2em;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    border-bottom: 2px solid #333;
+  }
+
+.category-content {
+
+}
+
+.speedrun {
+    flex: 2;
+    padding-left: 1rem;
+
+  }
+.popUp {
+    flex: 1;
+}
+
+.popUpContent {}
+
+#wr-button, .add-cat-btn, .close-btn {
+    background-color: orange;
+    color: rgb(0, 0, 0);
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 15px;
+    cursor: pointer;}
+
+#wr-button:hover, .add-cat-btn:hover, .close-btn:hover {
+        background-color: rgb(255, 145, 0);
+    }
+
+  /* MEDIA QUERIES */
+
+  @media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+    .grid-container {
+        grid-template-columns: 1fr; /* video ylhäällä, napit alla */
+    }
+}
