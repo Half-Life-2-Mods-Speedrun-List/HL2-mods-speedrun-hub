@@ -19,7 +19,7 @@ body {
     width: auto;
   }
 
-.xentable {
+.navbar {
     width:auto;
     margin-left:auto;
     margin-right:auto;
@@ -70,8 +70,7 @@ a:hover {text-decoration: underline 1.5px;}
 
 .category-div {
     display: flex;
-    align-items: flex-start;
-    flex-direction: row;
+    flex-direction: column;
     width: auto;
     padding-top: 1rem;
     padding-bottom: 2em;
@@ -80,34 +79,67 @@ a:hover {text-decoration: underline 1.5px;}
     border-bottom: 2px solid #333;
   }
 
-.category-content {
+.category-form {
+}
 
+.category-input {
+    padding: 6px;
+    border-radius: 10px;
+    margin: 1rem;
+    color: black;
+    border: solid 2px orange;
+}
+
+
+.category-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
 }
 
 .speedrun {
-    flex: 2;
+    flex: 1;
     padding-left: 1rem;
+    text-align: left;
 
   }
+
 .popUp {
-    flex: 1;
+    flex:;
 }
 
-.popUpContent {}
+.popUpContent {
+    padding: 1.5rem;
+    background-color: #222;
+    border-radius: 10px;
+}
 
-#wr-button, .add-cat-btn, .close-btn {
+.add-cat-btn, .close-btn {
     background-color: orange;
     color: rgb(0, 0, 0);
     font-size: 1rem;
     border: none;
     border-radius: 10px;
-    padding: 10px 15px;
+    padding: 5px 15px;
     cursor: pointer;}
 
 #wr-button:hover, .add-cat-btn:hover, .close-btn:hover {
         background-color: rgb(255, 145, 0);
     }
 
+#wr-button {
+    background-color: orange;
+    color: rgb(0, 0, 0);
+    font-size: 1rem;
+    border: none;
+    margin-right: 1rem;
+    border-radius: 10px;
+    padding: 10px 15px;
+    cursor: pointer;
+    align-self: flex-end;
+}
   /* MEDIA QUERIES */
 
   @media (max-width: 768px) {
