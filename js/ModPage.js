@@ -34,7 +34,12 @@ const changeTitle = async (modId) => {
 changeTitle(modId)
 
 // function for showing categories
-const renderCategory = (category, div) => {
+const renderCategory = (category) => {
+    if (!category || !category.getText || !category.getId) {
+        console.error("Invalid category data:", category);
+        return;
+    }
+
     const categoryDiv = document.createElement("div")
     const h4 = document.createElement("h4")
     h4.textContent = category.getText() 
@@ -75,17 +80,43 @@ const getCategories = async (modId) => {
     const div = document.createElement("div")
     try {
         const result = await categories.getCategories(modId)
-        div.innerHTML = "" // clear previous categories so no duplicates will appear
-        result.forEach(category => {
-            renderCategory(category, div);
-        });
+        console.log("Categories fetched:", result)
+        div.innerHTML = ""; // clear previous categories so no duplicates will appear
+        // If there are no categories
+        if (!result || result.length === 0) {
+            const noCategoriesMsg = document.createElement("p");
+            noCategoriesMsg.textContent = "No categories available yet.";
+            div.appendChild(noCategoriesMsg);
+        } else { 
+            result.forEach(category => {
+            renderCategory(category)});
+        }
         document.body.appendChild(div)
     } catch (error) {
         console.error("Error fetching category", error)
     }
 }
 
-getCategories(modId)
+// Fetch categories after adding a new one
+const fetchCategoriesAfterAdd = async () => {
+    await getCategories(modId);  // Fetch the updated categories list after a new one is added
+}
+
+const fetchCategories = async () => {
+    try {
+        await getCategories(modId);  // Fetch categories when the page is loaded
+    } catch (error) {
+        console.error("Error fetching categories:", error)
+    }
+}
+
+if (modId) {
+    fetchCategories();  // Fetch categories only if modId is valid
+} else {
+    console.error("ModId is missing in the url");
+}
+
+//fetchCategories();
 
 const fetchWRHistory = async (categoryId, popUpContent) => {
     try {
@@ -112,8 +143,10 @@ const openWRPopUp = async (categoryId) => {
     const popUpContent = document.createElement("div")
     popUpContent.classList.add("popUpContent")
 
+    const categoryName = await categories.getCategoryName(categoryId)
+
     const header = document.createElement("h3")
-    header.textContent = `WR-history for category: ${categoryId}`
+    header.textContent = `WR-history for category: ${categoryName}`
     popUpContent.appendChild(header)
 
     await fetchWRHistory(categoryId, popUpContent)
@@ -151,6 +184,7 @@ document.body.appendChild(addCategoryForm)
 const addCategoryLink = document.getElementById("addCategory")
 addCategoryLink.addEventListener("click", (event) => {
     event.preventDefault()
+    console.log('Form is visibile now')
     // form comes visible
     addCategoryForm.style.display = "block"
 })
@@ -162,20 +196,23 @@ addCategoryForm.addEventListener("submit", async (event) => {
         return
     }
     try {
-        console.log(`${backendUrl}/mods/${modId}/categories`)
+        console.log(`${backendUrl}/categories/${modId}`)
         // post-request to backend
-        const response = await fetch(`${backendUrl}/mods/${modId}/categories`, {
+        const response = await fetch(`${backendUrl}/categories/${modId}`, {
             method: "POST",
             headers: {
                 "Content-Type":"application/json"
             },
-            body: JSON.stringify({category_name: newCategory, mod_id: modId})
+            body: JSON.stringify({category_name: newCategory})
         })
         if (response.ok) {
+            const categoryData = await response.json()
             categoryInput.value = "" // clear input field
             addCategoryForm.style.display = "none"
-            //refresh category-listing
-            await getCategories(modId)
+
+            renderCategory(categoryData)
+            await fetchCategoriesAfterAdd(); //refresh category-listing
+            
         } else {
             console.error("Error adding category:" + response.statusText)
         }
@@ -183,3 +220,5 @@ addCategoryForm.addEventListener("submit", async (event) => {
         console.error("Error adding category:", error)
     }
 })
+
+//getCategories();

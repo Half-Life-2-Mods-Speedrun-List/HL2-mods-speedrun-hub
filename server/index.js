@@ -23,7 +23,7 @@ app.use(express.urlencoded({extended: false}))
 app.use("/mods", modRouter)
 app.use("/auth", authRouter)
 app.use("/user", userRouter)
-app.use("/mods/:mod_id/categories", categoryRouter)
+app.use("/categories", categoryRouter)
 app.use("/wr-history", wrHistoryRouter)
 
 

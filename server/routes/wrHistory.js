@@ -1,10 +1,9 @@
 const express = require("express");
-const { getWRHistory } = require('../models/worldRecordModel.js');
-const { query } = require("../helpers/db.js");
+const { getWRHistory } = require('../models/wrModel.js');
 const wrHistoryRouter = express.Router();
 
-const WRHistoryHandler = async (req, res) => {
-    const { categoryId } = req.query; // gets id from query parameter
+wrHistoryRouter.get("/:categoryId", async (req, res) => {
+    const { categoryId } = req.params; 
 
     if (!categoryId) {
         return res.status(400).json({ error: "Category ID is required" });
@@ -18,9 +17,7 @@ const WRHistoryHandler = async (req, res) => {
         console.error("Error fetching WR history:", error);
         res.status(500).json({ error: "Failed to fetch WR history" });
     }
-};
+});
 
-wrHistoryRouter.get('/wr-history', WRHistoryHandler);
-
-module.exports = wrHistoryRouter;
+module.exports = { wrHistoryRouter };
 

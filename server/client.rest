@@ -20,17 +20,24 @@ Content-Type: application/json
     "username":"user3", 
     "password":"mies" 
 }
+###
+POST http://127.0.0.1:3001/mods/newMod HTTP/1.1
+Content-Type: application/json
+
+{ 
+    "mod_name": "random Mod"
+}
 
 ### GET mods that have categories
-GET http://127.0.0.1:3001/categories/1 HTTP/1.1
+GET http://127.0.0.1:3001/categories/4 HTTP/1.1
 Content-Type: application/json
 
 ### Add categories to mods
-POST http://127.0.0.1:3001/categories/2 HTTP/1.1
+POST http://127.0.0.1:3001/categories/4 HTTP/1.1
 Content-Type: application/json
 
 {
-    "name": "2% runs"
+    "category_name": "test category"
 }
 
 ####
