@@ -41,9 +41,9 @@ const renderCategory = (category) => {
     }
 
     const categoryDiv = document.createElement("div")
-    const h4 = document.createElement("h4")
-    h4.textContent = category.getText() 
-    categoryDiv.appendChild(h4)
+    const h2 = document.createElement("h2")
+    h2.textContent = category.getText() 
+    categoryDiv.appendChild(h2)
 // class for styling
     categoryDiv.classList.add("category-div")
     const categoryContent = document.createElement("div");
@@ -53,7 +53,7 @@ const renderCategory = (category) => {
 // add "View WR-history" btn
     const viewWRbtn = document.createElement("button")
     viewWRbtn.textContent = "View WR-history"
-    categoryDiv.appendChild(viewWRbtn)
+    categoryContent.appendChild(viewWRbtn)
     viewWRbtn.id = "wr-button"
 
     // event handler
@@ -64,15 +64,8 @@ const renderCategory = (category) => {
     document.body.appendChild(categoryDiv)
 
 
-/* Add speedrun div something like this inside category-content div
-    const speedrunDiv = document.createElement("div");
-    speedrunDiv.classList.add("speedrun");
-    speedrunDiv.innerHTML = `
-        <h3>Speedrun Category: ${category.getText()}</h3>
-        <p>Speedrun details...</p>
-    `;
-    // this is important part so it gets located correctly
-    categoryContent.appendChild(speedrunDiv);*/
+// Add speedrun div inside category-content div
+ 
 }
 
 // getting categories from backend and appending to the html-page
@@ -167,7 +160,9 @@ const openWRPopUp = async (categoryId) => {
 // creating form and button for category adding
 const addCategoryForm = document.createElement("form")
 addCategoryForm.style.display = "none"; 
+addCategoryForm.classList.add("category-form")
 const categoryInput = document.createElement("input")
+categoryInput.classList.add("category-input")
 categoryInput.type = "text"
 categoryInput.placeholder = "Add new category"
 categoryInput.required = true
