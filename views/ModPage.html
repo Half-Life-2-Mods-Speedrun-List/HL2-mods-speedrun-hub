@@ -3,39 +3,41 @@
 
 <head>
   <title></title>
-  <link rel="icon" type="image/x-icon" href="../xendev.ico">
-  <link rel="stylesheet" href="/styles/mods.css">
+  <link rel="icon" type="image/x-icon" href="xendev.ico">
+  <!--<link rel="stylesheet" href="/styles/mods.css">-->
+  <link rel = "stylesheet" href="/styles/modPage.css">
+  <!--<link rel = "stylesheet" href="/styles/# style.css">-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  
   <script type="module" src="../js/ModPage.js"></script>
 </head>
 
 <body>
 
-<div style="background: linear-gradient(rgb(40,40,40) 0%, rgb(28,28,28) 10%);background-repeat: no-repeat;background-position: right bottom;">
+<div class = "container">
 
-<hr>
 
-<h2 style="margin-top:2rem;margin-bottom:2.5rem;font-size:4.5rem;text-align:left;font-weight:400;" id="modName"></h2>
+<h2 id="modName">ModName</h2>
 
 <hr class="line">
 
-  <div class="box">
-    <table class="xentable">
+  <!--<div class="box">-->
+    <table class="navbar"> 
       <tr>
-        <td style="padding:0px;color:orange;font-size:2rem;"font-size:2rem;><a href="/views/ModList.html">Home</td>
-        <td style="width:2rem;"></td>
-        <td style="padding:0px;color:orange;font-size:2rem;"font-size:2rem;><a href="">Categories</td>
-        <td style="width:2rem;"></td>
-        <td style="padding:0px;color:orange;font-size:2rem;"font-size:2rem;><a href="">Strategies</td>
-        <td style="width:2rem;"></td>
-        <td style="padding:0px;color:orange;font-size:2rem;"font-size:2rem;><a href="">Tutorials</td>
+        <td><a href="/views/ModList.html" class="fa-sharp fa-solid fa-house" style="color: #ffffff; text-decoration: none;" aria-label="Home"></a></td>
+        <td><a href="">Categories</a></td>
+        <td><a href="">Strategies</a></td>
+        <td><a href="">Tutorials</a></td>
+        <td><a href="#" id="addCategory">Add category</a></td>
         <!-- To the right side of the nav bar there should be the download links & potential speedrun.com link -->
       </tr>
     </table>
-    </div class="box">
+
+  <!--</div class="box">-->
 
 <hr class="line">
-
-<script src="../js/ModPage.js"></script>
+</div>
 </body>
 
 

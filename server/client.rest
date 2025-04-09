@@ -1,30 +1,45 @@
 ### Login with valid credentials 
 POST http://127.0.0.1:3001/user/login HTTP/1.1
 Content-Type: application/json
+
 { 
     "email": "mies2@gmail.com",
     "username":"user2", 
     "password":"mies" 
 }
+
 ### Protected route test, for example profile
 GET http://127.0.0.1:3001/user/profile HTTP/1.1
 Content-Type: application/json
 ### Register
 POST http://127.0.0.1:3001/auth/register HTTP/1.1
 Content-Type: application/json
+
 { 
     "email": "mies3@gmail.com",
     "username":"user3", 
     "password":"mies" 
 }
+###
+POST http://127.0.0.1:3001/mods/newMod HTTP/1.1
+Content-Type: application/json
+
+{ 
+    "mod_name": "random Mod"
+}
 
 ### GET mods that have categories
-GET http://127.0.0.1:3001/categories/1 HTTP/1.1
+GET http://127.0.0.1:3001/categories/4 HTTP/1.1
 Content-Type: application/json
 
 ### Add categories to mods
-POST http://127.0.0.1:3001/categories/2 HTTP/1.1
+POST http://127.0.0.1:3001/categories/4 HTTP/1.1
 Content-Type: application/json
+
 {
-    "name": "2% runs"
+    "category_name": "test category"
 }
+
+####
+GET http://127.0.0.1:3001/wr-history/1 HTTP/1.1
+Content-Type: application/json

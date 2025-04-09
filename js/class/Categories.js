@@ -8,16 +8,21 @@ class Categories {
         this.#backend_url = new URL (endpoint, url).href
     }
     getCategories = async (modId) => {
-        const url = this.#backend_url + "/" + modId;
+        const url = `${this.#backend_url}/${modId}`;
         try {
+            console.log("Fetching categories for modId:", modId);
+            console.log("Fetching from URL:", url);
             const response = await fetch(url)
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
             const json = await response.json()
-            console.log(json)
+            console.log("Raw json response:", json)
             this.#readJson(json, this.#categories, (data) => new Category(data.category_id, data.category_name));
 
             return this.#categories
         } catch (error) {
-            console.error(error)
+            console.error('Error fetching categories:', error)
         }
     }
     #readJson = (jsonArray, targetArray, mappingFunction) => {
