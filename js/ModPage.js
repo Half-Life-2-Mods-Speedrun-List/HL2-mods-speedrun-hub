@@ -50,6 +50,58 @@ const renderCategory = (category) => {
     categoryContent.classList.add("category-content");
     categoryDiv.appendChild(categoryContent)
 
+// add WR video box
+
+    const videoBox = document.createElement("div")
+    videoBox.classList.add("video-box")
+    categoryContent.appendChild(videoBox)
+    
+    const videoMissingText = document.createElement("p")
+    videoMissingText.textContent = "Add a world record with the button below"
+    videoMissingText.classList.add("video-missing-text")
+    const addVideoBtn = document.createElement("div")
+    addVideoBtn.classList.add("add-video-btn")
+    addVideoBtn.textContent = "+"
+
+    videoBox.appendChild(videoMissingText)
+    videoBox.appendChild(addVideoBtn)
+
+// logic
+addVideoBtn.addEventListener("click", async () => {
+    const videoUrl = prompt("Enter YouTube link to the video");
+    if (videoUrl) {
+        // Extract the video ID from the YouTube URL
+        const videoId = extractYouTubeVideoId(videoUrl);
+        if (videoId) {
+            const videoElement = document.createElement("iframe");
+            videoElement.classList.add("video-iframe");
+            videoElement.src = `https://www.youtube.com/embed/${videoId}`;
+            videoElement.allowFullscreen = true;
+            videoBox.innerHTML = ""; // Clear previous content
+            videoBox.appendChild(videoElement);
+
+            // Send the video URL to the backend
+            console.log("Category ID:", category.getId());
+    console.log("Video URL:", videoElement.src);
+            try {
+                const result = await mods.createVideo(category.getId(), videoElement.src);
+                console.log("Video successfully added to the database:", result);
+            } catch (error) {
+                console.error("Error adding video to the database:", error);
+            }
+        } else {
+            alert("Invalid YouTube URL. Please enter a valid link.");
+        }
+    }
+});
+
+// Helper function to extract the video ID from a YouTube URL
+const extractYouTubeVideoId = (url) => {
+    const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/.*v=([^&\s]+)|youtu\.be\/([^&\s]+)/;
+    const match = url.match(regex);
+    return match ? match[1] || match[2] : null;
+};
+
 // add "View WR-history" btn
     const viewWRbtn = document.createElement("button")
     viewWRbtn.textContent = "View WR-history"

@@ -41,6 +41,7 @@ class Mods {
                 id: data.mod_id,
                 name: data.mod_name,
                 category: data.category_name,
+                wr_video: data.wr_video,
             }));
             return this.#modsWithCategories;
         } catch (error) {
@@ -73,6 +74,50 @@ class Mods {
         throw error;
     }
     }
+/*
+    // get WR video from a mod
+    getVideo = async (categoryId) => {
+        const endpoint = new URL(`/categories/${categoryId}/wr-video`, this.#backend_url).href;
+        try {
+            const response = await fetch(endpoint);
+            if (!response.ok) {
+                throw new Error("Failed to fetch WR video");
+            }
+            const result = await response.json();
+            return result.wr_video;
+        } catch (error) {
+            console.error("Error fetching WR video:", error);
+            throw error;
+        }
+    };
+    */
+
+    // Add WR video to a mod
+    createVideo = async (categoryId, videoUrl) => {
+        const endpoint = new URL(`/categories/${categoryId}/wr-video`, this.#backend_url).href;
+        const data = { wr_video: videoUrl };
+
+        console.log("Sending data to backend:", { endpoint, data });
+
+        try {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to add video");
+            }
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error("Error adding video:", error);
+            throw error;
+        }
+    }; 
 }
 
 

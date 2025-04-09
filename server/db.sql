@@ -75,3 +75,5 @@ ALTER TABLE "world_records" ADD CONSTRAINT "world_records" FOREIGN KEY ("speedru
 ALTER TABLE "world_records" ADD CONSTRAINT "world_recods" FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
 ALTER TABLE "mods" ADD CONSTRAINT "user_id" FOREIGN KEY ("user_id") REFERENCES "users" ("user_id");
+
+ALTER TABLE "categories" ADD COLUMN "wr_video" text;
