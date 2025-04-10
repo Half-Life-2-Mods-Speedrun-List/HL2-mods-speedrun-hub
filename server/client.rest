@@ -43,3 +43,11 @@ Content-Type: application/json
 ####
 GET http://127.0.0.1:3001/wr-history/1 HTTP/1.1
 Content-Type: application/json
+
+### Add WR video to a category
+POST http://127.0.0.1:3001/categories/2/wr-video HTTP/1.1
+Content-Type: application/json
+
+{
+    "wr_video": "https://www.youtube.com/embed/m8M_BjRErmM"
+}

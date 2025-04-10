@@ -74,23 +74,6 @@ class Mods {
         throw error;
     }
     }
-/*
-    // get WR video from a mod
-    getVideo = async (categoryId) => {
-        const endpoint = new URL(`/categories/${categoryId}/wr-video`, this.#backend_url).href;
-        try {
-            const response = await fetch(endpoint);
-            if (!response.ok) {
-                throw new Error("Failed to fetch WR video");
-            }
-            const result = await response.json();
-            return result.wr_video;
-        } catch (error) {
-            console.error("Error fetching WR video:", error);
-            throw error;
-        }
-    };
-    */
 
     // Add WR video to a mod
     createVideo = async (categoryId, videoUrl) => {

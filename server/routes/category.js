@@ -2,6 +2,7 @@ const express = require("express");
 const { createCategory } = require("../models/gameCategoryModel.js");
 const { query } = require("../helpers/db.js");
 const categoryRouter = express.Router();
+const { getWRVideo } = require("../models/wrVideoModel.js");
 const { verifyToken } = require("../helpers/verifyToken.js")
 
 const addCategory = async (req, res) => {
@@ -32,30 +33,23 @@ const addCategory = async (req, res) => {
         res.status(500).json({ error: "Server error"});
     }
 }
-/*
+
 categoryRouter.get("/:categoryId/wr-video", async (req, res) => {
     const { categoryId } = req.params;
-    console.log("Received categoryId:", categoryId);
 
     try {
-        const result = await query(
-            `SELECT wr_video 
-             FROM categories 
-             WHERE category_id = $1`, 
-            [categoryId]
-        );
+        const wrVideo = await getWRVideo(categoryId);
 
-        if (result.rowCount === 0) {
-            return res.status(404).json({ message: "Category not found" });
+        if (wrVideo.length === 0) {
+            return res.status(404).json({ message: "No WR video found for this category" });
         }
 
-        res.status(200).json(result.rows[0]);
+        res.status(200).json(wrVideo[0]);
     } catch (error) {
         console.error("Error fetching WR video:", error);
-        res.status(500).json({ message: "Server error" });
+        res.status(500).json({ message: "Failed to fetch WR video" });
     }
 });
-*/
 
 categoryRouter.post("/:categoryId/wr-video", async (req, res) => {
     const { categoryId } = req.params;

@@ -18,7 +18,7 @@ modRouter.get("/", async (req, res) => {
 modRouter.get("/categories", async (req, res) => {
     try {
         const result = await query (
-            'SELECT m.mod_id, m.mod_name, c.category_name FROM mods AS m INNER JOIN mod_category mc ON m.mod_id = mc.mod_id INNER JOIN categories c ON mc.category_id = c.category_id;')
+            'SELECT m.mod_id, m.mod_name, c.category_name, c.wr_video FROM mods AS m INNER JOIN mod_category mc ON m.mod_id = mc.mod_id INNER JOIN categories c ON mc.category_id = c.category_id;')
         rows = result.rows ? result.rows : []
         res.status(200).json(rows)
     } catch (error) {
@@ -28,7 +28,7 @@ modRouter.get("/categories", async (req, res) => {
     }
 })
 
-/* TEMPORARILY COMMENTED OUT USER AUTHENTICATION FOR TESTING
+
 const fetchUserId = async (req, res, next) => {
     try {
         console.log("Fetching user_id for username:", req.user.username);
@@ -48,10 +48,9 @@ const fetchUserId = async (req, res, next) => {
         console.error("Error fetching user_id:", error);
         return res.status(500).json({ error: "Failed to fetch user_id" });
     }
-};*/
+};
 
-// modRouter.post("/newmod", verifyToken, fetchUserId, async (req, res) => {
-modRouter.post("/newmod", async (req, res) => {
+modRouter.post("/newmod", verifyToken, fetchUserId, async (req, res) => {
     console.log("trying to add a new mod...")
     console.log("Request body:", req.body)
 
