@@ -2,6 +2,7 @@ const express = require("express");
 const { createCategory } = require("../models/gameCategoryModel.js");
 const { query } = require("../helpers/db.js");
 const categoryRouter = express.Router();
+const { getWRVideo } = require("../models/wrVideoModel.js");
 const { verifyToken } = require("../helpers/verifyToken.js")
 
 const addCategory = async (req, res) => {
@@ -32,6 +33,55 @@ const addCategory = async (req, res) => {
         res.status(500).json({ error: "Server error"});
     }
 }
+
+categoryRouter.get("/:categoryId/wr-video", async (req, res) => {
+    const { categoryId } = req.params;
+
+    try {
+        const wrVideo = await getWRVideo(categoryId);
+
+        if (wrVideo.length === 0) {
+            return res.status(404).json({ message: "No WR video found for this category" });
+        }
+
+        res.status(200).json(wrVideo[0]);
+    } catch (error) {
+        console.error("Error fetching WR video:", error);
+        res.status(500).json({ message: "Failed to fetch WR video" });
+    }
+});
+
+categoryRouter.post("/:categoryId/wr-video", async (req, res) => {
+    const { categoryId } = req.params;
+    const { wr_video } = req.body;
+
+    console.log("Received categoryId:", categoryId);
+    console.log("Received wr_video:", wr_video);
+    console.log("Updating category with ID:", categoryId, "WR video:", wr_video);
+
+    if (!wr_video) {
+        return res.status(400).json({ message: "WR video URL is required" });
+    }
+
+    try {
+        const result = await query(
+            `UPDATE categories 
+             SET wr_video = $1
+             WHERE category_id = $2 
+             RETURNING *`,
+            [wr_video, categoryId]
+        );
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ message: "Category not found" });
+        }
+
+        res.status(200).json({ message: "WR video added successfully", data: result.rows[0] });
+    } catch (error) {
+        console.error("Error adding WR video:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
 
 // saving the mod's id to the URL-path :mod_id
 // TEMPORARILY COMMENTED OUT USER AUTHENTICATION FOR TESTING
