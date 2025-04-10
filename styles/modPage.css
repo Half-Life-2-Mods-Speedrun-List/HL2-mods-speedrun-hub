@@ -151,6 +151,11 @@ a:hover {text-decoration: underline 1.5px;}
     }
 }
 
+.video-box-container {
+    display: flex;
+    flex-direction: row;
+}
+
 .video-box {
     display: flex;
     flex-direction: column;
@@ -181,6 +186,21 @@ a:hover {text-decoration: underline 1.5px;}
     width: 1.4em;
     height: 1.4em;
     margin: 0 auto;
+}
+
+.edit-video-btn {
+    background-color: #222;
+    color: #ddd;
+    text-align: center;
+    align-content: center;
+    align-self: flex-end;
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 5em;
+    height: 1.4em;
+    margin-left: 0.4em;
 }
 
 .video-iframe {

@@ -51,9 +51,12 @@ const renderCategory = async (category) => {
     categoryDiv.appendChild(categoryContent)
 
 // Add WR video box
+    const videoBoxContainer = document.createElement("div");
+    videoBoxContainer.classList.add("video-box-container");
+    categoryContent.appendChild(videoBoxContainer);
     const videoBox = document.createElement("div");
     videoBox.classList.add("video-box");
-    categoryContent.appendChild(videoBox);
+    videoBoxContainer.appendChild(videoBox);
 
 // Add "Add Video" elements
     const videoMissingText = document.createElement("p");
@@ -93,6 +96,9 @@ const renderCategory = async (category) => {
         videoElement.src = wrVideoUrl;
         videoElement.allowFullscreen = true;
         videoBox.appendChild(videoElement);
+        addVideoBtn.textContent = "Edit video";
+        addVideoBtn.classList.add("edit-video-btn");
+        videoBoxContainer.appendChild(addVideoBtn);
     }
 
 // Logic for adding a new WR video
