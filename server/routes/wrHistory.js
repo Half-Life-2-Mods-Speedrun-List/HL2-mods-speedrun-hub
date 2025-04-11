@@ -10,10 +10,6 @@ wrHistoryRouter.get("/:categoryId", async (req, res) => {
     if (!categoryId) {
         return res.status(400).json({ error: "Category ID is required" });
     }
-    if (!wrHistory.length) {
-        return res.status(404).json({ error: "No records found" });
-    }
-
     try {
         // calling model method to get WR history
         const wrHistory = await getWRHistory(categoryId);
