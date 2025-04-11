@@ -34,11 +34,7 @@ const changeTitle = async (modId) => {
 changeTitle(modId)
 
 // function for showing categories
-const renderCategory = (category) => {
-    if (!category || !category.getText || !category.getId) {
-        console.error("Invalid category data:", category);
-        return;
-    }
+const renderCategory = async (category) => {
 
     const categoryDiv = document.createElement("div")
     const h2 = document.createElement("h2")
@@ -50,6 +46,93 @@ const renderCategory = (category) => {
     categoryContent.classList.add("category-content");
     categoryDiv.appendChild(categoryContent)
 
+// Add WR video box
+    const videoBoxContainer = document.createElement("div");
+    videoBoxContainer.classList.add("video-box-container");
+    categoryContent.appendChild(videoBoxContainer);
+    const videoBox = document.createElement("div");
+    videoBox.classList.add("video-box");
+    videoBoxContainer.appendChild(videoBox);
+
+// Add "Add Video" elements
+    const videoMissingText = document.createElement("p");
+    videoMissingText.textContent = "Add a world record with the button below";
+    videoMissingText.classList.add("video-missing-text");
+    videoBox.appendChild(videoMissingText);
+    const addVideoBtn = document.createElement("div");
+    addVideoBtn.classList.add("add-video-btn");
+    addVideoBtn.textContent = "+";
+    videoBox.appendChild(addVideoBtn);
+
+// add WR video if it exists in the database
+    const fetchWRVideo = async (categoryId) => {
+        try {
+            const response = await fetch(`${backendUrl}/categories/${categoryId}/wr-video`);
+            if (response.ok) {
+                const wrVideo = await response.json();
+                return wrVideo.wr_video;
+            } else if (response.status === 404) {
+                console.log("No WR video found for category:", categoryId);
+                return null;
+            } else {
+                throw new Error("Failed to fetch WR video");
+            }
+        } catch (error) {
+            console.error("Error fetching WR video:", error);
+            return null;
+        }
+    };
+
+// Fetch and display WR video if it exists
+    const wrVideoUrl = await fetchWRVideo(category.getId());
+    if (wrVideoUrl) {
+        videoBox.innerHTML = ""; // Clear previous content
+        const videoElement = document.createElement("iframe");
+        videoElement.classList.add("video-iframe");
+        videoElement.src = wrVideoUrl;
+        videoElement.allowFullscreen = true;
+        videoBox.appendChild(videoElement);
+        addVideoBtn.textContent = "Edit video";
+        addVideoBtn.classList.add("edit-video-btn");
+        videoBoxContainer.appendChild(addVideoBtn);
+    }
+
+// Logic for adding a new WR video
+    addVideoBtn.addEventListener("click", async () => {
+        const videoUrl = prompt("Enter YouTube link to the video");
+        if (videoUrl) {
+            // Extract the video ID from the YouTube URL
+            const videoId = extractYouTubeVideoId(videoUrl);
+            if (videoId) {
+                const videoElement = document.createElement("iframe");
+                videoElement.classList.add("video-iframe");
+                videoElement.src = `https://www.youtube.com/embed/${videoId}`;
+                videoElement.allowFullscreen = true;
+                videoBox.innerHTML = ""; // Clear previous content
+                videoBox.appendChild(videoElement);
+
+                // Send the video URL to the backend
+                console.log("Category ID:", category.getId());
+                console.log("Video URL:", videoElement.src);
+                try {
+                    const result = await mods.createVideo(category.getId(), videoElement.src);
+                    console.log("Video successfully added to the database:", result);
+                } catch (error) {
+                    console.error("Error adding video to the database:", error);
+                }
+            } else {
+                alert("Invalid YouTube URL. Please enter a valid link.");
+            }
+        }
+    });
+
+    // Helper function to extract the video ID from a YouTube URL
+    const extractYouTubeVideoId = (url) => {
+        const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/.*v=([^&\s]+)|youtu\.be\/([^&\s]+)/;
+        const match = url.match(regex);
+        return match ? match[1] || match[2] : null;
+    };
+
 // add "View WR-history" btn
     const viewWRbtn = document.createElement("button")
     viewWRbtn.textContent = "View WR-history"
@@ -58,19 +141,16 @@ const renderCategory = (category) => {
 
     // event handler
     viewWRbtn.addEventListener("click", () => {
-        openWRPopUp(category.getId())
+        console.log("View WR-history button clicked")
+        openWRPopUp(categoryDiv, category.getId())
     })
-
-    document.body.appendChild(categoryDiv)
-
-
-// Add speedrun div inside category-content div
- 
+    return categoryDiv;
 }
 
 // getting categories from backend and appending to the html-page
 const getCategories = async (modId) => {
     const div = document.createElement("div")
+    const renderedCategories = []
     try {
         const result = await categories.getCategories(modId)
         console.log("Categories fetched:", result)
@@ -81,8 +161,17 @@ const getCategories = async (modId) => {
             noCategoriesMsg.textContent = "No categories available yet.";
             div.appendChild(noCategoriesMsg);
         } else { 
-            result.forEach(category => {
-            renderCategory(category)});
+            // Order categories by ID to prevent wrong order
+            await Promise.all(
+                result.map(async (category) => {
+                    const categoryDiv = await renderCategory(category);
+                    renderedCategories.push({ categoryId: category.getId(), categoryDiv });
+                })
+            );
+            renderedCategories.sort((a, b) => a.categoryId - b.categoryId);
+            renderedCategories.forEach(({ categoryDiv }) => {
+                div.appendChild(categoryDiv);
+            });
         }
         document.body.appendChild(div)
     } catch (error) {
@@ -127,7 +216,7 @@ const fetchWRHistory = async (categoryId, popUpContent) => {
 
             wrData.forEach(record => {
                 const resultItem = document.createElement("li")
-                resultItem.style.marginBottom = "10px" 
+                resultItem.style.marginBottom = "5px" 
                 resultItem.innerHTML = 
                 `<strong>${record.runner_name}<strong> - Speedrun-time: ${record.record_time}<br>
                 Date: ${record.record_date}`
@@ -141,7 +230,9 @@ const fetchWRHistory = async (categoryId, popUpContent) => {
 }
 
 // function for showing the WR-history as pop-up
-const openWRPopUp = async (categoryId) => {
+const openWRPopUp = async (categoryContent, categoryId) => {
+    console.log("Opening WR pop-up for category:", categoryId)
+
     const popUp = document.createElement("div")
     popUp.classList.add("popUp") // for styling
 
@@ -157,7 +248,7 @@ const openWRPopUp = async (categoryId) => {
         }
         const categoryName = category.getText()
         const header = document.createElement("h3")
-        header.textContent = `WR-history for category: ${categoryName}`
+        header.textContent = `WR-history for category ${categoryName}`
         popUpContent.appendChild(header)
 
         await fetchWRHistory(categoryId, popUpContent)
@@ -166,12 +257,12 @@ const openWRPopUp = async (categoryId) => {
         closeBtn.textContent = "Close"
         closeBtn.classList.add("close-btn")
         closeBtn.addEventListener("click", () => {
-            document.body.removeChild(popUp)
+            categoryContent.removeChild(popUp)
         })
 
         popUpContent.appendChild(closeBtn)
         popUp.appendChild(popUpContent);
-        document.body.appendChild(popUp)
+        categoryContent.appendChild(popUp)
     } catch (error) {
         console.error("Error fetching categories:", error)
     }
@@ -196,6 +287,7 @@ addCategoryForm.appendChild(categoryInput)
 addCategoryForm.appendChild(addCategoryBtn)
 document.body.appendChild(addCategoryForm)
 
+// Creating the "Add category" option to the navbar
 const addCategoryLink = document.getElementById("addCategory")
 addCategoryLink.addEventListener("click", (event) => {
     event.preventDefault()
@@ -216,9 +308,10 @@ addCategoryForm.addEventListener("submit", async (event) => {
         const response = await fetch(`${backendUrl}/categories/${modId}`, {
             method: "POST",
             headers: {
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                credentials: "include"
             },
-            body: JSON.stringify({category_name: newCategory})
+            body: JSON.stringify({category_name: newCategory })
         })
         if (response.ok) {
             const categoryData = await response.json()
@@ -228,12 +321,31 @@ addCategoryForm.addEventListener("submit", async (event) => {
             renderCategory(categoryData)
             await fetchCategoriesAfterAdd(); //refresh category-listing
             
+            setTimeout(() => {
+            scrollToCategory(categoryData.id)
+        }, 300)
+        } else if (response.status === 500) {
+            alert("Category already exists")
         } else {
+            alert("Error while adding the category. Please try again later.")
             console.error("Error adding category:" + response.statusText)
         }
     } catch (error) {
         console.error("Error adding category:", error)
     }
+
+/* function to scroll to a newly added category  --> DOESN'T WORK YET
+function scrollToCategory(categoryId) {
+    console.log("categoryId in scrollToCategory:", categoryId);
+    const categoryElement = document.getElementById(categoryId)
+    if (categoryElement) {
+        categoryElement.scrollIntoView({behavior: "smooth", block: "center"})
+    } else {
+        console.error("CategoryElement not found ", categoryId)
+    }
+} */
 })
+
+
 
 //getCategories();

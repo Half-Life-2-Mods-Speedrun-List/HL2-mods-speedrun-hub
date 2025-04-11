@@ -81,3 +81,5 @@ ALTER TABLE "mods" ADD CONSTRAINT "user_id" FOREIGN KEY ("user_id") REFERENCES "
 ALTER TABLE "world_records" ALTER COLUMN "record_time" TYPE VARCHAR(12);
 
 ALTER TABLE "world_records" ADD COLUMN "record_date" DATE;
+
+ALTER TABLE "categories" ADD COLUMN "wr_video" text;
