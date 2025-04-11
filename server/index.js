@@ -25,6 +25,7 @@ app.use("/auth", authRouter)
 app.use("/user", userRouter)
 app.use("/categories", categoryRouter)
 app.use("/wr-history", wrHistoryRouter)
+app.use("/add-world-record", addRecordRouter)
 
 
 app.get('/', (req, res) => {
