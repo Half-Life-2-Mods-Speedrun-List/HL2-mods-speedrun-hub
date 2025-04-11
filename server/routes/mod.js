@@ -70,7 +70,9 @@ modRouter.post("/newmod", verifyToken, fetchUserId, async (req, res) => {
             [mod_name, user_id]
             );
             console.log("New mod created:", newMod.rows[0]);
-            res.status(200).json({message: "New mod created: " + mod_name});
+            // Send the mod_id in the response
+            const modId = newMod.rows[0].mod_id;
+            res.status(200).json({message: "New mod created: " + mod_name, mod_id: modId});
         } catch (error) {
             console.error("Error creating a new mod", error);
             res.status(500).json({message: "Server error"})
