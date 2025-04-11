@@ -7,7 +7,7 @@ const cookieParser = require("cookie-parser")
 const { modRouter } = require("./routes/mod.js")
 const { userRouter } = require("./routes/user.js")
 const { categoryRouter } = require("./routes/category.js")
-const { wrHistoryRouter } = require("./routes/wrHistory.js");
+const { wrHistoryRouter, addRecordRouter } = require("./routes/wrHistory.js");
 
 
 const app = express()
