@@ -15,8 +15,13 @@ class Mods {
         try {
             const response = await fetch(this.#backend_url);
             const json = await response.json();
+            console.log("Received JSON from backend (should be array):", json);
+
+            if (!Array.isArray(json)) {
+                console.error("json is not an array!", json);
+                return;
+            }
             this.#readJson(json, this.#mods, (data) => new Mod(data.mod_id, data.mod_name));
-            
             return this.#mods;
             
         } catch (error) {
@@ -33,7 +38,7 @@ class Mods {
 
 
     getModsWithCategories = async () => {
-        const endpoint = new URL("/mods/categories", this.#backend_url).href;
+        const endpoint = new URL("/categories", this.#backend_url).href;
         try {
             const response = await fetch(endpoint)
             const json = await response.json()
