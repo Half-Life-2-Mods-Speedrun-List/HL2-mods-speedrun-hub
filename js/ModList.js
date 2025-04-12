@@ -33,8 +33,12 @@ const changePage = (modId) => {
 const getMods = async () => {
     try {
         const modsWithCategoriesData = await modifications.getModsWithCategories();
-        modsWithCategoriesData.forEach(obj => modsWithCategories.add(obj.id));
-
+        console.log("Mods with categories:", modsWithCategoriesData)
+        modsWithCategoriesData.forEach(obj => {
+            if(obj.category) {
+            modsWithCategories.add(obj.id);
+            }
+        })    
         const mods = await modifications.getMods();
         mods.forEach(mod => {
             renderMod(mod);
