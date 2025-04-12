@@ -51,6 +51,22 @@ categoryRouter.get("/:categoryId/wr-video", async (req, res) => {
     }
 });
 
+categoryRouter.get("/", async (req, res) => {
+    try {
+        const result = await query(`
+            SELECT m.mod_id, m.mod_name, c.category_id, c.category_name
+            FROM mods m
+            LEFT JOIN mod_category mc ON m.mod_id = mc.mod_id
+            LEFT JOIN categories c ON c.category_id = mc.category_id
+        `);
+
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error("Error fetching all mod-category data:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+});
+
 categoryRouter.post("/:categoryId/wr-video", async (req, res) => {
     const { categoryId } = req.params;
     const { wr_video } = req.body;
