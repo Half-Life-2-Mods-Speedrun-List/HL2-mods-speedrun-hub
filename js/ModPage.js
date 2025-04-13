@@ -33,6 +33,70 @@ const changeTitle = async (modId) => {
 
 changeTitle(modId)
 
+// Construct add resource link button
+const addResourcesLink = document.createElement("td");
+addResourcesLink.classList.add("nav-link")
+addResourcesLink.textContent = "Add resources" // Replace this with an actual logo?
+const navbar = document.querySelector(".navbar-items")
+navbar.appendChild(addResourcesLink)
+
+const fetchResourceLinks = async (modId) => {
+    try {
+        console.log("Fetching resource links for modId:", modId);
+        const response = await fetch(`${backendUrl}/mods/${modId}/resourcelinks`);
+        if (response.ok) {
+            const resourceLinks = await response.json();
+            return resourceLinks;
+        } else if (response.status === 404) {
+            console.log("No resource links set for this mod:", modId);
+            return [];
+        } else {
+            throw new Error("Failed to fetch resource links");
+        }
+    } catch (error) {
+        console.error("Error fetching resource links:", error);
+        return [];
+    }
+};
+
+const resourceLinksArray = await fetchResourceLinks(modId);
+console.log("Fetched resource links:", resourceLinksArray);
+
+const logosForLinks = [
+    { pattern: /runthinkshootlive\.com/, imageSrc: "../imgs/rtsl.png" },
+    { pattern: /moddb\.com/, imageSrc: "../imgs/moddb.png" },
+    { pattern: /store.steampowered\.com/, imageSrc: "../imgs/steam.svg" },
+    { pattern: /speedrun\.com/, imageSrc: "../imgs/src.svg" }
+];
+
+const defaultLogo = "../imgs/globe.png";
+
+Object.entries(resourceLinksArray).forEach(([key, value]) => {
+    if (value) {
+        const resourceLinkContainer = document.createElement("td");
+
+        // Find the matching logo
+        const matchingLogo = logosForLinks.find(({ pattern }) => pattern.test(value));
+        const imageSrc = matchingLogo ? matchingLogo.imageSrc : defaultLogo ;
+
+        const logoImage = document.createElement("img");
+        logoImage.src = imageSrc;
+        logoImage.style.width = "1em";
+        logoImage.style.height = "1em";
+
+        const linkElement = document.createElement("a");
+        linkElement.href = value;
+        linkElement.target = "_blank"; // Open in a new tab
+        linkElement.appendChild(logoImage);
+
+        resourceLinkContainer.appendChild(linkElement);
+        navbar.appendChild(resourceLinkContainer);
+    }
+});
+
+// Add resources via a button in the navbar
+// NOT YET IMPLEMENTED
+
 // function for showing categories
 const renderCategory = async (category) => {
 
