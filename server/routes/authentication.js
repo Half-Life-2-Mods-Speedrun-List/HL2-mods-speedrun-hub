@@ -31,29 +31,4 @@ authRouter.post("/register", async(req, res) => {
         }
 });
 
-// This was my way of doing the login
-
-// authRouter.post("/login", async (req, res) => {
-//     const {email, username, password} = req.body;
-
-//     try {
-//         const result = await pool.query('SELECT * FROM users WHERE email=$1 OR username=$2', [email, username]);
-//         // if there's no users found with the login values
-//             if (result.rows.length === 0) {
-//                 return res.status(400).json({message: "Invalid login credentials"});
-//             }
-//             // if user is found, given password is compared with hashed one
-//             const user = result.rows[0];
-//             const isMatch = await bcrypt.compare(password, user.password);
-//             if (!isMatch) {
-//                 return res.status(400).json({message: "Invalid login credentials"});
-//             }
-
-//             res.status(200).json({message: "Login successful"});
-//     } catch (error) {
-//         console.error("Error with login", error)
-//         res.status(500).json({message: "Server error"})
-//     }
-// });
-
 module.exports = { authRouter };
