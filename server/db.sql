@@ -13,7 +13,7 @@ CREATE TABLE "speedruns" (
 CREATE TABLE "users" (
   "user_id" SERIAL PRIMARY KEY,
   "username" varchar(100) unique not null,
-  "speedrun_id" integer,
+  "speedrun_id" integer, --> this is not needed here, since user can have multiple runs and they are stored to speedrun table
   "email" varchar (255) unique,
   "password" varchar(255) not null,
   "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -24,22 +24,23 @@ CREATE TABLE "votes" (
   "difficulty" integer,
   "optimization" integer,
   "enjoyment" integer,
-  "user_id" integer,
-  "mods_id" integer,
-  "value" integer
+  "user_id" integer, ---> is this necessary? votes should be anonymous, and can unregistered user vote too?
+  "mods_id" integer, --> should this be category_id?
+  "value" integer ---> what is purpose of this?
 );
 
 CREATE TABLE "categories" (
   "category_id" SERIAL PRIMARY KEY,
-  "category_name" text
+  "category_name" text,
+  "user_id" integer REFERENCES users(user_id)
 );
 
 CREATE TABLE "world_records" (
   "wr_id" SERIAL PRIMARY KEY,
-  "user_id" integer,
+  "user_id" integer,  
   "runner_name" text,
   "category_id" integer,
-  "speedrun_id" integer,
+  "speedrun_id" integer, --> this is not necessary since there's only one speedrun per category visible?
   "record_time" varchar(12),
   "record_date" date
 );
@@ -82,3 +83,4 @@ ALTER TABLE "world_records" ALTER COLUMN "record_time" TYPE VARCHAR(12);
 ALTER TABLE "world_records" ADD COLUMN "record_date" DATE;
 
 ALTER TABLE "categories" ADD COLUMN "wr_video" text;
+ALTER TABLE "categories" ADD CONSTRAINT "user_id" FOREIGN KEY ("user_id") REFERENCES "users" ("user_id");
