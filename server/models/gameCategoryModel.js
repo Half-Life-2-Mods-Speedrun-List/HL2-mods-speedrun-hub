@@ -1,6 +1,6 @@
 const pool = require("../helpers/db.js");
 
-const createCategory = async (name, mod_id) => {
+const createCategory = async (name, mod_id, user_id) => {
     console.log("Creating category with name:", name, "and mod_id", mod_id)
     
     try {
@@ -18,8 +18,8 @@ const createCategory = async (name, mod_id) => {
         // adding category to categories-table
         console.log("Inserting new category")
         const categoryResult = await pool.query(
-            "INSERT INTO categories (category_name) VALUES ($1) RETURNING *",
-            [name]
+            "INSERT INTO categories (category_name, user_id) VALUES ($1, $2) RETURNING *",
+            [name, user_id]
         );
         const categoryId = categoryResult.rows[0].category_id;
         console.log("Inserting into mod_category table with modId:", mod_id, "and with categoryId", categoryId)
@@ -35,7 +35,7 @@ const createCategory = async (name, mod_id) => {
         }
         // adding to mod_category table
         await pool.query(
-            "INSERT INTO mod_category (mod_id, category_id) VALUES ($1, $2)",
+            "INSERT INTO mod_category (mod_id, category_id) VALUES ($1, $2) RETURNING *",
             [mod_id, categoryId]
         )
         await pool.query("COMMIT") // commit saves data to database
