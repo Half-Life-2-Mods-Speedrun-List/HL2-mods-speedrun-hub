@@ -11,12 +11,12 @@ const addCategory = async (req, res) => {
         const {category_name} = req.body;
         // mod's id should come directly from url
         const {mod_id} = req.params
+        const user_id = req.user.user_id
 
-        // TEMPORARILY COMMENTED OUT USER AUTHENTICATION FOR TESTING
         // user authetication check
-        /*if(!req.user) {
+        if(!req.user) {
             return res.status(401).json({ error: "Unauthorized user. Please log in/register to add category."});
-        }*/
+        }
 
         const modExists = await query('SELECT * FROM mods WHERE mod_id = $1', [mod_id])
         if (modExists.rowCount === 0 ) {
@@ -50,7 +50,7 @@ categoryRouter.get("/:categoryId/wr-video", async (req, res) => {
         res.status(500).json({ message: "Failed to fetch WR video" });
     }
 });
-
+// fetching all data from mod_category table
 categoryRouter.get("/", async (req, res) => {
     try {
         const result = await query(`
@@ -100,9 +100,7 @@ categoryRouter.post("/:categoryId/wr-video", async (req, res) => {
 });
 
 // saving the mod's id to the URL-path :mod_id
-// TEMPORARILY COMMENTED OUT USER AUTHENTICATION FOR TESTING
-//categoryRouter.post("/:mod_id", verifyToken, addCategory);
-categoryRouter.post("/:mod_id", async (req, res) => {
+categoryRouter.post("/:mod_id", verifyToken, async (req, res) => {
     // Log to check if the request is reaching the server
     console.log("Received POST request for mod ID:", req.params.mod_id);
     console.log("Request body:", req.body);
