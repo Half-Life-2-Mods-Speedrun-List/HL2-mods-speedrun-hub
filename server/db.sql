@@ -62,6 +62,18 @@ CREATE TABLE mod_category (
   FOREIGN KEY (category_id) REFERENCES categories(category_id)
 );
 
+CREATE TABLE resource_links (
+  resource_id integer SERIAL PRIMARY KEY, 
+  mod_id integer NOT NULL,
+  rtsl text,
+  moddb text,
+  steam text,
+  extra1 text,
+  extra2 text,
+  extra3 text,
+  src text,
+  FOREIGN KEY (mod_id) REFERENCES mods(mod_id),
+);
 
 
 ALTER TABLE "speedruns" ADD CONSTRAINT "speedruns" FOREIGN KEY ("user_id") REFERENCES "users" ("user_id");

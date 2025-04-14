@@ -1,5 +1,6 @@
 const { query } = require("../helpers/db.js")
 const express = require("express")
+const { getResourceLinks } = require("../models/resourceLinksModel.js");
 const { verifyToken } = require("../helpers/verifyToken.js");
 const modRouter = express.Router()
 
@@ -77,6 +78,23 @@ modRouter.post("/newmod", verifyToken, fetchUserId, async (req, res) => {
             console.error("Error creating a new mod", error);
             res.status(500).json({message: "Server error"})
         }
+});
+
+modRouter.get("/:modId/resourcelinks", async (req, res) => {
+    const { modId } = req.params;
+
+    try {
+        const resourceLinks = await getResourceLinks(modId);
+
+        if (resourceLinks.length === 0) {
+            return res.status(404).json({ message: "No resource links set for this mod" });
+        }
+
+        res.status(200).json(resourceLinks[0]);
+    } catch (error) {
+        console.error("Error fetching resource links:", error);
+        res.status(500).json({ message: "Failed to fetch resource links" });
+    }
 });
 
 module.exports = {
