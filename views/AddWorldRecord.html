@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add World Record</title>
+    <link rel="stylesheet" href="../styles/wrForm.css">
+
+</head>
+<body>
+
+    <div id="wr-form-container">
+        
+        <form id="wr-form">
+            <h2>Add new World Record</h2>
+            <label>Nickname used with speedrun:</label>
+            <input type="text" id="runnerName" required>
+            <label>Record time:</label>
+            <input type="text" id="recordTime" required placeholder="MM:SS:SSS">
+            <label>Record date:</label>
+            <input type="date" id="recordDate" required>
+            
+            <button type="submit" id="saveWr">Save WR</button>
+        </form>
+    </div>
+
+    <!--<script type="module" src="../js/ModPage.js"></script>-->
+    <script src="../js/wrForm.js"></script>
+    
+</body>
+</html>
