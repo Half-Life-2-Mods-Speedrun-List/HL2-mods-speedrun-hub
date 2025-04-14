@@ -266,6 +266,16 @@ const openWRPopUp = async (categoryContent, categoryId) => {
     } catch (error) {
         console.error("Error fetching categories:", error)
     }
+
+    // button for adding new WR
+    const addWrBtn = document.createElement("button")
+    addWrBtn.textContent = "+"
+    addWrBtn.id = "addWr"
+    addWrBtn.addEventListener("click", () => {
+        window.location.href = `AddWorldRecord.html?categoryId=${categoryId}&modId=${modId}`
+    })
+
+    popUpContent.appendChild(addWrBtn)
 }
 
 // creating form and button for category adding
@@ -289,12 +299,14 @@ document.body.appendChild(addCategoryForm)
 
 // Creating the "Add category" option to the navbar
 const addCategoryLink = document.getElementById("addCategory")
-addCategoryLink.addEventListener("click", (event) => {
+
+if(addCategoryLink) {addCategoryLink.addEventListener("click", (event) => {
     event.preventDefault()
     console.log('Form is visibile now')
     // form comes visible
     addCategoryForm.style.display = "block"
 })
+}
 // adding category after submit
 addCategoryForm.addEventListener("submit", async (event) => {
     event.preventDefault()
