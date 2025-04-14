@@ -3,6 +3,7 @@ const { getWRHistory, parseTimeToMilliseconds } = require('../models/wrModel.js'
 const wrHistoryRouter = express.Router();
 const addRecordRouter = express.Router()
 const pool = require('../helpers/db.js');
+const { verifyToken } = require('../helpers/verifyToken')
 
 wrHistoryRouter.get("/:categoryId", async (req, res) => {
     const { categoryId } = req.params; 
@@ -36,20 +37,26 @@ const addWorldRecord = async (runnerName, recordTime, recordDate, userId, catego
 };
 
 // route
-addRecordRouter.post('/add-world-record', async (req, res) => {
-    const { runnerName, recordTime, recordDate, userId, categoryId } = req.body;
+addRecordRouter.post('/', verifyToken, async (req, res) => {
+    const userId = req.user.user_id;
+    const { category_id, mod_id } = req.query;
+    const { runnerName, recordTime, recordDate } = req.body;
 
-    if (!runnerName || !recordTime || !recordDate || !userId || !categoryId) {
+    if (!userId) {
+        return res.status(401).json({ error: "Unauthorized: You must be registered/logged in to add a record" })
+    }
+
+    if (!runnerName || !recordTime || !recordDate || !userId || !category_id || !mod_id) {
         return res.status(400).send('Missing required fields');
     }
 
     try {
-        // conversions
+        // conversions and check
         const timeInMilliseconds = parseTimeToMilliseconds(recordTime);
         if (timeInMilliseconds === null) {
             return res.status(400).send('Invalid record time format');
         }
-        const newRecord = await addWorldRecord(runnerName, timeInMilliseconds, recordDate, userId, categoryId);
+        const newRecord = await addWorldRecord(runnerName, timeInMilliseconds, recordDate, userId, category_id);
         res.status(201).json({
             message: 'World record added successfully',
             record: newRecord
