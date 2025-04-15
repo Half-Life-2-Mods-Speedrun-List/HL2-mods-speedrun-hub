@@ -219,6 +219,7 @@ const renderCategory = async (category) => {
 // getting categories from backend and appending to the html-page
 const getCategories = async (modId) => {
     const div = document.createElement("div")
+    div.id = "categories-container"
     const renderedCategories = []
     try {
         const result = await categories.getCategories(modId)
@@ -544,5 +545,83 @@ if (addResources) {
         addResourceForm.style.visibility = "visible";
     });
 }
+
+const testDiv = document.createElement("div")
+testDiv.id = "tutorials-container"
+testDiv.style.display = "none"
+const testP = document.createElement("p")
+testP.textContent = "Test"
+testDiv.appendChild(testP)
+document.body.appendChild(testDiv)
+const testDiv2 = document.createElement("div")
+testDiv2.id = "strategies-container"
+testDiv2.style.display = "none"
+const testP2 = document.createElement("p")
+testP2.textContent = "Test2"
+testDiv2.appendChild(testP2)
+document.body.appendChild(testDiv2)
+
+const hideExistingContent = () => {
+    const categoriesDiv = document.getElementById("categories-container");
+    const tutorialsDiv = document.getElementById("tutorials-container");
+    const strategiesDiv = document.getElementById("strategies-container");
+        categoriesDiv.style.display = "none";
+        tutorialsDiv.style.display = "none";
+        strategiesDiv.style.display = "none";
+};
+
+const showCategories = () => {
+    const categoriesDiv = document.getElementById("categories-container");
+    if (categoriesDiv) {
+        categoriesDiv.style.display = "block";
+    }
+};
+
+const showTutorials = () => {
+    const tutorialsDiv = document.getElementById("tutorials-container");
+    if (tutorialsDiv) {
+        tutorialsDiv.style.display = "block";
+    }
+};
+
+const showStrategies = () => {
+    const strategiesDiv = document.getElementById("strategies-container");
+    if (strategiesDiv) {
+        strategiesDiv.style.display = "block";
+    }
+};
+
+
+const categoriesMenu = document.getElementById("categoriesMenu")
+const tutorialsMenu = document.getElementById("tutorialsMenu")
+const strategiesMenu = document.getElementById("strategiesMenu")
+
+categoriesMenu.addEventListener("click", () => {
+    hideExistingContent()
+    showCategories()
+    const parameters = new URLSearchParams(window.location.search);
+    parameters.delete("view");
+    const newUrl = `${window.location.pathname}?${parameters.toString()}`;
+    history.pushState(null, "", newUrl);
+});
+
+tutorialsMenu.addEventListener("click", () => {
+    hideExistingContent()
+    showTutorials()
+    const parameters = new URLSearchParams(window.location.search);
+    parameters.set("view", "tutorials");
+    const newUrl = `${window.location.pathname}?${parameters.toString()}`;
+    history.pushState(null, "", newUrl);
+});
+
+strategiesMenu.addEventListener("click", () => {
+    hideExistingContent()
+    showStrategies()
+    const parameters = new URLSearchParams(window.location.search);
+    parameters.set("view", "strategies");
+    const newUrl = `${window.location.pathname}?${parameters.toString()}`;
+    history.pushState(null, "", newUrl);
+});
+
 
 //getCategories();
