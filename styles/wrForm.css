@@ -31,6 +31,10 @@ body {
     align-items: center;
     
 }
+#wr-form > h2 {
+    margin-top: -2rem;
+}
+
 #runnerName, #recordTime, #recordDate {
     width: 15rem;
     padding: 5px;
