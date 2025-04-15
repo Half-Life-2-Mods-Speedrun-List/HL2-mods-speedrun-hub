@@ -342,7 +342,7 @@ const openWRPopUp = async (categoryContent, categoryId) => {
     addWrBtn.textContent = "+"
     addWrBtn.id = "addWr"
     addWrBtn.addEventListener("click", () => {
-        window.location.href = `AddWorldRecord.html?categoryId=${categoryId}&modId=${modId}`
+        window.location.href = `AddWorldRecord.html?categoryId=${categoryId}`
     })
 
     popUpContent.appendChild(addWrBtn)
