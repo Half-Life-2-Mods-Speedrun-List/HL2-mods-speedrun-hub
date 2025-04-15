@@ -96,3 +96,15 @@ ALTER TABLE "world_records" ADD COLUMN "record_date" DATE;
 
 ALTER TABLE "categories" ADD COLUMN "wr_video" text;
 ALTER TABLE "categories" ADD CONSTRAINT "user_id" FOREIGN KEY ("user_id") REFERENCES "users" ("user_id");
+
+CREATE TABLE guides (
+  guide_id SERIAL PRIMARY KEY, 
+  mod_id integer NOT NULL,
+  user_id integer,
+  video text,
+  image VARCHAR(64),
+  description text,
+  FOREIGN KEY (mod_id) REFERENCES mods(mod_id),
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  type SMALLINT NOT NULL DEFAULT 0, --> 0 = not set, 1 = strategies, 2 = tutorials
+);
