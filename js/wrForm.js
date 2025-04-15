@@ -2,33 +2,20 @@
 const backendUrl = "http://localhost:3001"
 
 
-function getModId() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('modId');  
-}
-
-function getCategoryId() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('categoryId'); 
-}
-
-function showUrlParams() {
-    const modId = getModId();
-    const categoryId = getCategoryId();
-    console.log("Mod ID:", modId);  
-    console.log("Category ID:", categoryId);  
-}
-showUrlParams();  
-
 document.getElementById("wr-form").addEventListener("submit", async (event) => {
     event.preventDefault()
+
+    const categoryId = getCategoryId()
+
+    if (!categoryId) {
+        alert("Category ID is missing.");
+        return;
+    }
 
     const data = {
         runnerName: document.getElementById("runnerName").value,
         recordTime: document.getElementById("recordTime").value,
-        recordDate: document.getElementById("recordDate").value, 
-        categoryId: getCategoryId(),
-        modId: getModId()
+        recordDate: document.getElementById("recordDate").value
     }
 
     if (!data.runnerName || !data.recordTime || !data.recordDate) {
@@ -36,12 +23,11 @@ document.getElementById("wr-form").addEventListener("submit", async (event) => {
         return;
     }
 
-    if (!data.categoryId || !data.modId) {
-        alert("Category ID or Mod ID is missing.");
-        return;
-    }
+    console.log(JSON.stringify(data));
+    console.log("Form data:", data);
+
     try {
-        const response = await fetch(`${backendUrl}/add-world-record?category_id=${data.categoryId}&mod_id=${data.modId}`, {
+        const response = await fetch(`${backendUrl}/add-world-record/${categoryId}`, {
             method: "POST",
             headers: { 
                 "Content-Type": "application/json"
@@ -52,7 +38,7 @@ document.getElementById("wr-form").addEventListener("submit", async (event) => {
   
         const result = await response.json();
   
-        if (response.status === 200) {
+        if (response.ok) {
             alert("World record added successfully!");
             console.log(result);
         } else {
@@ -65,3 +51,7 @@ document.getElementById("wr-form").addEventListener("submit", async (event) => {
     }
 });
 
+function getCategoryId() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('categoryId'); 
+}
