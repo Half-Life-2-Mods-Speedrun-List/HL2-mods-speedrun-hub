@@ -20,12 +20,15 @@ body {
   }
 
 .navbar {
-    width:auto;
-    margin-left:auto;
-    margin-right:auto;
-    margin-top:0rem;
-    margin-bottom:0rem;
-    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .navbar > tbody {
+    margin: auto;
+    position: relative;
+    text-align: center;
   }
   
   p, span, label, input, textarea {
@@ -78,7 +81,7 @@ h1, h2, h3, h4, h5, h6 {
     padding: 6px;
     border-radius: 10px;
     margin: 1rem;
-    color: black;
+    color: #cbcbcb;
     border: solid 2px orange;
 }
 
@@ -124,7 +127,7 @@ h1, h2, h3, h4, h5, h6 {
     margin-right: -5rem;
 }
 
-.add-cat-btn, .close-btn, #addWr {
+.add-cat-btn, .add-resource-btn, .close-btn, #addWr {
     background-color: orange;
     color: rgb(0, 0, 0);
     font-size: 1rem;
@@ -217,4 +220,49 @@ h1, h2, h3, h4, h5, h6 {
     .popUp {
         right: 22em;
     }
+}
+
+.resources-flex {
+    position: absolute;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1em;
+    background-color: #1a1a1a;
+    border: 2px solid #333;
+    border-right: none;
+    border-radius: 10px 0 0 10px;
+    padding: 1em;
+}
+
+.resource-form {
+    position: fixed;
+    right: 0;
+    top: 30%;
+    transform: translateX(20px);
+    z-index: 1000;
+    background-color: #1a1a1a;
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 1rem;
+    flex-direction: column;
+    margin-left: auto;
+    width: 30em;
+    margin-right: 1rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.resource-form.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.add-resource-btn {
+    width: 10em;
+    align-self: center;
 }

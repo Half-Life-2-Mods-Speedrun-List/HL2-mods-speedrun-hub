@@ -97,6 +97,41 @@ modRouter.get("/:modId/resourcelinks", async (req, res) => {
     }
 });
 
+modRouter.post("/:modId/resourcelinks", async (req, res) => {
+    const { modId } = req.params;
+    const { rtsl, moddb, steam, extra1, extra2, extra3, src } = req.body;
+
+    try {
+        // Check if a record already exists for the given modId
+        const existingRecord = await query(
+            "SELECT * FROM resource_links WHERE mod_id = $1",
+            [modId]
+        );
+
+        if (existingRecord.rows.length > 0) {
+            // Update the existing record
+            await query(
+                `UPDATE resource_links
+                 SET rtsl = $1, moddb = $2, steam = $3, extra1 = $4, extra2 = $5, extra3 = $6, src = $7
+                 WHERE mod_id = $8`,
+                [rtsl, moddb, steam, extra1, extra2, extra3, src, modId]
+            );
+            return res.status(200).json({ message: "Resource links updated successfully" });
+        } else {
+            // Insert a new record
+            await query(
+                `INSERT INTO resource_links (mod_id, rtsl, moddb, steam, extra1, extra2, extra3, src)
+                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+                [modId, rtsl, moddb, steam, extra1, extra2, extra3, src]
+            );
+            return res.status(201).json({ message: "Resource links added successfully" });
+        }
+    } catch (error) {
+        console.error("Error saving resource links:", error);
+        res.status(500).json({ message: "Failed to save resource links" });
+    }
+});
+
 module.exports = {
     modRouter
 }

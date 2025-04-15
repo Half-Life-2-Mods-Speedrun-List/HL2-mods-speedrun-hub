@@ -1,4 +1,3 @@
-
 import { Categories } from "./class/Categories.js"
 import { Mods } from "./class/Mods.js"
 const backendUrl = "http://localhost:3001"
@@ -33,12 +32,19 @@ const changeTitle = async (modId) => {
 
 changeTitle(modId)
 
+const navbar = document.querySelector(".navbar");
+const resourcesFlex = document.createElement("div");
+resourcesFlex.classList.add("resources-flex");
+navbar.appendChild(resourcesFlex);
+
 // Construct add resource link button
-const addResourcesLink = document.createElement("td");
-addResourcesLink.classList.add("nav-link")
-addResourcesLink.textContent = "Add resources" // Replace this with an actual logo?
-const navbar = document.querySelector(".navbar-items")
-navbar.appendChild(addResourcesLink)
+const addResources = document.createElement("div");
+addResources.classList.add("nav-link");
+const addResourcesImg = document.createElement("img");
+addResourcesImg.src = "../imgs/plus.png";
+addResourcesImg.style.width = "1.5em";
+addResourcesImg.style.height = "1.5em";
+addResources.appendChild(addResourcesImg);
 
 const fetchResourceLinks = async (modId) => {
     try {
@@ -73,7 +79,7 @@ const defaultLogo = "../imgs/globe.png";
 
 Object.entries(resourceLinksArray).forEach(([key, value]) => {
     if (value) {
-        const resourceLinkContainer = document.createElement("td");
+        const resourceLinkContainer = document.createElement("div");
 
         // Find the matching logo
         const matchingLogo = logosForLinks.find(({ pattern }) => pattern.test(value));
@@ -81,8 +87,8 @@ Object.entries(resourceLinksArray).forEach(([key, value]) => {
 
         const logoImage = document.createElement("img");
         logoImage.src = imageSrc;
-        logoImage.style.width = "1em";
-        logoImage.style.height = "1em";
+        logoImage.style.width = "2.2em";
+        logoImage.style.height = "2.2em";
 
         const linkElement = document.createElement("a");
         linkElement.href = value;
@@ -90,12 +96,11 @@ Object.entries(resourceLinksArray).forEach(([key, value]) => {
         linkElement.appendChild(logoImage);
 
         resourceLinkContainer.appendChild(linkElement);
-        navbar.appendChild(resourceLinkContainer);
+        resourcesFlex.appendChild(resourceLinkContainer);
     }
 });
 
-// Add resources via a button in the navbar
-// NOT YET IMPLEMENTED
+resourcesFlex.appendChild(addResources)
 
 // function for showing categories
 const renderCategory = async (category) => {
@@ -422,6 +427,122 @@ function scrollToCategory(categoryId) {
 } */
 })
 
+// creating form and button for resource adding
+const createInputField = (placeholder, linkInDatabase, required = false) => {
+    const input = document.createElement("input");
+    input.classList.add("category-input");
+    input.type = "text";
+    input.placeholder = placeholder;
+    input.linkInDatabase = linkInDatabase;
+    input.required = required;
+    return input;
+};
 
+const createForm = (inputs, submitButtonText, onSubmit) => {
+    const form = document.createElement("form");
+    form.classList.add("resource-form");
+
+    inputs.forEach((input) => form.appendChild(input));
+
+    const submitButton = document.createElement("button");
+    submitButton.type = "submit";
+    submitButton.textContent = submitButtonText;
+    submitButton.classList.add("add-resource-btn");
+    form.appendChild(submitButton);
+
+    form.addEventListener("submit", onSubmit);
+
+    return form;
+};
+
+// Create input fields for the resource form
+const resourceInputs = [
+    createInputField("RunThinkShootLive", "rtsl"),
+    createInputField("ModDB", "moddb"),
+    createInputField("Steam", "steam"),
+    createInputField("Extra link", "extra1"),
+    createInputField("Extra link", "extra2"),
+    createInputField("Extra link", "extra3"),
+    createInputField("Speedrun.com", "src"),
+];
+
+// Handle resource form submission
+const handleResourceFormSubmit = async (event) => {
+    event.preventDefault();
+
+    const resourceData = resourceInputs.reduce((acc, input) => {
+        acc[input.linkInDatabase] = input.value;
+        return acc;
+    }, {});
+
+    if (Object.keys(resourceData).length === 0) {
+        alert("At least one resource link is required.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`${backendUrl}/mods/${modId}/resourcelinks`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(resourceData),
+        });
+
+        if (response.ok) {
+            console.log("Resource links saved successfully:", await response.json());
+            addResourceForm.style.border = "2px solid green";
+            setTimeout(() => {
+                addResourceForm.classList.remove("show");
+                setTimeout(() => {
+                    addResourceForm.style.border = "2px solid #333";
+                    addResourceForm.style.visibility = "hidden";
+                }, 300);
+            }, 500);
+        } else {
+            console.error("Error saving resource links:", response.statusText);
+            alert("Failed to save resource links. Please try again.");
+        }
+    } catch (error) {
+        console.error("Error saving resource links:", error);
+        alert("An error occurred while saving resource links.");
+    }
+};
+
+// Create the resource form
+const addResourceForm = createForm(resourceInputs, "Add", handleResourceFormSubmit);
+document.body.appendChild(addResourceForm);
+
+// Function to populate input fields with existing resource links
+const populateResourceForm = async () => {
+    try {
+        const existingLinks = await fetchResourceLinks(modId); // Fetch existing links
+        console.log("Existing resource links:", existingLinks);
+
+        // Map the fetched links to the input fields
+        resourceInputs.forEach((input) => {
+            const linkInDatabase = input.linkInDatabase; // Match by linkInDatabase
+            if (existingLinks[linkInDatabase]) {
+                input.value = existingLinks[linkInDatabase]; // Set the value if it exists
+            } else {
+                input.value = ""; // Leave empty if no link exists
+            }
+        });
+    } catch (error) {
+        console.error("Error populating resource form:", error);
+    }
+};
+
+// Show the resource form when the "Add Resources" button is clicked
+if (addResources) {
+    addResources.addEventListener("click", async (event) => {
+        event.preventDefault();
+        console.log("Form is visible now");
+
+        await populateResourceForm(); // Populate the form with existing links
+        addResourceForm.classList.add("show");
+        addResourceForm.style.visibility = "visible";
+    });
+}
 
 //getCategories();
