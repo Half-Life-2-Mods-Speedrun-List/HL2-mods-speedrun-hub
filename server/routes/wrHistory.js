@@ -37,32 +37,42 @@ const addWorldRecord = async (runnerName, recordTime, recordDate, userId, catego
 };
 
 // route
-addRecordRouter.post('/', verifyToken, async (req, res) => {
-    const userId = req.user.user_id;
-    const { category_id, mod_id } = req.query;
+addRecordRouter.post('/:categoryId', verifyToken, async (req, res) => {
+    const { categoryId } = req.params;
     const { runnerName, recordTime, recordDate } = req.body;
 
-    if (!userId) {
+    if (!req.user) {
         return res.status(401).json({ error: "Unauthorized: You must be registered/logged in to add a record" })
     }
 
-    if (!runnerName || !recordTime || !recordDate || !userId || !category_id || !mod_id) {
-        return res.status(400).send('Missing required fields');
+    const userId = req.user.user_id;
+
+    console.log("POST data:", req.body);
+
+    if (!runnerName || !recordTime || !recordDate) {
+        return res.status(400).json({
+            error: 'Missing required fields',
+            missingFields: {
+                runnerName,
+                recordTime,
+                recordDate
+            }
+        });
     }
 
     try {
         // conversions and check
         const timeInMilliseconds = parseTimeToMilliseconds(recordTime);
         if (timeInMilliseconds === null) {
-            return res.status(400).send('Invalid record time format');
+            return res.status(400).json('Invalid record time format');
         }
-        const newRecord = await addWorldRecord(runnerName, timeInMilliseconds, recordDate, userId, category_id);
+        const newRecord = await addWorldRecord(runnerName, timeInMilliseconds, recordDate, userId, categoryId);
         res.status(201).json({
             message: 'World record added successfully',
             record: newRecord
         });
     } catch (error) {
-        res.status(500).send('Failed to add world record');
+        res.status(500).json('Failed to add world record');
     }
 });
 
