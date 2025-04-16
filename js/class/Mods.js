@@ -95,13 +95,14 @@ class Mods {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(data),
+                credentials: 'include'
             });
 
             if (!response.ok) {
-                throw new Error("Failed to add video");
+                const errorData = await response.json();
+                throw new Error(errorData.message || "Failed to add video");
             }
-            const result = await response.json();
-            return result;
+            return response;
         } catch (error) {
             console.error("Error adding video:", error);
             throw error;

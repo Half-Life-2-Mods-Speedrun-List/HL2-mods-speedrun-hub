@@ -168,32 +168,43 @@ const renderCategory = async (category) => {
 
 // Logic for adding a new WR video
     addVideoBtn.addEventListener("click", async () => {
-        const videoUrl = prompt("Enter YouTube link to the video");
-        if (videoUrl) {
-            // Extract the video ID from the YouTube URL
-            const videoId = extractYouTubeVideoId(videoUrl);
-            if (videoId) {
-                const videoElement = document.createElement("iframe");
-                videoElement.classList.add("video-iframe");
-                videoElement.src = `https://www.youtube.com/embed/${videoId}`;
-                videoElement.allowFullscreen = true;
-                videoBox.innerHTML = ""; // Clear previous content
-                videoBox.appendChild(videoElement);
-
+    const videoUrl = prompt("Enter YouTube link to the video");
+    if (videoUrl) {
+        // Extract the video ID from the YouTube URL
+        const videoId = extractYouTubeVideoId(videoUrl);
+        if (videoId) {
+            try {
                 // Send the video URL to the backend
                 console.log("Category ID:", category.getId());
-                console.log("Video URL:", videoElement.src);
-                try {
-                    const result = await mods.createVideo(category.getId(), videoElement.src);
+                console.log("Video URL:", videoUrl);
+
+                const response = await mods.createVideo(category.getId(), `https://www.youtube.com/embed/${videoId}`);
+
+                if (response.ok) {
+                    const result = await response.json();
                     console.log("Video successfully added to the database:", result);
-                } catch (error) {
-                    console.error("Error adding video to the database:", error);
+                
+                    // Update the UI only if the backend confirms success
+                    const videoElement = document.createElement("iframe");
+                    videoElement.classList.add("video-iframe");
+                    videoElement.src = `https://www.youtube.com/embed/${videoId}`;
+                    videoElement.allowFullscreen = true;
+                    videoBox.innerHTML = ""; // Clear previous content
+                    videoBox.appendChild(videoElement);
+                } else {
+                    const errorData = await response.json();
+                    console.error("Error adding video to the database:", errorData);
+                    alert(errorData.message || "Failed to update the video. Please try again.");
                 }
-            } else {
-                alert("Invalid YouTube URL. Please enter a valid link.");
+            } catch (error) {
+                console.error("Error adding video to the database:", error);
+                alert("An error occurred while updating the video. Please try again.");
             }
+        } else {
+            alert("Invalid YouTube URL. Please enter a valid link.");
         }
-    });
+    }
+});
 
     // Helper function to extract the video ID from a YouTube URL
     const extractYouTubeVideoId = (url) => {
@@ -561,6 +572,7 @@ testP2.textContent = "Test2"
 testDiv2.appendChild(testP2)
 document.body.appendChild(testDiv2)
 
+// Switch between content
 const hideExistingContent = () => {
     const categoriesDiv = document.getElementById("categories-container");
     const tutorialsDiv = document.getElementById("tutorials-container");

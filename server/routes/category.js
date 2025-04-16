@@ -67,7 +67,7 @@ categoryRouter.get("/", async (req, res) => {
     }
 });
 
-categoryRouter.post("/:categoryId/wr-video", async (req, res) => {
+categoryRouter.post("/:categoryId/wr-video", verifyToken, async (req, res) => {
     const { categoryId } = req.params;
     const { wr_video } = req.body;
 
@@ -77,6 +77,10 @@ categoryRouter.post("/:categoryId/wr-video", async (req, res) => {
 
     if (!wr_video) {
         return res.status(400).json({ message: "WR video URL is required" });
+    }
+
+    if(!req.user) {
+        return res.status(401).json({ error: "Unauthorized user. Please log in/register to add category."});
     }
 
     try {
@@ -95,7 +99,7 @@ categoryRouter.post("/:categoryId/wr-video", async (req, res) => {
         res.status(200).json({ message: "WR video added successfully", data: result.rows[0] });
     } catch (error) {
         console.error("Error adding WR video:", error);
-        res.status(500).json({ message: "Server error" });
+        res.status(500).json({ message: "Server error", details: error.message });
     }
 });
 
