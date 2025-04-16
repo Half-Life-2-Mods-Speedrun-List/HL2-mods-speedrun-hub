@@ -499,6 +499,7 @@ const handleResourceFormSubmit = async (event) => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(resourceData),
+            credentials: "include",
         });
 
         if (response.ok) {

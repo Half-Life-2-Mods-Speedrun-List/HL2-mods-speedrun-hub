@@ -97,9 +97,13 @@ modRouter.get("/:modId/resourcelinks", async (req, res) => {
     }
 });
 
-modRouter.post("/:modId/resourcelinks", async (req, res) => {
+modRouter.post("/:modId/resourcelinks", verifyToken, async (req, res) => {
     const { modId } = req.params;
     const { rtsl, moddb, steam, extra1, extra2, extra3, src } = req.body;
+
+    if(!req.user) {
+        return res.status(401).json({ error: "Unauthorized user. Please log in/register to add category."});
+    }
 
     try {
         // Check if a record already exists for the given modId
