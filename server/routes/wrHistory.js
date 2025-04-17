@@ -46,6 +46,11 @@ addRecordRouter.post('/:categoryId', verifyToken, async (req, res) => {
     }
 
     const userId = req.user.user_id;
+    console.log("User ID from token:", userId);
+
+    if (!userId) {
+        return res.status(401).json({ error: "User ID is missing from token" });
+    }
 
     console.log("POST data:", req.body);
 
