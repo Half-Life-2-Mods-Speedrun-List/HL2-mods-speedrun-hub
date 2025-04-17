@@ -66,5 +66,37 @@ Content-Type: application/json
     "recordDate": "2025-04-01"
 }
 
+### Get guide information
+GET http://localhost:3001/mods/1/display-guide?view=strategies HTTP/1.1
+Content-Type: application/json
 
+### Add a video to a guide
+POST http://localhost:3001/mods/1/update-guide HTTP/1.1
+Content-Type: application/json
 
+{
+    "type": 1,
+    "guide_id": 1,
+    "video": "a"
+}
+
+### Add an image to a guide
+POST http://localhost:3001/mods/1/update-guide HTTP/1.1
+Content-Type: application/json
+
+{
+    "type": 1,
+    "guide_id": 1,
+    "image": "image.png"
+}
+
+### Add a video and a description to a guide
+POST http://localhost:3001/mods/1/update-guide HTTP/1.1
+Content-Type: application/json
+
+{
+    "type": 1,
+    "guide_id": 1,
+    "video": "b",
+    "description": "test description"
+}
