@@ -1,5 +1,6 @@
 import { timeout } from "./Utils.js"
 const backendUrl = "http://localhost:3001"
+
 document.getElementById("loginForm").addEventListener("submit", async function(event) {
   event.preventDefault(); 
 
@@ -17,6 +18,9 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
       const result = await response.json();
 
       if (response.ok) {
+        // save token and userId to localStorage
+        localStorage.setItem("accessToken", result.accessToken);
+        localStorage.setItem("userId", result.user_id);
         timeout("Login")
       } else {
           alert("Login failed: " + result.message);
