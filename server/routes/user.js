@@ -8,7 +8,8 @@ const userRouter = express.Router()
 
 const generateToken = (user)=>{
     console.log(process.env.JWT_SECRET_KEY);
-    return jwt.sign({ username: user.username }, process.env.JWT_SECRET_KEY, {expiresIn: '2h'});
+    console.log("Token generating for user: ", user.id, user.username);
+    return jwt.sign({ user_id: user.user_id, username: user.username }, process.env.JWT_SECRET_KEY, {expiresIn: '2h'});
 }
 
 userRouter.post("/login", async (req, res) => {
@@ -48,6 +49,7 @@ userRouter.post("/login", async (req, res) => {
         console.log("Cookie maxAge set to:", 2 * 60 * 60 * 1000);
         res.status(200).json({
             username: user.username,
+            user_id: user.user_id,
             accessToken,
         })
     } catch (error) {
