@@ -224,8 +224,201 @@ const renderCategory = async (category) => {
         console.log("View WR-history button clicked")
         openWRPopUp(categoryDiv, category.getId())
     })
+
+    // Category voting
+
+    console.log("Stored token:", localStorage.getItem("accessToken"));
+    console.log("Stored userId:", localStorage.getItem("userId"));
+
+    const voteOptions = {
+        difficulty: [1, 2, 3, 4, 5],
+        optimization: [1, 2, 3, 4, 5],
+        enjoyment: ['S', 'A', 'B', 'C', 'D', 'E', 'F']
+    };
+
+    const reverseTierMap = {
+        1: "S",
+        2: "A",
+        3: "B",
+        4: "C",
+        5: "D",
+        6: "E",
+        7: "F"
+    };
+    const tierToNumber = {
+        "S": 1,
+        "A": 2,
+        "B": 3,
+        "C": 4,
+        "D": 5,
+        "E": 6,
+        "F": 7
+    };
+
+    const sendVote = async (categoryName, value) => {
+        const categoryId = category.getId()
+        const accessToken = localStorage.getItem("accessToken");
+            if (!accessToken) {
+                console.error("No access token found.");
+                return;
+            }
+        const userId = Number(localStorage.getItem("userId"));
+
+        // Change letter to number if categoryName equals "enjoyment"
+    const numericValue = categoryName === "enjoyment" ? tierToNumber[value] : value;
+
+    const voteData = { [categoryName]: numericValue };
+        try {
+            const response = await fetch(`${backendUrl}/votes/${categoryId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${accessToken}`
+                },
+                credentials: "include",
+                body: JSON.stringify(voteData)
+            });
+
+        if (!response.ok) throw new Error("Voting failed")
+            const data = await response.json()
+            console.log("Vote saved:",  data)
+        } catch (error) {
+            console.error("Error sending vote:", error)
+        }
+    }
+    // fetch existing votes
+    const fetchUserVotes = async (categoryId) => {
+        const userId = Number(localStorage.getItem("userId"));
+        try {
+            const response = await fetch(`${backendUrl}/votes/${categoryId}?user_id=${userId}`, {
+                method: "GET",
+                credentials: "include"
+        });
+        if (response.ok) {
+            const votes = await response.json()
+            console.log("Fetched votes:", votes)
+        // get user's own votes
+            const userVote = votes.find(v => v.user_id === userId)
+            console.log("User vote:", userVote)
+            
+            if (!userVote) return {};
+            return {
+                difficulty: userVote.difficulty,
+                optimization: userVote.optimization,
+                // from number to letter
+                enjoyment: reverseTierMap[userVote.enjoyment]
+            }
+        } else {
+            throw new Error("Vote fetch failed");
+        }
+        } catch (error) {
+        console.error("Error fetching votes:", error);
+        return {};
+        }
+    };
+
+  const userVotes = await fetchUserVotes(category.getId());
+
+    const votesContainer = document.createElement("div")
+    votesContainer.classList.add("votes-container")
+    votesContainer.style.display = "flex"
+    votesContainer.style.gap = "2rem"
+    votesContainer.style.marginTop = "1rem"
+
+    // votebox for each voting category
+    Object.entries(voteOptions).forEach(([categoryName, values]) => {
+        const voteBox = document.createElement("div");
+        voteBox.classList.add("voteBox")
+
+        const voteCategoryName = document.createElement("h3");
+        voteCategoryName.textContent = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
+        voteBox.appendChild(voteCategoryName);   
+
+        const starsContainer = document.createElement("div");
+        starsContainer.classList.add("starsContainer");
+        starsContainer.style.display = "flex";
+        starsContainer.style.gap = "0.25rem";
+        starsContainer.style.cursor = "pointer";
+
+        let selectedValue = null;
+        const votedValue = userVotes[categoryName]
+        let hasVoted = votedValue !== undefined // to check if user has already voted
+
+        // star for other categories except to enjoyment
+        values.forEach((value, index) => {
+            const star = document.createElement("span");
+            star.textContent = categoryName === "enjoyment" ? value : "★";
+            star.dataset.value = value;
+            star.style.fontSize = "1.5rem";
+            star.style.transition = "color 0.2s";
+            star.style.color = "#ccc";
+        // show already given votes
+        if (hasVoted) {
+            let votedIndex = values.indexOf(votedValue)
+            selectedValue = votedIndex
+            if (categoryName === "enjoyment") {
+                votedIndex = values.indexOf(votedValue);
+                star.style.color = index === votedIndex ? "rgb(255, 145, 0)" : "#ccc";
+            } else {
+                star.style.color = index <= votedIndex ? "rgb(255, 145, 0)" : "#ccc";
+            }
+        }
+
+      // Hover-effect
+      if (!hasVoted) {
+      star.addEventListener("mouseenter", () => {
+        if (categoryName === "enjoyment") {
+            star.style.color = "rgb(255, 165, 0)"
+        } else {
+        [...starsContainer.children].forEach((s, i) => {
+          s.style.color = i <= index ? "rgb(255, 165, 0)" : "#ccc";
+        });
+        }
+      });
+
+      // leaving hover
+      star.addEventListener("mouseleave", () => {
+        [...starsContainer.children].forEach((s, i) => {
+            if (categoryName === "enjoyment") {
+                s.style.color = i === selectedValue ? "#f5b301" : "#ccc";
+            } else {
+                s.style.color = selectedValue !== null && i <= selectedValue ? "#f5b301" : "#ccc";
+            }
+        });
+      });
+
+      star.addEventListener("click", () => {
+        selectedValue = index;
+        hasVoted = true
+        if (categoryName === "enjoyment") {
+            [...starsContainer.children].forEach((s, i) => {
+                s.style.color = i === index ? "rgb(255, 145, 0)" : "#ccc";
+            }) 
+        } else {
+            [...starsContainer.children].forEach((s, i) => {
+                s.style.color = i <= index ? "rgb(255, 145, 0)" : "#ccc";
+            })
+        }
+
+        sendVote(categoryName, values[index]);
+
+      });
+      }
+
+      starsContainer.appendChild(star);
+    });
+
+    voteBox.appendChild(starsContainer);
+    votesContainer.appendChild(voteBox);
+  });
+
+
+  categoryDiv.appendChild(votesContainer);
     return categoryDiv;
+
 }
+
+
 
 // getting categories from backend and appending to the html-page
 const getCategories = async (modId) => {
@@ -240,6 +433,7 @@ const getCategories = async (modId) => {
         if (!result || result.length === 0) {
             const noCategoriesMsg = document.createElement("p");
             noCategoriesMsg.textContent = "No categories available yet.";
+            noCategoriesMsg.style.margin ="2rem"
             div.appendChild(noCategoriesMsg);
         } else { 
             // Order categories by ID to prevent wrong order
@@ -282,10 +476,11 @@ if (modId) {
 //fetchCategories();
 
 const fetchWRHistory = async (categoryId, popUpContent) => {
+    console.log("Fetching WR history for category", categoryId)
     try {
         const response = await fetch (`${backendUrl}/wr-history/${categoryId}`)
         const wrData = await response.json()
-
+        console.log(wrData)
         if (wrData.length === 0) {
             const noRecordsMsg = document.createElement("p")
             noRecordsMsg.textContent = "No World Records for this category yet."
@@ -297,10 +492,12 @@ const fetchWRHistory = async (categoryId, popUpContent) => {
 
             wrData.forEach(record => {
                 const resultItem = document.createElement("li")
-                resultItem.style.marginBottom = "5px" 
+                resultItem.style.marginBottom = "1rem" 
+
+                const formattedDate = new Date(record.record_date).toLocaleDateString('fi-FI');
                 resultItem.innerHTML = 
-                `<strong>${record.runner_name}<strong> - Speedrun-time: ${record.record_time}<br>
-                Date: ${record.record_date}`
+                `<strong>${record.record_time}</strong> by <strong>${record.runner_name}</strong><br>
+                Record date: ${formattedDate}`
                 resultList.appendChild(resultItem)
             })
             popUpContent.appendChild(resultList)
@@ -638,3 +835,4 @@ strategiesMenu.addEventListener("click", () => {
 
 
 //getCategories();
+
