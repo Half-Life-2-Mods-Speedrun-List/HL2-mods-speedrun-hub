@@ -6,7 +6,7 @@ const div = document.createElement("div")
 div.setAttribute("class", "gridlist")
 
 let modsWithCategories = new Set()
-
+let allMods = []
 const renderMod = (mod) => {
     const h4 = document.createElement("h4")
     h4.textContent = mod.getText()
@@ -40,6 +40,7 @@ const getMods = async () => {
             }
         })    
         const mods = await modifications.getMods();
+        allMods = mods;
         mods.forEach(mod => {
             renderMod(mod);
         });
@@ -49,5 +50,41 @@ const getMods = async () => {
     }
 }
 
+const filterMods = (searchInput) => {
+    div.innerHTML = ""
+
+    const filteredMods = allMods.filter(mod => 
+        mod.getText().toLowerCase().includes(searchInput.toLowerCase())
+    )
+
+    filteredMods.forEach(mod => {
+        renderMod(mod)
+    })
+}
+
+const createSearchBar = () => {
+    const searchBar = document.createElement("input")
+
+    searchBar.setAttribute("type", "text")
+    searchBar.setAttribute("placeholder", "Search for mods")
+    searchBar.addEventListener("input", (e) => {
+        filterMods(e.target.value)
+    })
+    const navigationTable = document.querySelector(".box")
+
+    navigationTable.appendChild(searchBar)
+
+    searchBar.style.padding = "0px";
+    searchBar.style.color = "white";
+    searchBar.style.fontSize = "1rem";
+    searchBar.style.border = "none";  
+    searchBar.style.backgroundColor = "transparent"; 
+    searchBar.style.position = "absolute"
+    searchBar.style.top = "10.5rem";
+    searchBar.style.left = "5rem";  
+
+
+}
 getMods()
+createSearchBar()
 

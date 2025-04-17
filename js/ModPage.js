@@ -5,7 +5,7 @@ const backendUrl = "http://localhost:3001"
 let params = new URLSearchParams(document.location.search);
 let modId = params.get("id")
 
-if(!modId) {
+if (!modId) {
     console.error("ModId is missing in the url")
 }
 
@@ -83,7 +83,7 @@ Object.entries(resourceLinksArray).forEach(([key, value]) => {
 
         // Find the matching logo
         const matchingLogo = logosForLinks.find(({ pattern }) => pattern.test(value));
-        const imageSrc = matchingLogo ? matchingLogo.imageSrc : defaultLogo ;
+        const imageSrc = matchingLogo ? matchingLogo.imageSrc : defaultLogo;
 
         const logoImage = document.createElement("img");
         logoImage.src = imageSrc;
@@ -107,15 +107,15 @@ const renderCategory = async (category) => {
 
     const categoryDiv = document.createElement("div")
     const h2 = document.createElement("h2")
-    h2.textContent = category.getText() 
+    h2.textContent = category.getText()
     categoryDiv.appendChild(h2)
-// class for styling
+    // class for styling
     categoryDiv.classList.add("category-div")
     const categoryContent = document.createElement("div");
     categoryContent.classList.add("category-content");
     categoryDiv.appendChild(categoryContent)
 
-// Add WR video box
+    // Add WR video box
     const videoBoxContainer = document.createElement("div");
     videoBoxContainer.classList.add("video-box-container");
     categoryContent.appendChild(videoBoxContainer);
@@ -123,7 +123,7 @@ const renderCategory = async (category) => {
     videoBox.classList.add("video-box");
     videoBoxContainer.appendChild(videoBox);
 
-// Add "Add Video" elements
+    // Add "Add Video" elements
     const videoMissingText = document.createElement("p");
     videoMissingText.textContent = "Add a world record with the button below";
     videoMissingText.classList.add("video-missing-text");
@@ -133,26 +133,26 @@ const renderCategory = async (category) => {
     addVideoBtn.textContent = "+";
     videoBox.appendChild(addVideoBtn);
 
-// add WR video if it exists in the database
-const fetchWRVideo = async (categoryId) => {
-    try {
-        const response = await fetch(`${backendUrl}/categories/${categoryId}/wr-video`);
-        if (response.ok) {
-            const wrVideo = await response.json();
-            return wrVideo.wr_video;
-        } else if (response.status === 404) {
-            console.log("No WR video found for category:", categoryId);
+    // add WR video if it exists in the database
+    const fetchWRVideo = async (categoryId) => {
+        try {
+            const response = await fetch(`${backendUrl}/categories/${categoryId}/wr-video`);
+            if (response.ok) {
+                const wrVideo = await response.json();
+                return wrVideo.wr_video;
+            } else if (response.status === 404) {
+                console.log("No WR video found for category:", categoryId);
+                return null;
+            } else {
+                throw new Error("Failed to fetch WR video");
+            }
+        } catch (error) {
+            console.error("Error fetching WR video:", error);
             return null;
-        } else {
-            throw new Error("Failed to fetch WR video");
         }
-    } catch (error) {
-        console.error("Error fetching WR video:", error);
-        return null;
-    }
-};
+    };
 
-// Fetch and display WR video if it exists
+    // Fetch and display WR video if it exists
     const wrVideoUrl = await fetchWRVideo(category.getId());
     if (wrVideoUrl) {
         videoBox.innerHTML = ""; // Clear previous content
@@ -160,60 +160,64 @@ const fetchWRVideo = async (categoryId) => {
         videoElement.classList.add("video-iframe");
         videoElement.src = wrVideoUrl;
         videoElement.allowFullscreen = true;
+        videoElement.setAttribute("crossorigin","anonymous")
+        videoElement.setAttribute("credentialless", true)
+       
         videoBox.appendChild(videoElement);
+        
         addVideoBtn.textContent = "Edit video";
         addVideoBtn.classList.add("edit-video-btn");
         videoBoxContainer.appendChild(addVideoBtn);
     }
 
-// Logic for adding a new WR video
+    // Logic for adding a new WR video
     addVideoBtn.addEventListener("click", async () => {
-    const videoUrl = prompt("Enter YouTube link to the video");
-    if (videoUrl) {
-        // Extract the video ID from the YouTube URL
-        const videoId = extractYouTubeVideoId(videoUrl);
-        if (videoId) {
-            try {
-                // Send the video URL to the backend
-                console.log("Category ID:", category.getId());
-                console.log("Video URL:", videoUrl);
+        const videoUrl = prompt("Enter YouTube link to the video");
+        if (videoUrl) {
+            // Extract the video ID from the YouTube URL
+            const videoId = extractYouTubeVideoId(videoUrl);
+            if (videoId) {
+                try {
+                    // Send the video URL to the backend
+                    console.log("Category ID:", category.getId());
+                    console.log("Video URL:", videoUrl);
 
-                const response = await mods.createVideo(category.getId(), `https://www.youtube.com/embed/${videoId}`);
+                    const response = await mods.createVideo(category.getId(), `https://www.youtube.com/embed/${videoId}`);
 
-                if (response.ok) {
-                    const result = await response.json();
-                    console.log("Video successfully added to the database:", result);
-                
-                    // Update the UI only if the backend confirms success
-                    const videoElement = document.createElement("iframe");
-                    videoElement.classList.add("video-iframe");
-                    videoElement.src = `https://www.youtube.com/embed/${videoId}`;
-                    videoElement.allowFullscreen = true;
-                    videoBox.innerHTML = ""; // Clear previous content
-                    videoBox.appendChild(videoElement);
-                } else {
-                    const errorData = await response.json();
-                    console.error("Error adding video to the database:", errorData);
-                    alert(errorData.message || "Failed to update the video. Please try again.");
+                    if (response.ok) {
+                        const result = await response.json();
+                        console.log("Video successfully added to the database:", result);
+
+                        // Update the UI only if the backend confirms success
+                        const videoElement = document.createElement("iframe");
+                        videoElement.classList.add("video-iframe");
+                        videoElement.src = `https://www.youtube.com/embed/${videoId}`;
+                        videoElement.allowFullscreen = true;
+                        videoBox.innerHTML = ""; // Clear previous content
+                        videoBox.appendChild(videoElement);
+                    } else {
+                        const errorData = await response.json();
+                        console.error("Error adding video to the database:", errorData);
+                        alert(errorData.message || "Failed to update the video. Please try again.");
+                    }
+                } catch (error) {
+                    console.error("Error adding video to the database:", error);
+                    alert("An error occurred while updating the video. Please try again.");
                 }
-            } catch (error) {
-                console.error("Error adding video to the database:", error);
-                alert("An error occurred while updating the video. Please try again.");
+            } else {
+                alert("Invalid YouTube URL. Please enter a valid link.");
             }
-        } else {
-            alert("Invalid YouTube URL. Please enter a valid link.");
         }
-    }
-});
+    });
 
-// Helper function to extract the video ID from a YouTube URL
-const extractYouTubeVideoId = (url) => {
-    const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/.*v=([^&\s]+)|youtu\.be\/([^&\s]+)/;
-    const match = url.match(regex);
-    return match ? match[1] || match[2] : null;
-};
+    // Helper function to extract the video ID from a YouTube URL
+    const extractYouTubeVideoId = (url) => {
+        const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/.*v=([^&\s]+)|youtu\.be\/([^&\s]+)/;
+        const match = url.match(regex);
+        return match ? match[1] || match[2] : null;
+    };
 
-// add "View WR-history" btn
+    // add "View WR-history" btn
     const viewWRbtn = document.createElement("button")
     viewWRbtn.textContent = "View WR-history"
     categoryContent.appendChild(viewWRbtn)
@@ -258,16 +262,16 @@ const extractYouTubeVideoId = (url) => {
     const sendVote = async (categoryName, value) => {
         const categoryId = category.getId()
         const accessToken = localStorage.getItem("accessToken");
-            if (!accessToken) {
-                console.error("No access token found.");
-                return;
-            }
+        if (!accessToken) {
+            console.error("No access token found.");
+            return;
+        }
         const userId = Number(localStorage.getItem("userId"));
 
         // Change letter to number if categoryName equals "enjoyment"
-    const numericValue = categoryName === "enjoyment" ? tierToNumber[value] : value;
+        const numericValue = categoryName === "enjoyment" ? tierToNumber[value] : value;
 
-    const voteData = { [categoryName]: numericValue };
+        const voteData = { [categoryName]: numericValue };
         try {
             const response = await fetch(`${backendUrl}/votes/${categoryId}`, {
                 method: "POST",
@@ -279,45 +283,45 @@ const extractYouTubeVideoId = (url) => {
                 body: JSON.stringify(voteData)
             });
 
-        if (!response.ok) throw new Error("Voting failed")
+            if (!response.ok) throw new Error("Voting failed")
             const data = await response.json()
-            console.log("Vote saved:",  data)
+            console.log("Vote saved:", data)
         } catch (error) {
             console.error("Error sending vote:", error)
         }
     }
-// fetch existing votes
-const fetchUserVotes = async (categoryId) => {
-    const userId = Number(localStorage.getItem("userId"));
-    try {
-        const response = await fetch(`${backendUrl}/votes/${categoryId}?user_id=${userId}`, {
-            method: "GET",
-            credentials: "include"
-    });
-    if (response.ok) {
-        const votes = await response.json()
-        console.log("Fetched votes:", votes)
-    // get user's own votes
-        const userVote = votes.find(v => v.user_id === userId)
-        console.log("User vote:", userVote)
-        
-        if (!userVote) return {};
-        return {
-            difficulty: userVote.difficulty,
-            optimization: userVote.optimization,
-            // from number to letter
-            enjoyment: reverseTierMap[userVote.enjoyment]
-        }
-    } else {
-        throw new Error("Vote fetch failed");
-    }
-    } catch (error) {
-    console.error("Error fetching votes:", error);
-    return {};
-    }
-};
+    // fetch existing votes
+    const fetchUserVotes = async (categoryId) => {
+        const userId = Number(localStorage.getItem("userId"));
+        try {
+            const response = await fetch(`${backendUrl}/votes/${categoryId}?user_id=${userId}`, {
+                method: "GET",
+                credentials: "include"
+            });
+            if (response.ok) {
+                const votes = await response.json()
+                console.log("Fetched votes:", votes)
+                // get user's own votes
+                const userVote = votes.find(v => v.user_id === userId)
+                console.log("User vote:", userVote)
 
-  const userVotes = await fetchUserVotes(category.getId());
+                if (!userVote) return {};
+                return {
+                    difficulty: userVote.difficulty,
+                    optimization: userVote.optimization,
+                    // from number to letter
+                    enjoyment: reverseTierMap[userVote.enjoyment]
+                }
+            } else {
+                throw new Error("Vote fetch failed");
+            }
+        } catch (error) {
+            console.error("Error fetching votes:", error);
+            return {};
+        }
+    };
+
+    const userVotes = await fetchUserVotes(category.getId());
 
     const votesContainer = document.createElement("div")
     votesContainer.classList.add("votes-container")
@@ -332,7 +336,7 @@ const fetchUserVotes = async (categoryId) => {
 
         const voteCategoryName = document.createElement("h3");
         voteCategoryName.textContent = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
-        voteBox.appendChild(voteCategoryName);   
+        voteBox.appendChild(voteCategoryName);
 
         const starsContainer = document.createElement("div");
         starsContainer.classList.add("starsContainer");
@@ -352,68 +356,68 @@ const fetchUserVotes = async (categoryId) => {
             star.style.fontSize = "1.5rem";
             star.style.transition = "color 0.2s";
             star.style.color = "#ccc";
-        // show already given votes
-        if (hasVoted) {
-            let votedIndex = values.indexOf(votedValue)
-            selectedValue = votedIndex
-            if (categoryName === "enjoyment") {
-                votedIndex = values.indexOf(votedValue);
-                star.style.color = index === votedIndex ? "rgb(255, 145, 0)" : "#ccc";
-            } else {
-                star.style.color = index <= votedIndex ? "rgb(255, 145, 0)" : "#ccc";
+            // show already given votes
+            if (hasVoted) {
+                let votedIndex = values.indexOf(votedValue)
+                selectedValue = votedIndex
+                if (categoryName === "enjoyment") {
+                    votedIndex = values.indexOf(votedValue);
+                    star.style.color = index === votedIndex ? "rgb(255, 145, 0)" : "#ccc";
+                } else {
+                    star.style.color = index <= votedIndex ? "rgb(255, 145, 0)" : "#ccc";
+                }
             }
-        }
 
-      // Hover-effect
-      if (!hasVoted) {
-      star.addEventListener("mouseenter", () => {
-        if (categoryName === "enjoyment") {
-            star.style.color = "rgb(255, 165, 0)"
-        } else {
-        [...starsContainer.children].forEach((s, i) => {
-          s.style.color = i <= index ? "rgb(255, 165, 0)" : "#ccc";
-        });
-        }
-      });
+            // Hover-effect
+            if (!hasVoted) {
+                star.addEventListener("mouseenter", () => {
+                    if (categoryName === "enjoyment") {
+                        star.style.color = "rgb(255, 165, 0)"
+                    } else {
+                        [...starsContainer.children].forEach((s, i) => {
+                            s.style.color = i <= index ? "rgb(255, 165, 0)" : "#ccc";
+                        });
+                    }
+                });
 
-      // leaving hover
-      star.addEventListener("mouseleave", () => {
-        [...starsContainer.children].forEach((s, i) => {
-            if (categoryName === "enjoyment") {
-                s.style.color = i === selectedValue ? "#f5b301" : "#ccc";
-            } else {
-                s.style.color = selectedValue !== null && i <= selectedValue ? "#f5b301" : "#ccc";
+                // leaving hover
+                star.addEventListener("mouseleave", () => {
+                    [...starsContainer.children].forEach((s, i) => {
+                        if (categoryName === "enjoyment") {
+                            s.style.color = i === selectedValue ? "#f5b301" : "#ccc";
+                        } else {
+                            s.style.color = selectedValue !== null && i <= selectedValue ? "#f5b301" : "#ccc";
+                        }
+                    });
+                });
+
+                star.addEventListener("click", () => {
+                    selectedValue = index;
+                    hasVoted = true
+                    if (categoryName === "enjoyment") {
+                        [...starsContainer.children].forEach((s, i) => {
+                            s.style.color = i === index ? "rgb(255, 145, 0)" : "#ccc";
+                        })
+                    } else {
+                        [...starsContainer.children].forEach((s, i) => {
+                            s.style.color = i <= index ? "rgb(255, 145, 0)" : "#ccc";
+                        })
+                    }
+
+                    sendVote(categoryName, values[index]);
+
+                });
             }
+
+            starsContainer.appendChild(star);
         });
-      });
 
-      star.addEventListener("click", () => {
-        selectedValue = index;
-        hasVoted = true
-        if (categoryName === "enjoyment") {
-            [...starsContainer.children].forEach((s, i) => {
-                s.style.color = i === index ? "rgb(255, 145, 0)" : "#ccc";
-            }) 
-        } else {
-            [...starsContainer.children].forEach((s, i) => {
-                s.style.color = i <= index ? "rgb(255, 145, 0)" : "#ccc";
-            })
-        }
-
-        sendVote(categoryName, values[index]);
-
-      });
-      }
-
-      starsContainer.appendChild(star);
+        voteBox.appendChild(starsContainer);
+        votesContainer.appendChild(voteBox);
     });
 
-    voteBox.appendChild(starsContainer);
-    votesContainer.appendChild(voteBox);
-  });
 
-
-  categoryDiv.appendChild(votesContainer);
+    categoryDiv.appendChild(votesContainer);
     return categoryDiv;
 
 }
@@ -433,9 +437,9 @@ const getCategories = async (modId) => {
         if (!result || result.length === 0) {
             const noCategoriesMsg = document.createElement("p");
             noCategoriesMsg.textContent = "No categories available yet.";
-            noCategoriesMsg.style.margin ="2rem"
+            noCategoriesMsg.style.margin = "2rem"
             div.appendChild(noCategoriesMsg);
-        } else { 
+        } else {
             // Order categories by ID to prevent wrong order
             await Promise.all(
                 result.map(async (category) => {
@@ -478,7 +482,7 @@ if (modId) {
 const fetchWRHistory = async (categoryId, popUpContent) => {
     console.log("Fetching WR history for category", categoryId)
     try {
-        const response = await fetch (`${backendUrl}/wr-history/${categoryId}`)
+        const response = await fetch(`${backendUrl}/wr-history/${categoryId}`)
         const wrData = await response.json()
         console.log(wrData)
         if (wrData.length === 0) {
@@ -492,11 +496,11 @@ const fetchWRHistory = async (categoryId, popUpContent) => {
 
             wrData.forEach(record => {
                 const resultItem = document.createElement("li")
-                resultItem.style.marginBottom = "1rem" 
+                resultItem.style.marginBottom = "1rem"
 
                 const formattedDate = new Date(record.record_date).toLocaleDateString('fi-FI');
-                resultItem.innerHTML = 
-                `<strong>${record.record_time}</strong> by <strong>${record.runner_name}</strong><br>
+                resultItem.innerHTML =
+                    `<strong>${record.record_time}</strong> by <strong>${record.runner_name}</strong><br>
                 Record date: ${formattedDate}`
                 resultList.appendChild(resultItem)
             })
@@ -558,7 +562,7 @@ const openWRPopUp = async (categoryContent, categoryId) => {
 
 // creating form and button for category adding
 const addCategoryForm = document.createElement("form")
-addCategoryForm.style.display = "none"; 
+addCategoryForm.style.display = "none";
 addCategoryForm.classList.add("category-form")
 const categoryInput = document.createElement("input")
 categoryInput.classList.add("category-input")
@@ -578,12 +582,13 @@ document.body.appendChild(addCategoryForm)
 // Creating the "Add category" option to the navbar
 const addCategoryLink = document.getElementById("addCategory")
 
-if(addCategoryLink) {addCategoryLink.addEventListener("click", (event) => {
-    event.preventDefault()
-    console.log('Form is visibile now')
-    // form comes visible
-    addCategoryForm.style.display = "block"
-})
+if (addCategoryLink) {
+    addCategoryLink.addEventListener("click", (event) => {
+        event.preventDefault()
+        console.log('Form is visibile now')
+        // form comes visible
+        addCategoryForm.style.display = "block"
+    })
 }
 // adding category after submit
 addCategoryForm.addEventListener("submit", async (event) => {
@@ -598,10 +603,10 @@ addCategoryForm.addEventListener("submit", async (event) => {
         const response = await fetch(`${backendUrl}/categories/${modId}`, {
             method: "POST",
             headers: {
-                "Content-Type":"application/json",
+                "Content-Type": "application/json",
                 credentials: "include"
             },
-            body: JSON.stringify({category_name: newCategory })
+            body: JSON.stringify({ category_name: newCategory })
         })
         if (response.ok) {
             const categoryData = await response.json()
@@ -610,10 +615,10 @@ addCategoryForm.addEventListener("submit", async (event) => {
 
             renderCategory(categoryData)
             await fetchCategoriesAfterAdd(); //refresh category-listing
-            
+
             setTimeout(() => {
-            scrollToCategory(categoryData.id)
-        }, 300)
+                scrollToCategory(categoryData.id)
+            }, 300)
         } else if (response.status === 500) {
             alert("Category already exists")
         } else {
@@ -624,16 +629,16 @@ addCategoryForm.addEventListener("submit", async (event) => {
         console.error("Error adding category:", error)
     }
 
-/* function to scroll to a newly added category  --> DOESN'T WORK YET
-function scrollToCategory(categoryId) {
-    console.log("categoryId in scrollToCategory:", categoryId);
-    const categoryElement = document.getElementById(categoryId)
-    if (categoryElement) {
-        categoryElement.scrollIntoView({behavior: "smooth", block: "center"})
-    } else {
-        console.error("CategoryElement not found ", categoryId)
-    }
-} */
+    /* function to scroll to a newly added category  --> DOESN'T WORK YET
+    function scrollToCategory(categoryId) {
+        console.log("categoryId in scrollToCategory:", categoryId);
+        const categoryElement = document.getElementById(categoryId)
+        if (categoryElement) {
+            categoryElement.scrollIntoView({behavior: "smooth", block: "center"})
+        } else {
+            console.error("CategoryElement not found ", categoryId)
+        }
+    } */
 })
 
 // creating form and button for resource adding
@@ -775,9 +780,9 @@ const hideExistingContent = () => {
     const categoriesDiv = document.getElementById("categories-container");
     const tutorialsDiv = document.getElementById("tutorials-container");
     const strategiesDiv = document.getElementById("strategies-container");
-        categoriesDiv.style.display = "none";
-        tutorialsDiv.style.display = "none";
-        strategiesDiv.style.display = "none";
+    categoriesDiv.style.display = "none";
+    tutorialsDiv.style.display = "none";
+    strategiesDiv.style.display = "none";
 };
 
 const showCategories = () => {
