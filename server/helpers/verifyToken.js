@@ -5,12 +5,13 @@ const verifyToken = (req, res, next) => {
     // token comes either from authorization herader or from cookies
     let accessToken = req.cookies.access_token;
     const secretKey = process.env.JWT_SECRET_KEY;
-
+    console.log(accessToken)
     if (authHeader && authHeader.startsWith("Bearer ")) {
         accessToken = authHeader.split(" ")[1];
     }
 
     if (!accessToken) {
+        console.log("error")
         return res.status(401).json({ message: "Access token is missing"})
     } 
     try {
@@ -23,6 +24,7 @@ const verifyToken = (req, res, next) => {
             return next()
         }
     } catch(error) {
+        console.log("error")
         if (error.name === "TokenExpiredError") {
             return res.status(401).json({ message: "Token expired" });
         }    

@@ -134,23 +134,23 @@ const renderCategory = async (category) => {
     videoBox.appendChild(addVideoBtn);
 
 // add WR video if it exists in the database
-    const fetchWRVideo = async (categoryId) => {
-        try {
-            const response = await fetch(`${backendUrl}/categories/${categoryId}/wr-video`);
-            if (response.ok) {
-                const wrVideo = await response.json();
-                return wrVideo.wr_video;
-            } else if (response.status === 404) {
-                console.log("No WR video found for category:", categoryId);
-                return null;
-            } else {
-                throw new Error("Failed to fetch WR video");
-            }
-        } catch (error) {
-            console.error("Error fetching WR video:", error);
+const fetchWRVideo = async (categoryId) => {
+    try {
+        const response = await fetch(`${backendUrl}/categories/${categoryId}/wr-video`);
+        if (response.ok) {
+            const wrVideo = await response.json();
+            return wrVideo.wr_video;
+        } else if (response.status === 404) {
+            console.log("No WR video found for category:", categoryId);
             return null;
+        } else {
+            throw new Error("Failed to fetch WR video");
         }
-    };
+    } catch (error) {
+        console.error("Error fetching WR video:", error);
+        return null;
+    }
+};
 
 // Fetch and display WR video if it exists
     const wrVideoUrl = await fetchWRVideo(category.getId());
@@ -206,12 +206,12 @@ const renderCategory = async (category) => {
     }
 });
 
-    // Helper function to extract the video ID from a YouTube URL
-    const extractYouTubeVideoId = (url) => {
-        const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/.*v=([^&\s]+)|youtu\.be\/([^&\s]+)/;
-        const match = url.match(regex);
-        return match ? match[1] || match[2] : null;
-    };
+// Helper function to extract the video ID from a YouTube URL
+const extractYouTubeVideoId = (url) => {
+    const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/.*v=([^&\s]+)|youtu\.be\/([^&\s]+)/;
+    const match = url.match(regex);
+    return match ? match[1] || match[2] : null;
+};
 
 // add "View WR-history" btn
     const viewWRbtn = document.createElement("button")
@@ -286,36 +286,36 @@ const renderCategory = async (category) => {
             console.error("Error sending vote:", error)
         }
     }
-    // fetch existing votes
-    const fetchUserVotes = async (categoryId) => {
-        const userId = Number(localStorage.getItem("userId"));
-        try {
-            const response = await fetch(`${backendUrl}/votes/${categoryId}?user_id=${userId}`, {
-                method: "GET",
-                credentials: "include"
-        });
-        if (response.ok) {
-            const votes = await response.json()
-            console.log("Fetched votes:", votes)
-        // get user's own votes
-            const userVote = votes.find(v => v.user_id === userId)
-            console.log("User vote:", userVote)
-            
-            if (!userVote) return {};
-            return {
-                difficulty: userVote.difficulty,
-                optimization: userVote.optimization,
-                // from number to letter
-                enjoyment: reverseTierMap[userVote.enjoyment]
-            }
-        } else {
-            throw new Error("Vote fetch failed");
+// fetch existing votes
+const fetchUserVotes = async (categoryId) => {
+    const userId = Number(localStorage.getItem("userId"));
+    try {
+        const response = await fetch(`${backendUrl}/votes/${categoryId}?user_id=${userId}`, {
+            method: "GET",
+            credentials: "include"
+    });
+    if (response.ok) {
+        const votes = await response.json()
+        console.log("Fetched votes:", votes)
+    // get user's own votes
+        const userVote = votes.find(v => v.user_id === userId)
+        console.log("User vote:", userVote)
+        
+        if (!userVote) return {};
+        return {
+            difficulty: userVote.difficulty,
+            optimization: userVote.optimization,
+            // from number to letter
+            enjoyment: reverseTierMap[userVote.enjoyment]
         }
-        } catch (error) {
-        console.error("Error fetching votes:", error);
-        return {};
-        }
-    };
+    } else {
+        throw new Error("Vote fetch failed");
+    }
+    } catch (error) {
+    console.error("Error fetching votes:", error);
+    return {};
+    }
+};
 
   const userVotes = await fetchUserVotes(category.getId());
 

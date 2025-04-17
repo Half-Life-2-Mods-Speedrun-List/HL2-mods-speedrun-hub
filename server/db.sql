@@ -63,7 +63,7 @@ CREATE TABLE mod_category (
 );
 
 CREATE TABLE resource_links (
-  resource_id integer SERIAL PRIMARY KEY, 
+  resource_id SERIAL PRIMARY KEY, 
   mod_id integer NOT NULL,
   rtsl text,
   moddb text,
@@ -72,7 +72,7 @@ CREATE TABLE resource_links (
   extra2 text,
   extra3 text,
   src text,
-  FOREIGN KEY (mod_id) REFERENCES mods(mod_id),
+  FOREIGN KEY (mod_id) REFERENCES mods(mod_id)
 );
 
 
@@ -106,5 +106,5 @@ CREATE TABLE guides (
   description text,
   FOREIGN KEY (mod_id) REFERENCES mods(mod_id),
   FOREIGN KEY (user_id) REFERENCES users(user_id),
-  type SMALLINT NOT NULL DEFAULT 0, --> 0 = not set, 1 = strategies, 2 = tutorials
+  type SMALLINT NOT NULL DEFAULT 0 --> 0 = not set, 1 = strategies, 2 = tutorials
 );

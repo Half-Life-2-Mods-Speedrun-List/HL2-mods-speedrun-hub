@@ -3,12 +3,11 @@ const express = require("express")
 const jwt = require("jsonwebtoken")
 const { compare, hash } = require("bcrypt")
 const { verifyToken } = require("../helpers/verifyToken.js")
-
 const userRouter = express.Router()
 
 const generateToken = (user)=>{
-    console.log(process.env.JWT_SECRET_KEY);
-    console.log("Token generating for user: ", user.id, user.username);
+    
+    console.log("Token generating for user: ", user.user_id, user.username);
     return jwt.sign({ user_id: user.user_id, username: user.username }, process.env.JWT_SECRET_KEY, {expiresIn: '2h'});
 }
 
@@ -24,13 +23,13 @@ userRouter.post("/login", async (req, res) => {
         }
 
         const userFromDb = await query(
-            'SELECT * FROM users WHERE username = $1 OR email = $2', [username, email]
+            'SELECT * FROM users WHERE username = $1 OR email = $2;', [username, email]
         )
 
         if (userFromDb.rowCount === 0) {
             return res.status(401).json({ error: "Invalid credentials"})
         }
-
+        
         const user = userFromDb.rows[0]
         
         if (!await compare(password, user.password)) {
@@ -38,11 +37,12 @@ userRouter.post("/login", async (req, res) => {
         } 
 
         const accessToken = generateToken(user)
+        
 
         res.cookie("access_token", accessToken, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "None",
+            httpOnly: false,
+            secure: false,
+            sameSite: "Lax",
             path: "/",
             maxAge: 2 * 60 * 60 * 1000, // 2 hours
         });
@@ -65,6 +65,16 @@ userRouter.get("/profile", verifyToken, async (req, res) => {
     })
 })
 
+userRouter.post("/logout", verifyToken, async (req, res, next) => {
+    res.clearCookie('access_token', {
+        httpOnly: false,
+        secure: false,
+        sameSite: "Lax",
+        path:"/"
+    });
+
+    res.status(200).json({message: "Logout succesfull"})
+})
 
 
 module.exports = {

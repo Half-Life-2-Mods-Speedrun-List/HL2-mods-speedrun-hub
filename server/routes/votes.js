@@ -10,7 +10,6 @@ votesRouter.post("/:categoryId", verifyToken, async (req, res) => {
         const userId = req.user.user_id
         const categoryId = req.params.categoryId
         const { difficulty, optimization, enjoyment } = req.body
-
         const vote = await votesModel.createOrUpdateVote({
             difficulty, optimization, enjoyment, user_id: userId, category_id: categoryId
         })
@@ -21,7 +20,7 @@ votesRouter.post("/:categoryId", verifyToken, async (req, res) => {
     }
 })
 
-votesRouter.get("/:categoryId",verifyToken,async (req, res) => {
+votesRouter.get("/:categoryId",async (req, res) => {
     try {
         const userId = req.user.user_id
         const categoryId = req.params.categoryId
