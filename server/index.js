@@ -8,6 +8,7 @@ const { modRouter } = require("./routes/mod.js")
 const { userRouter } = require("./routes/user.js")
 const { categoryRouter } = require("./routes/category.js")
 const { wrHistoryRouter, addRecordRouter } = require("./routes/wrHistory.js");
+const { votesRouter } = require("./routes/votes.js") 
 
 
 const app = express()
@@ -26,6 +27,7 @@ app.use("/user", userRouter)
 app.use("/categories", categoryRouter)
 app.use("/wr-history", wrHistoryRouter)
 app.use("/add-world-record", addRecordRouter)
+app.use("/votes", votesRouter)
 
 
 app.get('/', (req, res) => {
