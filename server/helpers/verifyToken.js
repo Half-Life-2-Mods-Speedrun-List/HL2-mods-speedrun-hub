@@ -1,8 +1,14 @@
 const jwt = require("jsonwebtoken")
 
 const verifyToken = (req, res, next) => {
-    const accessToken = req.cookies.access_token;
+    const authHeader = req.headers["authorization"]
+    // token comes either from authorization herader or from cookies
+    let accessToken = req.cookies.access_token;
     const secretKey = process.env.JWT_SECRET_KEY;
+
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+        accessToken = authHeader.split(" ")[1];
+    }
 
     if (!accessToken) {
         return res.status(401).json({ message: "Access token is missing"})
