@@ -24,8 +24,8 @@ CREATE TABLE "votes" (
   "difficulty" integer,
   "optimization" integer,
   "enjoyment" integer,
-  "user_id" integer, ---> is this necessary? votes should be anonymous, and can unregistered user vote too?
-  "mods_id" integer, --> should this be category_id?
+  "user_id" integer, 
+  "category_id" integer, 
   "value" integer ---> what is purpose of this?
 );
 
@@ -40,7 +40,7 @@ CREATE TABLE "world_records" (
   "user_id" integer,  
   "runner_name" text,
   "category_id" integer,
-  "speedrun_id" integer, --> this is not necessary since there's only one speedrun per category visible?
+  "speedrun_id" integer, 
   "record_time" varchar(12),
   "record_date" date
 );
