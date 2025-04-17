@@ -20,7 +20,7 @@ votesRouter.post("/:categoryId", verifyToken, async (req, res) => {
     }
 })
 
-votesRouter.get("/:categoryId",async (req, res) => {
+votesRouter.get("/:categoryId", verifyToken, async (req, res) => {
     try {
         const userId = req.user.user_id
         const categoryId = req.params.categoryId
