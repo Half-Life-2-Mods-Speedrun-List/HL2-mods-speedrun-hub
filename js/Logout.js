@@ -2,10 +2,8 @@
 
 document.addEventListener("DOMContentLoaded", function() {
     const backendUrl = "http://localhost:3001"
-    const access_token = document.cookie.split("; ").find(row => row.startsWith("access_token="))
 
-    if (access_token) {
-        const token = access_token.split('=')[1];
+      if (localStorage.getItem("isLogged")) {
         const logoutButton = document.createElement('button');
         logoutButton.innerText = 'Logout';
         logoutButton.id = 'logout-btn';
@@ -36,10 +34,12 @@ document.addEventListener("DOMContentLoaded", function() {
             });
     
             if (response.ok) {
+
               // Clear the JWT from the localStorage or cookies manually
-              document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;';
+            
               console.log(document.cookie)
               alert('Logged out successfully!');
+              localStorage.setItem("isLogged", "false")
               window.location.href = '/views/ModList.html';  
             } else {
               alert('Error logging out. Please try again.');
@@ -50,5 +50,5 @@ document.addEventListener("DOMContentLoaded", function() {
             alert('An error occurred during logout. Please try again.');
           }
         });
-    }
+      }
 })

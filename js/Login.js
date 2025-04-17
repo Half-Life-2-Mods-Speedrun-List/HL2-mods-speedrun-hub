@@ -21,6 +21,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         // save token and userId to localStorage
         localStorage.setItem("accessToken", result.accessToken);
         localStorage.setItem("userId", result.user_id);
+        localStorage.setItem("isLogged", true);
         timeout("Login")
       } else {
           alert("Login failed: " + result.message);

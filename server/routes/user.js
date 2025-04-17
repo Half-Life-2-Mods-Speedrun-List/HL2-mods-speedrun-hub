@@ -40,9 +40,9 @@ userRouter.post("/login", async (req, res) => {
         
 
         res.cookie("access_token", accessToken, {
-            httpOnly: false,
-            secure: false,
-            sameSite: "Lax",
+            httpOnly: true,
+            secure: true,
+            sameSite: "None",
             path: "/",
             maxAge: 2 * 60 * 60 * 1000, // 2 hours
         });
@@ -67,9 +67,9 @@ userRouter.get("/profile", verifyToken, async (req, res) => {
 
 userRouter.post("/logout", verifyToken, async (req, res, next) => {
     res.clearCookie('access_token', {
-        httpOnly: false,
-        secure: false,
-        sameSite: "Lax",
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
         path:"/"
     });
 
