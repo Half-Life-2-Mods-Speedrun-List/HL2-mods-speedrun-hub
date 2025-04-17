@@ -5,7 +5,7 @@ const verifyToken = (req, res, next) => {
     // token comes either from authorization herader or from cookies
     let accessToken = req.cookies.access_token;
     const secretKey = process.env.JWT_SECRET_KEY;
-    console.log(accessToken)
+
     if (authHeader && authHeader.startsWith("Bearer ")) {
         accessToken = authHeader.split(" ")[1];
     }
@@ -17,7 +17,7 @@ const verifyToken = (req, res, next) => {
     try {
         console.log("validating token..")
         const validToken = jwt.verify(accessToken, secretKey)
-        console.log(validToken)
+        
         if (validToken) {
             req.authenticated = true
             req.user = validToken
