@@ -78,10 +78,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .category-input {
+    font-size: medium;
     padding: 6px;
     border-radius: 10px;
     margin: 1rem;
-    color: #cbcbcb;
+    color: #000000;
     border: solid 2px orange;
 }
 

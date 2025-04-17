@@ -8,9 +8,9 @@ const { verifyToken } = require("../helpers/verifyToken.js")
 const addCategory = async (req, res) => {
     try {
         console.log(req.body);
-        const {category_name} = req.body;
+        const { category_name } = req.body;
         // mod's id should come directly from url
-        const {mod_id} = req.params
+        const { mod_id } = req.params
         const user_id = req.user.user_id
 
         // user authetication check

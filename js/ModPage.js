@@ -604,8 +604,8 @@ addCategoryForm.addEventListener("submit", async (event) => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                credentials: "include"
             },
+            credentials: "include",
             body: JSON.stringify({ category_name: newCategory })
         })
         if (response.ok) {
