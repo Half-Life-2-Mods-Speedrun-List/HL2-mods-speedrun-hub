@@ -47,7 +47,7 @@ const getWRHistory = async (categoryId) => {
     // record_time is parsed from string format back to milliseconds and then formatted back to "MM:SS.SSS"
     return result.rows.map(row => ({
         runner_name: row.runner_name,
-        record_time: formatMillisecondsToTime(parseTimeToMilliseconds(row.record_time)),
+        record_time: formatMillisecondsToTime((row.record_time)),
         record_date: row.record_date,
         username: row.username
     }));
