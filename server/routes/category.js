@@ -26,7 +26,7 @@ const addCategory = async (req, res) => {
         if (!category_name) {
             return res.status(400).json({ error:"Category name is required"});
         }
-        const newCategory = await createCategory(category_name, mod_id);
+        const newCategory = await createCategory(category_name, mod_id, user_id);
         res.status(200).json({success: true, category: newCategory});
     } catch (error) {
         console.error(error);
