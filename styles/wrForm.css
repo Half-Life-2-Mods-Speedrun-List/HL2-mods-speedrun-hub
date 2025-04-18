@@ -24,7 +24,7 @@ body {
     background-color: rgb(20, 20, 20);
     display: flex;
     flex-direction: column;
-    padding: 8rem;
+    padding: 8rem 7rem 5rem 7rem;
     gap: 1rem;
     border: 2px solid #333;
     border-radius: 10px;
@@ -41,7 +41,7 @@ body {
     border-radius: 10px;
 }
 #saveWr {
-    margin-top: 2rem;
+    margin-top: 3rem;
     background-color: orange;
     color: rgb(0, 0, 0);
     font-size: 1rem;
@@ -50,6 +50,18 @@ body {
     padding: 5px 15px;
     cursor: pointer;}
 
-#saveWr:hover {
+#backToModPage {
+    margin-top: 1rem;
+    background-color: orange;
+    color: rgb(0, 0, 0);
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 15px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#saveWr:hover, #backToModPage:hover {
         background-color: rgb(255, 145, 0);
     }
