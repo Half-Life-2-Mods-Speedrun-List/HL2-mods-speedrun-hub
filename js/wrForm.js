@@ -55,3 +55,7 @@ function getCategoryId() {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('categoryId'); 
 }
+
+document.getElementById("backToModPage").addEventListener("click", () => {
+    history.back()
+});
