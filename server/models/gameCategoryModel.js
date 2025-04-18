@@ -10,21 +10,23 @@ const createCategory = async (name, mod_id, user_id) => {
         // check if category already exists
         const existingCategory = await pool.query('SELECT * FROM categories WHERE category_name=$1', [name]);
         console.log("Existing categories:", existingCategory.rows)
+        let categoryId;
 
         if (existingCategory.rows.length > 0) {
-            throw new Error ("Category already exists")
+            categoryId = existingCategory.rows[0].category_id;
+            console.log("Category exists, ID:", categoryId);
+        } 
+        // adding category to categories-table 
+        else {
+            const categoryResult = await pool.query(
+                "INSERT INTO categories (category_name, user_id) VALUES ($1, $2) RETURNING *",
+                [name, user_id]
+            )
+            categoryId = categoryResult.rows[0].category_id;
+            console.log("Inserted new category with ID:", categoryId);
         }
-
-        // adding category to categories-table
-        console.log("Inserting new category")
-        const categoryResult = await pool.query(
-            "INSERT INTO categories (category_name, user_id) VALUES ($1, $2) RETURNING *",
-            [name, user_id]
-        );
-        const categoryId = categoryResult.rows[0].category_id;
+        // check if category is already linked to mod
         console.log("Inserting into mod_category table with modId:", mod_id, "and with categoryId", categoryId)
-
-        // Check if the category is already linked to this mod
         const existingModCategory = await pool.query(
             "SELECT * FROM mod_category WHERE mod_id = $1 AND category_id = $2",
             [mod_id, categoryId]
