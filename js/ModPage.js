@@ -422,8 +422,6 @@ const renderCategory = async (category) => {
 
 }
 
-
-
 // getting categories from backend and appending to the html-page
 const getCategories = async (modId) => {
     const div = document.createElement("div")
@@ -459,9 +457,10 @@ const getCategories = async (modId) => {
 }
 
 // Fetch categories after adding a new one
-const fetchCategoriesAfterAdd = async () => {
+/*const fetchCategoriesAfterAdd = async () => {
     await getCategories(modId);  // Fetch the updated categories list after a new one is added
-}
+    renderCategory;
+}*/
 
 const fetchCategories = async () => {
     try {
@@ -590,6 +589,7 @@ if (addCategoryLink) {
         addCategoryForm.style.display = "block"
     })
 }
+
 // adding category after submit
 addCategoryForm.addEventListener("submit", async (event) => {
     event.preventDefault()
@@ -610,15 +610,24 @@ addCategoryForm.addEventListener("submit", async (event) => {
         })
         if (response.ok) {
             const categoryData = await response.json()
+            console.log("categoryData:", categoryData);
+
             categoryInput.value = "" // clear input field
             addCategoryForm.style.display = "none"
 
-            renderCategory(categoryData)
-            await fetchCategoriesAfterAdd(); //refresh category-listing
+            if (categoryData.success && categoryData.category) {
+                const addedCategory = {
+                    category_id: categoryData.category.id,
+                    category_name: categoryData.category.name
+                }
+            
+            renderCategory()
+            //await fetchCategories(); //refresh category-listing
 
             setTimeout(() => {
-                scrollToCategory(categoryData.id)
+                scrollToCategory(addedCategory.category_id)
             }, 300)
+            }
         } else if (response.status === 500) {
             alert("Category already exists")
         } else {
@@ -629,7 +638,7 @@ addCategoryForm.addEventListener("submit", async (event) => {
         console.error("Error adding category:", error)
     }
 
-    /* function to scroll to a newly added category  --> DOESN'T WORK YET
+    // function to scroll to a newly added category  --> DOESN'T WORK YET
     function scrollToCategory(categoryId) {
         console.log("categoryId in scrollToCategory:", categoryId);
         const categoryElement = document.getElementById(categoryId)
@@ -638,7 +647,7 @@ addCategoryForm.addEventListener("submit", async (event) => {
         } else {
             console.error("CategoryElement not found ", categoryId)
         }
-    } */
+    } 
 })
 
 // creating form and button for resource adding
@@ -759,6 +768,27 @@ if (addResources) {
         addResourceForm.style.visibility = "visible";
     });
 }
+
+    // hide resource and category form when clicked outside
+    document.addEventListener("click", (event) => {
+
+        if (
+            addResourceForm.classList.contains("show") &&
+            !addResourceForm.contains(event.target) &&
+            !addResources.contains(event.target)
+        ) {
+            addResourceForm.classList.remove("show");
+            addResourceForm.style.visibility = "hidden";
+        }
+
+        if (
+            addCategoryForm.style.display === "block" &&
+            !addCategoryForm.contains(event.target) &&
+            !addCategoryLink.contains(event.target)
+        ) {
+            addCategoryForm.style.display = "none";
+        }
+    });
 
 const testDiv = document.createElement("div")
 testDiv.id = "tutorials-container"
