@@ -151,37 +151,23 @@ modRouter.get("/:modId/display-guide", async (req, res) => {
     }
 
     try {
-        const guideVideo = await getGuideVideo(modId, type);
-        const guideImage = await getGuideImage(modId, type);
-        const guideDescription = await getGuideDescription(modId, type);
+        // Fetch all guides for the given modId and type
+        const guides = await query(
+            `SELECT guide_id, video, image, description 
+             FROM guides 
+             WHERE mod_id = $1 AND type = $2`,
+            [modId, type]
+        );
 
-        if (guideVideo.length > 0 && guideVideo[0].video) {
-            return res.status(200).json({
-                type: "video",
-                guide_id: guideVideo[0].guide_id,
-                data: guideVideo[0].video,
-                description: guideDescription[0]?.description || null,
-            });
+        if (guides.rows.length === 0) {
+            return res.status(404).json({ message: "No guides found for this mod and type" });
         }
-        if (guideImage.length > 0 && guideImage[0].image) {
-            return res.status(200).json({
-                type: "image",
-                guide_id: guideImage[0].guide_id,
-                data: guideImage[0].image,
-                description: guideDescription[0]?.description || null,
-            });
-        }
-        if (guideDescription.length > 0) {
-            return res.status(200).json({
-                type: "description",
-                guide_id: guideDescription[0].guide_id,
-                data: guideDescription[0].description,
-            });
-        }
-        return res.status(404).json({ message: "No guide content found for this mod and type" });
+
+        // Return all guides as an array
+        return res.status(200).json(guides.rows);
     } catch (error) {
-        console.error("Error fetching guide info:", error);
-        res.status(500).json({ message: "Failed to fetch guide info" });
+        console.error("Error fetching guides:", error);
+        res.status(500).json({ message: "Failed to fetch guides" });
     }
 });
 

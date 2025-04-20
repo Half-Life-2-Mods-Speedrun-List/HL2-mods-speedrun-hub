@@ -285,3 +285,20 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   min-width: 100px;
 }
+
+.guide {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    margin: 2rem;
+}
+
+.guide-description {
+    border: 1px solid #333;
+    border-radius: 10px;
+    background-color: #222;
+    width: 50rem;
+    height: 360px;
+    padding: 1rem;
+}

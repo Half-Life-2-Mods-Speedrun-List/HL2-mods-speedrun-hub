@@ -5,6 +5,7 @@ class Mods {
     #mods = []
     #backend_url = ""
     #modsWithCategories = []
+    #guides = []
 
     constructor(url, endpoint = "/mods") {
         this.#backend_url = new URL (endpoint, url).href
@@ -108,6 +109,67 @@ class Mods {
             throw error;
         }
     }; 
+
+// Fetch guides for a specific mod
+getGuides = async (modId, view) => {
+    const endpoint = new URL(`/mods/${modId}/display-guide?view=${view}`, this.#backend_url).href;
+    try {
+        console.log("Fetching guides for modId:", modId, "with view:", view);
+        console.log("Fetching from URL:", endpoint);
+        const response = await fetch(endpoint);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const json = await response.json();
+        console.log("Raw JSON response for guides:", json);
+
+        // Clear the guides array
+        this.#guides.length = 0;
+
+        // Process the array of guides
+        if (Array.isArray(json)) {
+            json.forEach((guide) => {
+                this.#guides.push({
+                    guide_id: guide.guide_id,
+                    type: guide.type,
+                    video: guide.video || null,
+                    image: guide.image || null,
+                    description: guide.description || null,
+                });
+            });
+        } else {
+            console.error("Expected an array of guides but received:", json);
+        }
+
+        return this.#guides;
+    } catch (error) {
+        console.error("Error fetching guides:", error);
+    }
+};
+
+    createGuideVideo = async (modId, videoUrl, guideId, type) => {
+        const endpoint = new URL(`/mods/${modId}/update-guide`, this.#backend_url).href;
+        const data = { video: videoUrl, guide_id: guideId, type: type };
+
+        try {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+                credentials: 'include'
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to create guide video");
+            }
+            return response;
+        } catch (error) {
+            console.error("Error creating guide video:", error);
+            throw error;
+        }
+    };
 }
 
 

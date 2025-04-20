@@ -14,6 +14,182 @@ console.log("mod_id: " + modId)
 const categories = new Categories(backendUrl)
 const mods = new Mods(backendUrl)
 
+const hideExistingContent = () => {
+    const params = new URLSearchParams(window.location.search);
+    const view = params.get("view");
+
+    const categoriesDiv = document.getElementById("categories-container");
+    const guideContainer = document.getElementById("guide-container");
+
+    // Hide content based on the view parameter
+    if (view === "tutorials" || view === "strategies") {
+        if (categoriesDiv) {
+            categoriesDiv.style.display = "none";
+        }
+    } else {
+        if (guideContainer) {
+            guideContainer.style.display = "none";
+        }
+    }
+};
+
+const loadGuides = async () => {
+    const params = new URLSearchParams(window.location.search);
+    const modId = params.get("id");
+    const view = params.get("view");
+
+    if (!modId) {
+        console.error("Missing modId in URL parameters.");
+        return;
+    }
+    if (view !== "tutorials" && view !== "strategies") {
+        console.error("Invalid view parameter:", view);
+        return;
+    }
+
+    try {
+        const guides = await mods.getGuides(modId, view);
+        console.log("Fetched guides:", guides);
+
+        // Get or create the guide container
+        let guideContainer = document.getElementById("guide-container");
+        if (!guideContainer) {
+            guideContainer = document.createElement("div");
+            guideContainer.id = "guide-container";
+            document.body.appendChild(guideContainer);
+        }
+
+
+        // Clear the guide container
+        guideContainer.innerHTML = "";
+
+        // Render the guides
+        guides.forEach((guide) => {
+
+            const type = view === "strategies" ? 1 : view === "tutorials" ? 2 : null;
+
+            const guideElement = document.createElement("div");
+            guideElement.classList.add("guide");
+
+            // Add video box
+            const videoBoxContainer = document.createElement("div");
+            videoBoxContainer.classList.add("video-box-container");
+            guideElement.appendChild(videoBoxContainer);
+            const videoBox = document.createElement("div");
+            videoBox.classList.add("video-box");
+            videoBoxContainer.appendChild(videoBox);
+
+            // Add "Add Video" elements
+            const videoMissingText = document.createElement("p");
+            videoMissingText.textContent = "Add a video with the button below";
+            videoMissingText.classList.add("video-missing-text");
+            videoBox.appendChild(videoMissingText);
+            const addGuideVideoBtn = document.createElement("div");
+            addGuideVideoBtn.classList.add("add-video-btn");
+            addGuideVideoBtn.textContent = "+";
+            videoBox.appendChild(addGuideVideoBtn);
+
+            // Add YouTube video iframe if the guide has a video
+            if (guide.video) {
+                videoBox.innerHTML = ""; // Clear previous content
+                const videoElement = document.createElement("iframe");
+                videoElement.classList.add("video-iframe");
+                videoElement.src = guide.video; // Ensure the video URL is in an embeddable format
+                videoElement.allowFullscreen = true;
+                videoElement.setAttribute("crossorigin", "anonymous");
+                videoElement.setAttribute("credentialless", true);
+                videoBox.appendChild(videoElement);
+
+                addGuideVideoBtn.textContent = "Edit video";
+                addGuideVideoBtn.classList.add("edit-video-btn");
+                videoBoxContainer.appendChild(addGuideVideoBtn);
+            }
+        
+
+
+    // Logic for adding a new video
+    addGuideVideoBtn.addEventListener("click", async () => {
+        const videoUrl = prompt("Enter YouTube link to the video");
+        if (videoUrl) {
+            // Extract the video ID from the YouTube URL
+            const videoId = extractYouTubeVideoId(videoUrl);
+            if (videoId) {
+                try {
+
+                    const response = await mods.createGuideVideo(modId, `https://www.youtube.com/embed/${videoId}`, guide.guide_id, type);
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        console.log("Video successfully added to the database:", result);
+
+                        // Update the UI only if the backend confirms success
+                        const videoElement = document.createElement("iframe");
+                        videoElement.classList.add("video-iframe");
+                        videoElement.src = `https://www.youtube.com/embed/${videoId}`;
+                        videoElement.allowFullscreen = true;
+                        videoBox.innerHTML = ""; // Clear previous content
+                        videoBox.appendChild(videoElement);
+                    } else {
+                        const errorData = await response.json();
+                        console.error("Error adding video to the database:", errorData);
+                        alert(errorData.message || "Failed to update the video. Please try again.");
+                    }
+                } catch (error) {
+                    console.error("Error adding video to the database:", error);
+                    alert("An error occurred while updating the video. Please try again.");
+                }
+            } else {
+                alert("Invalid YouTube URL. Please enter a valid link.");
+            }
+            
+        }
+    }); 
+
+        // Helper function to extract the video ID from a YouTube URL
+        const extractYouTubeVideoId = (url) => {
+            const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/.*v=([^&\s]+)|youtu\.be\/([^&\s]+)/;
+            const match = url.match(regex);
+            return match ? match[1] || match[2] : null;
+        };
+
+            // Add image if the guide has one
+            if (guide.image) {
+                const imageElement = document.createElement("img");
+                imageElement.src = guide.image;
+                imageElement.alt = "Guide Image";
+                guideElement.appendChild(imageElement);
+            }
+
+            const guideDescription = document.createElement("p");
+            guideDescription.classList.add("guide-description");
+            guideDescription.textContent = guide.description || "No description available";
+            guideElement.appendChild(guideDescription);
+
+            guideContainer.appendChild(guideElement);
+        });
+
+        guideContainer.style.display = "block";
+    } catch (error) {
+        console.error("Error fetching or rendering guides:", error);
+    }
+};
+
+// Load guides when opening the page
+document.addEventListener("DOMContentLoaded", async () => {
+    const params = new URLSearchParams(window.location.search);
+    const view = params.get("view");
+
+    hideExistingContent();
+
+    if (view === "tutorials" || view === "strategies") {
+        await loadGuides();
+    } else {
+        showCategories();
+        await fetchCategories();
+    }
+});
+
+
 // Change <title> & <h2> to the mod's name
 const changeTitle = async (modId) => {
     try {
@@ -426,6 +602,12 @@ const renderCategory = async (category) => {
 const getCategories = async (modId) => {
     const div = document.createElement("div")
     div.id = "categories-container"
+    const params = new URLSearchParams(window.location.search);
+    const view = params.get("view");
+
+    if (view === "tutorials" || view === "strategies") {
+        div.style.display = "none";
+    }
     const renderedCategories = []
     try {
         const result = await categories.getCategories(modId)
@@ -790,30 +972,7 @@ if (addResources) {
         }
     });
 
-const testDiv = document.createElement("div")
-testDiv.id = "tutorials-container"
-testDiv.style.display = "none"
-const testP = document.createElement("p")
-testP.textContent = "Test"
-testDiv.appendChild(testP)
-document.body.appendChild(testDiv)
-const testDiv2 = document.createElement("div")
-testDiv2.id = "strategies-container"
-testDiv2.style.display = "none"
-const testP2 = document.createElement("p")
-testP2.textContent = "Test2"
-testDiv2.appendChild(testP2)
-document.body.appendChild(testDiv2)
-
 // Switch between content
-const hideExistingContent = () => {
-    const categoriesDiv = document.getElementById("categories-container");
-    const tutorialsDiv = document.getElementById("tutorials-container");
-    const strategiesDiv = document.getElementById("strategies-container");
-    categoriesDiv.style.display = "none";
-    tutorialsDiv.style.display = "none";
-    strategiesDiv.style.display = "none";
-};
 
 const showCategories = () => {
     const categoriesDiv = document.getElementById("categories-container");
@@ -822,50 +981,35 @@ const showCategories = () => {
     }
 };
 
-const showTutorials = () => {
-    const tutorialsDiv = document.getElementById("tutorials-container");
-    if (tutorialsDiv) {
-        tutorialsDiv.style.display = "block";
-    }
-};
-
-const showStrategies = () => {
-    const strategiesDiv = document.getElementById("strategies-container");
-    if (strategiesDiv) {
-        strategiesDiv.style.display = "block";
-    }
-};
-
-
 const categoriesMenu = document.getElementById("categoriesMenu")
 const tutorialsMenu = document.getElementById("tutorialsMenu")
 const strategiesMenu = document.getElementById("strategiesMenu")
 
 categoriesMenu.addEventListener("click", () => {
-    hideExistingContent()
-    showCategories()
     const parameters = new URLSearchParams(window.location.search);
     parameters.delete("view");
     const newUrl = `${window.location.pathname}?${parameters.toString()}`;
     history.pushState(null, "", newUrl);
+    hideExistingContent()
+    showCategories()
 });
 
 tutorialsMenu.addEventListener("click", () => {
-    hideExistingContent()
-    showTutorials()
     const parameters = new URLSearchParams(window.location.search);
     parameters.set("view", "tutorials");
     const newUrl = `${window.location.pathname}?${parameters.toString()}`;
     history.pushState(null, "", newUrl);
+    hideExistingContent()
+    loadGuides();
 });
 
 strategiesMenu.addEventListener("click", () => {
-    hideExistingContent()
-    showStrategies()
     const parameters = new URLSearchParams(window.location.search);
     parameters.set("view", "strategies");
     const newUrl = `${window.location.pathname}?${parameters.toString()}`;
     history.pushState(null, "", newUrl);
+    hideExistingContent()
+    loadGuides();
 });
 
 
