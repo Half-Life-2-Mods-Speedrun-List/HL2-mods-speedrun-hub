@@ -9,7 +9,16 @@ authRouter.post("/register", async(req, res) => {
     const { email, password, username } = req.body;
         console.log("started registering")
         try {
-        const result = await query('SELECT * FROM users WHERE email=$1 OR username=$2', [email, username]);
+        // check for username
+        let queryCheck = `SELECT * FROM users WHERE username=$1`
+        let queryParams = [username];
+        // check email if given
+        if (email) {
+            queryCheck = `SELECT * FROM users WHERE email=$1 OR username=$2`
+            queryParams = [email, username]
+        }
+        // Execute the query to check for existing email or username
+        const result = await query(queryCheck, queryParams);
 
         // if users are returned
         if (result.rows.length > 0) {
@@ -21,7 +30,7 @@ authRouter.post("/register", async(req, res) => {
         // new user to db
         const newUser = await query(
             'INSERT INTO users (email, password, username) VALUES ($1, $2, $3) RETURNING *',
-            [email, hashedPassword, username]
+            [email || null, hashedPassword, username] //  email to null if not given
             );
             console.log("New user created:", newUser.rows[0]);
             res.status(200).json({message: "New user registered"})
