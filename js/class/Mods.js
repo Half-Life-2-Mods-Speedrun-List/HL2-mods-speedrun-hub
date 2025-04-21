@@ -170,6 +170,32 @@ getGuides = async (modId, view) => {
             throw error;
         }
     };
+
+    updateGuideDescription = async (modId, guideId, newDescription, type) => {
+        const endpoint = new URL(`/mods/${modId}/update-guide`, this.#backend_url).href;
+        const data = { guide_id: guideId, description: newDescription, type: type };
+    
+        try {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+                credentials: 'include'
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Backend error response:", errorData);
+                throw new Error("Failed to update guide description");
+            }
+            return response;
+        } catch (error) {
+            console.error("Error updating guide description:", error);
+            throw error;
+        }
+    };
 }
 
 

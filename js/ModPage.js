@@ -160,10 +160,79 @@ const loadGuides = async () => {
                 guideElement.appendChild(imageElement);
             }
 
+            // Add description
+            const guideDescriptionContainer = document.createElement("div");
+            guideDescriptionContainer.classList.add("guide-description-container");
+
             const guideDescription = document.createElement("p");
             guideDescription.classList.add("guide-description");
             guideDescription.textContent = guide.description || "No description available";
-            guideElement.appendChild(guideDescription);
+            guideDescriptionContainer.appendChild(guideDescription);
+
+            const editDescriptionBtn = document.createElement("div");
+            editDescriptionBtn.textContent = "Edit";
+            editDescriptionBtn.classList.add("edit-description-btn");
+            guideDescriptionContainer.appendChild(editDescriptionBtn);
+
+            editDescriptionBtn.addEventListener("click", () => {
+                // Replace description with an input box
+                const descriptionInput = document.createElement("textarea");
+                descriptionInput.value = guide.description || "";
+                descriptionInput.classList.add("description-input");
+                descriptionInput.setAttribute("maxlength", 750);
+
+                const charCounter = document.createElement("div");
+                charCounter.classList.add("char-counter");
+                charCounter.textContent = `${750 - descriptionInput.value.length} characters remaining`;
+            
+                descriptionInput.addEventListener("input", () => {
+                    const remaining = 750 - descriptionInput.value.length;
+                    charCounter.textContent = `${remaining} characters remaining`;
+                });
+
+                guideDescriptionContainer.innerHTML = "";
+                guideDescriptionContainer.appendChild(descriptionInput);
+                guideDescriptionContainer.appendChild(charCounter);
+
+                const saveDescriptionBtn = document.createElement("div");
+                saveDescriptionBtn.textContent = "Save";
+                saveDescriptionBtn.classList.add("save-description-btn");
+                guideDescriptionContainer.appendChild(saveDescriptionBtn);
+
+                saveDescriptionBtn.addEventListener("click", async () => {
+                    const newDescription = descriptionInput.value.trim();
+                    if (newDescription === guide.description) {
+                        // If the description hasn't changed, revert to the original view
+                        guideDescriptionContainer.innerHTML = "";
+                        guideDescription.textContent = guide.description || "No description available";
+                        guideDescriptionContainer.appendChild(guideDescription);
+                        guideDescriptionContainer.appendChild(editDescriptionBtn);
+                        return;
+                    }
+
+                    try {
+                        const response = await mods.updateGuideDescription(modId, guide.guide_id, newDescription, type);
+                        if (response.ok) {
+                            console.log("Description updated successfully.");
+                            guide.description = newDescription;
+                            guideDescription.textContent = newDescription || "No description available";
+                        } else {
+                            console.error("Failed to update description:", await response.json());
+                            alert(errorData.message || "Failed to update the description. Please try again.");
+                        }
+                    } catch (error) {
+                        console.error("Error updating description:", error);
+                        alert("An error occurred while updating the description.");
+                    }
+
+                    // Revert to the original view
+                    guideDescriptionContainer.innerHTML = "";
+                    guideDescriptionContainer.appendChild(guideDescription);
+                    guideDescriptionContainer.appendChild(editDescriptionBtn);
+                });
+            });
+
+            guideElement.appendChild(guideDescriptionContainer);
 
             guideContainer.appendChild(guideElement);
         });
