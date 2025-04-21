@@ -110,6 +110,36 @@ class Mods {
         }
     }; 
 
+    createNewGuide = async (modId, type) => {
+        const endpoint = new URL(`/mods/${modId}/create-guide`, this.#backend_url).href;
+        const data = { type: type };
+    
+        try {
+            console.log("Sending data to backend for creating guide:", { endpoint, data });
+            const response = await fetch(endpoint, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+                credentials: "include",
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Failed to create guide:", errorData);
+                throw new Error(errorData.message || "Failed to create guide");
+            }
+    
+            const result = await response.json();
+            console.log("Guide created successfully:", result);
+            return result;
+        } catch (error) {
+            console.error("Error creating guide:", error);
+            throw error;
+        }
+    };
+
 // Fetch guides for a specific mod
 getGuides = async (modId, view) => {
     const endpoint = new URL(`/mods/${modId}/display-guide?view=${view}`, this.#backend_url).href;
@@ -167,6 +197,32 @@ getGuides = async (modId, view) => {
             return response;
         } catch (error) {
             console.error("Error creating guide video:", error);
+            throw error;
+        }
+    };
+
+    updateGuideDescription = async (modId, guideId, newDescription, type) => {
+        const endpoint = new URL(`/mods/${modId}/update-guide`, this.#backend_url).href;
+        const data = { guide_id: guideId, description: newDescription, type: type };
+    
+        try {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+                credentials: 'include'
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Backend error response:", errorData);
+                throw new Error("Failed to update guide description");
+            }
+            return response;
+        } catch (error) {
+            console.error("Error updating guide description:", error);
             throw error;
         }
     };
