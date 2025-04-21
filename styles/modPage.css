@@ -292,6 +292,22 @@ h1, h2, h3, h4, h5, h6 {
   min-width: 100px;
 }
 
+.create-guide-btn {
+    font-size: 1.4rem !important;
+    background-color: #222;
+    color: #ddd;
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 1rem auto 0;
+}
+
+.create-guide-btn:hover {
+    background-color: #333;
+}
+
 .guide {
     display: flex;
     flex-direction: row;
@@ -309,6 +325,7 @@ h1, h2, h3, h4, h5, h6 {
     width: 50rem;
     height: 360px;
     padding: 1rem;
+    resize: none;
 }
 
 .char-counter {

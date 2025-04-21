@@ -171,6 +171,41 @@ modRouter.get("/:modId/display-guide", async (req, res) => {
     }
 });
 
+modRouter.post("/:modId/create-guide", verifyToken, fetchUserId, async (req, res) => {
+    const { modId } = req.params;
+    const user_id = req.user_id;
+    const { type, description, video, image } = req.body;
+
+    if (!req.user) {
+        return res.status(401).json({ error: "Unauthorized user. Please log in/register to add content." });
+    }
+
+    if (type !== 1 && type !== 2) {
+        return res.status(400).json({ message: "Invalid type. Must be 1 (strategies) or 2 (tutorials)." });
+    }
+
+    try {
+        const insertQuery = `
+            INSERT INTO guides (mod_id, user_id, type, description, video, image)
+            VALUES ($1, $2, $3, $4, $5, $6)
+            RETURNING guide_id
+        `;
+        const result = await query(insertQuery, [
+            modId,
+            user_id,
+            type,
+            description || null,
+            video || null,
+            image || null,
+        ]);
+
+        return res.status(201).json({ message: "Guide created successfully.", guide_id: result.rows[0].guide_id });
+    } catch (error) {
+        console.error("Error creating guide:", error);
+        res.status(500).json({ message: "Failed to create guide." });
+    }
+});
+
 modRouter.post("/:modId/update-guide", verifyToken, async (req, res) => {
     const { modId } = req.params;
     const { type, video, image, description, guide_id } = req.body;

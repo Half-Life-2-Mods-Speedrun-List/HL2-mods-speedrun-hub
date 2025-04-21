@@ -29,9 +29,26 @@ const hideExistingContent = () => {
     } else {
         if (guideContainer) {
             guideContainer.style.display = "none";
+            strategiesButton.style.display = "none";
+            tutorialsButton.style.display = "none";
         }
     }
 };
+
+// Buttons to create new guides
+const strategiesButton = document.createElement("button");
+strategiesButton.textContent = "Add a new strategy";
+strategiesButton.classList.add("create-guide-btn");
+strategiesButton.style.display = "none";
+
+const tutorialsButton = document.createElement("button");
+tutorialsButton.textContent = "Add a new tutorial";
+tutorialsButton.classList.add("create-guide-btn");
+tutorialsButton.style.display = "none";
+
+// Append buttons to the page
+document.body.appendChild(strategiesButton);
+document.body.appendChild(tutorialsButton);
 
 const loadGuides = async () => {
     const params = new URLSearchParams(window.location.search);
@@ -48,6 +65,32 @@ const loadGuides = async () => {
     }
 
     try {
+        const createNewGuide = async (type) => {
+            try {
+                const result = await mods.createNewGuide(modId, type);
+                console.log(`Guide created successfully with ID: ${result.guide_id}`);
+                await loadGuides();
+            } catch (error) {
+                console.error("Error creating guide:", error);
+                alert("An error occurred while creating the guide.");
+            }
+        };
+        
+    
+        if (view === "strategies") {
+            strategiesButton.style.display = "block";
+            tutorialsButton.style.display = "none";
+        } else if (view === "tutorials") {
+            strategiesButton.style.display = "none";
+            tutorialsButton.style.display = "block";
+        } else {
+            strategiesButton.style.display = "none";
+            tutorialsButton.style.display = "none";
+        }
+
+        strategiesButton.addEventListener("click", () => createNewGuide(1));
+        tutorialsButton.addEventListener("click", () => createNewGuide(2));
+
         const guides = await mods.getGuides(modId, view);
         console.log("Fetched guides:", guides);
 
