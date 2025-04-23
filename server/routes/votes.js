@@ -32,4 +32,15 @@ votesRouter.get("/:categoryId", verifyToken, async (req, res) => {
     }
 })
 
+votesRouter.get("/average/:categoryId", async (req, res) => {
+    try {
+        const categoryId = req.params.categoryId;
+        const averages = await votesModel.categoryVotesAvg(categoryId);
+        res.json(averages);
+    } catch (error) {
+        console.error("Error fetching category averages:", error);
+        res.status(500).json({ error: "Failed to fetch category vote averages." });
+    }
+});
+
 module.exports = { votesRouter };

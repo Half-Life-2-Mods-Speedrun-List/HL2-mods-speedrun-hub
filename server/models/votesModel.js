@@ -61,4 +61,24 @@ const createOrUpdateVote = async ({difficulty, optimization, enjoyment, user_id,
     }
 }
 
-module.exports = { getVotes, createOrUpdateVote };
+const categoryVotesAvg = async (categoryId) => {
+    try {
+        const result = await pool.query(`
+            SELECT 
+                ROUND(AVG(difficulty), 2) AS avg_difficulty,
+                COUNT(difficulty) AS count_difficulty,
+                ROUND(AVG(optimization), 2) AS avg_optimization,
+                COUNT(optimization) AS count_optimization,
+                ROUND(AVG(enjoyment), 2) AS avg_enjoyment,
+                COUNT(enjoyment) AS count_enjoyment
+            FROM votes
+            WHERE category_id = $1`, [categoryId]);
+
+        return result.rows[0]; 
+    } catch (error) {
+        console.error("Error getting category vote averages", error);
+        throw error;
+    }
+}
+
+module.exports = { getVotes, createOrUpdateVote, categoryVotesAvg };

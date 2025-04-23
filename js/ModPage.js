@@ -394,6 +394,7 @@ resourcesFlex.appendChild(addResources)
 const renderCategory = async (category) => {
 
     const categoryDiv = document.createElement("div")
+    categoryDiv.id = category.id
     const h2 = document.createElement("h2")
     h2.textContent = category.getText()
     categoryDiv.appendChild(h2)
@@ -518,7 +519,6 @@ const renderCategory = async (category) => {
     })
 
     // Category voting
-
     console.log("Stored token:", localStorage.getItem("accessToken"));
     console.log("Stored userId:", localStorage.getItem("userId"));
 
@@ -595,10 +595,10 @@ const renderCategory = async (category) => {
 
                 if (!userVote) return {};
                 return {
-                    difficulty: userVote.difficulty,
-                    optimization: userVote.optimization,
+                    difficulty: userVote.difficulty ?? undefined,
+                    optimization: userVote.optimization ?? undefined,
                     // from number to letter
-                    enjoyment: reverseTierMap[userVote.enjoyment]
+                    enjoyment: userVote.enjoyment != null ? reverseTierMap[userVote.enjoyment] : undefined
                 }
             } else {
                 throw new Error("Vote fetch failed");
@@ -611,12 +611,30 @@ const renderCategory = async (category) => {
 
     const userVotes = await fetchUserVotes(category.getId());
 
+    // Display average votes on categories
+    const fetchAverages = async (categoryId) => {
+
+        try {
+            const response = await fetch(`${backendUrl}/votes/average/${categoryId}`);
+            if(!response.ok) throw new Error("Failed to fetch averages")
+                
+            const averages = await response.json()
+            return averages  
+        
+        } catch (error) {
+            console.error("Error fetching averages:", error)
+            return
+        }
+        
+    }
+
     const votesContainer = document.createElement("div")
     votesContainer.classList.add("votes-container")
-    votesContainer.style.display = "flex"
-    votesContainer.style.gap = "2rem"
-    votesContainer.style.marginTop = "1rem"
 
+    const averages = await fetchAverages(category.getId());
+    console.log("Fetched averages:", averages);
+
+    
     // votebox for each voting category
     Object.entries(voteOptions).forEach(([categoryName, values]) => {
         const voteBox = document.createElement("div");
@@ -628,9 +646,7 @@ const renderCategory = async (category) => {
 
         const starsContainer = document.createElement("div");
         starsContainer.classList.add("starsContainer");
-        starsContainer.style.display = "flex";
-        starsContainer.style.gap = "0.25rem";
-        starsContainer.style.cursor = "pointer";
+        
 
         let selectedValue = null;
         const votedValue = userVotes[categoryName]
@@ -639,6 +655,7 @@ const renderCategory = async (category) => {
         // star for other categories except to enjoyment
         values.forEach((value, index) => {
             const star = document.createElement("span");
+            star.classList.add("voteStar")
             star.textContent = categoryName === "enjoyment" ? value : "★";
             star.dataset.value = value;
             star.style.fontSize = "1.5rem";
@@ -702,12 +719,35 @@ const renderCategory = async (category) => {
 
         voteBox.appendChild(starsContainer);
         votesContainer.appendChild(voteBox);
-    });
+        const averageKey = `avg_${categoryName}`
+        const averageValue = averages[averageKey];
+        const averageAsNumber = Number(averageValue)
+        const countKey = `count_${categoryName}`
+        const voteCount = averages[countKey]
+
+        const averageDisplay = document.createElement("p");
+        averageDisplay.classList.add("average")
+
+        if (averageValue !== undefined && averageValue !== null) {
+            if (categoryName === "enjoyment") {
+                const roundedAverage = Math.round(averageAsNumber)
+                averageDisplay.textContent = reverseTierMap[roundedAverage]
+                    ? `Average: ${reverseTierMap[roundedAverage]} (votes: ${voteCount})`
+                    : `Average: - (votes: ${voteCount})`;
+            } else {
+                averageDisplay.textContent = averageValue
+                    ? `Average: ${averageValue} (votes: ${voteCount})`
+                    : `Average: -   (votes: ${voteCount})`;
+            }
+        }
+        voteBox.appendChild(averageDisplay);
+        
+
+        });
 
 
-    categoryDiv.appendChild(votesContainer);
-    return categoryDiv;
-
+        categoryDiv.appendChild(votesContainer);
+        return categoryDiv;
 }
 
 // getting categories from backend and appending to the html-page
@@ -750,12 +790,6 @@ const getCategories = async (modId) => {
     }
 }
 
-// Fetch categories after adding a new one
-/*const fetchCategoriesAfterAdd = async () => {
-    await getCategories(modId);  // Fetch the updated categories list after a new one is added
-    renderCategory;
-}*/
-
 const fetchCategories = async () => {
     try {
         await getCategories(modId);  // Fetch categories when the page is loaded
@@ -769,8 +803,6 @@ if (modId) {
 } else {
     console.error("ModId is missing in the url");
 }
-
-//fetchCategories();
 
 const fetchWRHistory = async (categoryId, popUpContent) => {
     console.log("Fetching WR history for category", categoryId)
@@ -912,37 +944,35 @@ addCategoryForm.addEventListener("submit", async (event) => {
             if (categoryData.success && categoryData.category) {
                 const addedCategory = {
                     category_id: categoryData.category.id,
-                    category_name: categoryData.category.name
+                    category_name: categoryData.category.category_name
                 }
-            
-            renderCategory()
-            //await fetchCategories(); //refresh category-listing
-
-            setTimeout(() => {
-                scrollToCategory(addedCategory.category_id)
-            }, 300)
+                console.log("Tiedot lisättävästä kategoriasta", addedCategory)
+                renderCategory(categoryData.category)
+                setTimeout(() => {
+                    scrollToCategory(addedCategory.category_id)
+                }, 300)
             }
         } else if (response.status === 500) {
             alert("Category already exists")
         } else {
             alert("Error while adding the category. Please try again later.")
-            console.error("Error adding category:" + response.statusText)
+            console.error("Error adding category:", response.statusText)
         }
     } catch (error) {
         console.error("Error adding category:", error)
     }
-
+})
     // function to scroll to a newly added category  --> DOESN'T WORK YET
     function scrollToCategory(categoryId) {
         console.log("categoryId in scrollToCategory:", categoryId);
-        const categoryElement = document.getElementById(categoryId)
-        if (categoryElement) {
-            categoryElement.scrollIntoView({behavior: "smooth", block: "center"})
+        const categoryDiv = document.getElementById(categoryId)
+        if (categoryDiv) {
+            categoryDiv.scrollIntoView({behavior: "smooth", block: "center"})
         } else {
-            console.error("CategoryElement not found ", categoryId)
+            console.error("Category not found ", categoryId)
         }
     } 
-})
+
 
 // creating form and button for resource adding
 const createInputField = (placeholder, linkInDatabase, required = false) => {
