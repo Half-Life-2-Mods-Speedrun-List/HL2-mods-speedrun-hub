@@ -1,4 +1,4 @@
--- Active: 1743102853420@@localhost@5432@hl2
+-- Active: 1745510862924@@dpg-d0561fvgi27c73cc09ug-a.frankfurt-postgres.render.com@5432@hl2
 DROP TABLE IF EXISTS mods;
 DROP TABLE IF EXISTS categories;
 

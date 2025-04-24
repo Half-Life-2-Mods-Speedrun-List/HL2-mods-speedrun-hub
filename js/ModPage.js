@@ -1,6 +1,7 @@
 import { Categories } from "./class/Categories.js"
 import { Mods } from "./class/Mods.js"
-const backendUrl = "http://localhost:3001"
+// const backendUrl = "http://localhost:3001"
+const backendUrl = "https://hl2-speedrunhub-backend.onrender.com/"
 
 let params = new URLSearchParams(document.location.search);
 let modId = params.get("id")

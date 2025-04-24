@@ -1,5 +1,6 @@
 
-const backendUrl = "http://localhost:3001"
+// const backendUrl = "http://localhost:3001"
+const backendUrl = "https://hl2-speedrunhub-backend.onrender.com/"
 
 
 document.getElementById("wr-form").addEventListener("submit", async (event) => {
