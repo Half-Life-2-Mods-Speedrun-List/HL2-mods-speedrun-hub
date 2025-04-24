@@ -72,7 +72,11 @@ const loadGuides = async () => {
                 await loadGuides();
             } catch (error) {
                 console.error("Error creating guide:", error);
+                if (error.message === "Access token is missing") {
+                alert("Unauthorized access. Please log in.");
+                } else {
                 alert("An error occurred while creating the guide.");
+                }
             }
         };
         
@@ -178,8 +182,12 @@ const loadGuides = async () => {
                         alert(errorData.message || "Failed to update the video. Please try again.");
                     }
                 } catch (error) {
+                    if (error.message === "Access token is missing") {
+                        alert("Unauthorized access. Please log in.");
+                    } else {
                     console.error("Error adding video to the database:", error);
                     alert("An error occurred while updating the video. Please try again.");
+                    }
                 }
             } else {
                 alert("Invalid YouTube URL. Please enter a valid link.");
@@ -264,8 +272,12 @@ const loadGuides = async () => {
                             alert(errorData.message || "Failed to update the description. Please try again.");
                         }
                     } catch (error) {
+                        if (error.message === "Access token is missing") {
+                            alert("Unauthorized access. Please log in.");
+                        } else {
                         console.error("Error updating description:", error);
                         alert("An error occurred while updating the description.");
+                        }
                     }
 
                     // Revert to the original view
@@ -490,8 +502,12 @@ const renderCategory = async (category) => {
                         alert(errorData.message || "Failed to update the video. Please try again.");
                     }
                 } catch (error) {
+                    if (error.message === "Access token is missing") {
+                        alert("Unauthorized access. Please log in.");
+                    } else {
                     console.error("Error adding video to the database:", error);
                     alert("An error occurred while updating the video. Please try again.");
+                    }
                 }
             } else {
                 alert("Invalid YouTube URL. Please enter a valid link.");
@@ -954,7 +970,9 @@ addCategoryForm.addEventListener("submit", async (event) => {
             }
         } else if (response.status === 500) {
             alert("Category already exists")
-        } else {
+        } else if (response.status === 401) {
+            alert("Unauthorized access. Please log in.") }
+        else {
             alert("Error while adding the category. Please try again later.")
             console.error("Error adding category:", response.statusText)
         }
@@ -1036,6 +1054,11 @@ const handleResourceFormSubmit = async (event) => {
             body: JSON.stringify(resourceData),
             credentials: "include",
         });
+
+        if (response.status === 401) {
+            alert("Unauthorized access. Please log in.");
+            return;
+        }
 
         if (response.ok) {
             console.log("Resource links saved successfully:", await response.json());

@@ -42,8 +42,12 @@ document.getElementById("wr-form").addEventListener("submit", async (event) => {
             alert("World record added successfully!");
             console.log(result);
         } else {
+            if (response.status === 401) {
+                alert("Unauthorized access. Please log in.");
+            } else {
             alert("Error adding world record.");
             console.error(result);
+            }
         }
     } catch (error) {
         alert("Failed to submit the form.");

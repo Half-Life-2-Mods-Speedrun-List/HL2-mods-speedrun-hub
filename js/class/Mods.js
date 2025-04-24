@@ -192,7 +192,9 @@ getGuides = async (modId, view) => {
             });
 
             if (!response.ok) {
-                throw new Error("Failed to create guide video");
+                const errorData = await response.json();
+                console.error("Backend error response:", errorData);
+                throw new Error(errorData.message || "Failed to create guide video");
             }
             return response;
         } catch (error) {
@@ -218,7 +220,7 @@ getGuides = async (modId, view) => {
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error("Backend error response:", errorData);
-                throw new Error("Failed to update guide description");
+                throw new Error(errorData.message || "Failed to update guide description");
             }
             return response;
         } catch (error) {
