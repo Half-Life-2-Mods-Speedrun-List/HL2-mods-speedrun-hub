@@ -14,7 +14,12 @@ document.getElementById("createMod").addEventListener("submit", async function(e
       });
 
       const data = await response.json();
-      document.getElementById("message").innerText = data.message;
+      if (response.status === 401) {
+        console.log("Unauthorized access. Please log in.");
+        document.getElementById("message").innerText = "Unauthorized access. Please log in.";
+      } else {
+        document.getElementById("message").innerText = data.message;
+      }
       document.getElementById("message").style.color = "rgb(235,235,235)";
 
     // appending modId to url and redirecting to ModPage.html  

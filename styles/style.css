@@ -218,3 +218,15 @@ border: none;
   }
 }
 
+.createModDiv {
+  width: fit-content;
+  margin: 1rem;
+  padding: 1rem;
+  border: 2px solid #333;
+  border-radius: 10px;
+  background: #222;
+}
+
+.createModDiv > p {
+  margin-top: 0.5rem;
+}

@@ -59,6 +59,10 @@ modRouter.post("/newmod", verifyToken, fetchUserId, async (req, res) => {
     const { mod_name } = req.body;
     const user_id = req.user_id;
 
+    if (!req.user) {
+        return res.status(401).json({ error: "Unauthorized user. Please log in/register to add a mod." });
+    }
+
         try {
         const result = await query('SELECT * FROM mods WHERE mod_name=$1', [mod_name]);
 
