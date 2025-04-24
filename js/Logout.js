@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
               console.log(document.cookie)
               alert('Logged out successfully!');
-              localStorage.setItem("isLogged", "false")
+              
               window.location.href = '/views/ModList.html';  
             } else {
               alert('Error logging out. Please try again.');
