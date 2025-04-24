@@ -1,6 +1,6 @@
 // const backendUrl = "http://localhost:3001"
 const backendUrl = "https://hl2-speedrunhub-backend.onrender.com"
-
+const frontendUrl = "https://hl2-mods-speedrun-hub.onrender.com"
 document.getElementById("createMod").addEventListener("submit", async function(event) {
   event.preventDefault(); 
     const mod_name = document.getElementById("modName").value;
@@ -28,7 +28,7 @@ document.getElementById("createMod").addEventListener("submit", async function(e
       if (response.ok) {
           console.log("A new mod created: " + mod_name, data);
           let modId = data.mod_id
-          let url = new URL("http://localhost:5500/views/ModPage.html")
+          let url = new URL(`${frontendUrl}/views/ModPage.html`)
           url.searchParams.append("id", modId)
           window.location.href = url.toString()
       } else {

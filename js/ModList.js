@@ -1,9 +1,9 @@
-
-// const BACKEND_ROOT_URL = "http://localhost:3001"
-const BACKEND_ROOT_URL = "https://hl2-speedrunhub-backend.onrender.com"
+// const backendUrl = "http://localhost:3001"
+const backendUrl = "https://hl2-speedrunhub-backend.onrender.com"
+const frontendUrl = "https://hl2-mods-speedrun-hub.onrender.com"
 import { Mods } from "./class/Mods.js"
 
-const modifications = new Mods(BACKEND_ROOT_URL)
+const modifications = new Mods(backendUrl)
 const div = document.createElement("div")
 div.setAttribute("class", "gridlist")
 
@@ -24,7 +24,7 @@ const renderMod = (mod) => {
 
 const changePage = (modId) => {
     console.log(modId)
-    let url = new URL("http://localhost:5500/views/ModPage.html") 
+    let url = new URL(`${frontendUrl}/views/ModPage.html`) 
     url.searchParams.append("id", modId)  
     window.location.href = url.toString()
 
