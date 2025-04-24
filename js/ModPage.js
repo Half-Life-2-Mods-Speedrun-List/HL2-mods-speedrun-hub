@@ -529,9 +529,13 @@ const renderCategory = async (category) => {
     viewWRbtn.id = "wr-button"
 
     // event handler
-    viewWRbtn.addEventListener("click", () => {
+    viewWRbtn.addEventListener("click", async () => {
         console.log("View WR-history button clicked")
-        openWRPopUp(categoryDiv, category.getId())
+        viewWRbtn.disabled = true
+        viewWRbtn.style.opacity="0.5" // dimm the button
+        viewWRbtn.style.pointerEvents="none" // no possibility to click again
+        
+        await openWRPopUp(categoryDiv, category.getId(), viewWRbtn)
     })
 
     // Category voting
@@ -586,10 +590,11 @@ const renderCategory = async (category) => {
                 credentials: "include",
                 body: JSON.stringify(voteData)
             });
-
+            console.log("Vote saved:", voteData)
             if (!response.ok) throw new Error("Voting failed")
             const data = await response.json()
-            console.log("Vote saved:", data)
+            console.log(data)
+            
         } catch (error) {
             console.error("Error sending vote:", error)
         }
@@ -666,7 +671,6 @@ const renderCategory = async (category) => {
 
         let selectedValue = null;
         const votedValue = userVotes[categoryName]
-        let hasVoted = votedValue !== undefined // to check if user has already voted
 
         // star for other categories except to enjoyment
         values.forEach((value, index) => {
@@ -674,11 +678,8 @@ const renderCategory = async (category) => {
             star.classList.add("voteStar")
             star.textContent = categoryName === "enjoyment" ? value : "★";
             star.dataset.value = value;
-            star.style.fontSize = "1.5rem";
-            star.style.transition = "color 0.2s";
-            star.style.color = "#ccc";
             // show already given votes
-            if (hasVoted) {
+            if (votedValue !== undefined) {
                 let votedIndex = values.indexOf(votedValue)
                 selectedValue = votedIndex
                 if (categoryName === "enjoyment") {
@@ -690,7 +691,7 @@ const renderCategory = async (category) => {
             }
 
             // Hover-effect
-            if (!hasVoted) {
+            if (votedValue !== undefined) {
                 star.addEventListener("mouseenter", () => {
                     if (categoryName === "enjoyment") {
                         star.style.color = "rgb(255, 165, 0)"
@@ -714,7 +715,7 @@ const renderCategory = async (category) => {
 
                 star.addEventListener("click", () => {
                     selectedValue = index;
-                    hasVoted = true
+                    
                     if (categoryName === "enjoyment") {
                         [...starsContainer.children].forEach((s, i) => {
                             s.style.color = i === index ? "rgb(255, 145, 0)" : "#ccc";
@@ -861,6 +862,7 @@ const openWRPopUp = async (categoryContent, categoryId) => {
 
     const popUpContent = document.createElement("div")
     popUpContent.classList.add("popUpContent")
+    const viewWR = document.getElementById("wr-button")
 
     try {
         const allCategories = await categories.getCategories(modId)
@@ -881,14 +883,17 @@ const openWRPopUp = async (categoryContent, categoryId) => {
         closeBtn.classList.add("close-btn")
         closeBtn.addEventListener("click", () => {
             categoryContent.removeChild(popUp)
+            // activate view WR-history button again after popUp is closed
+            if (viewWR) {
+                viewWR.disabled = false;
+                viewWR.style.opacity = "1";
+                viewWR.style.pointerEvents = "auto";
+            }
         })
 
         popUpContent.appendChild(closeBtn)
         popUp.appendChild(popUpContent);
         categoryContent.appendChild(popUp)
-    } catch (error) {
-        console.error("Error fetching categories:", error)
-    }
 
     // button for adding new WR
     const addWrBtn = document.createElement("button")
@@ -897,8 +902,16 @@ const openWRPopUp = async (categoryContent, categoryId) => {
     addWrBtn.addEventListener("click", () => {
         window.location.href = `AddWorldRecord.html?categoryId=${categoryId}`
     })
-
     popUpContent.appendChild(addWrBtn)
+    } catch (error) {
+        console.error("Error fetching categories:", error)
+    
+        if (viewWR) {
+            viewWR.disabled = false;
+            viewWR.style.opacity = "1";
+            viewWR.style.pointerEvents = "auto";
+        }
+    }
 }
 
 // creating form and button for category adding

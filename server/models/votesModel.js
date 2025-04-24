@@ -23,17 +23,17 @@ const createOrUpdateVote = async ({difficulty, optimization, enjoyment, user_id,
         const existingVoteData = existingVote.rows[0];
         const updates = []
         const values = []
-        let i = 1
+        let i = 1 // this keeps track of SQL parameters order flexible way ($1, $2 ..etc)
 
-        if (difficulty !== undefined && existingVoteData.difficulty === null) {
+        if (difficulty !== undefined) {
             updates.push(`difficulty = $${i++}`)
             values.push(difficulty)
         }
-        if (optimization !== undefined && existingVoteData.optimization === null) {
+        if (optimization !== undefined) {
             updates.push(`optimization = $${i++}`);
             values.push(optimization);
         }
-        if (enjoyment !== undefined && existingVoteData.enjoyment === null) {
+        if (enjoyment !== undefined) {
             updates.push(`enjoyment = $${i++}`);
             values.push(enjoyment);
         }
@@ -47,10 +47,10 @@ const createOrUpdateVote = async ({difficulty, optimization, enjoyment, user_id,
             RETURNING *`
         const result = await pool.query(query, values)
         return result.rows[0]
-    } else {
-        return existingVoteData
-    }
-} else {
+        } else {
+            return existingVoteData
+        }
+        } else {
         // new row to database even if only some values are given, others stay null
         const result = await pool.query(
             `INSERT INTO votes (difficulty, optimization, enjoyment, user_id, category_id)

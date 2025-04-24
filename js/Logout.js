@@ -36,7 +36,9 @@ document.addEventListener("DOMContentLoaded", function() {
             if (response.ok) {
 
               // Clear the JWT from the localStorage or cookies manually
-            
+              // clear whole local storage where the access_token is
+              localStorage.clear();
+
               console.log(document.cookie)
               alert('Logged out successfully!');
               localStorage.setItem("isLogged", "false")
