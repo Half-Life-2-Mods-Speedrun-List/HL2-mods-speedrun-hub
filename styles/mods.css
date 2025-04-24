@@ -62,10 +62,9 @@ margin-left:3rem;
 sb {font-size:0.8rem;text-align: center}
 p {font-size: 1.5rem;}
 pre {
-  font-size: 1.45rem;
-  line-height:0.35rem;
+  font-size: 1.2rem;
+  line-height: 1.5;
   font-family: "consolas", monospace;
-  text-align: center;
 }
 h4 {
   font-size: 1.4rem;
@@ -201,4 +200,30 @@ border: none;
 .line {
   border-bottom: 1px solid #333;
   width:auto;
+}
+
+.config-codeblock {
+  text-align: left;
+  background-color: #1e1e1e;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 2px solid #333;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.copy-btn {
+  margin-left: auto;
+  background-color: #121212;
+  color: rgb(215,215,215);
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  display: block;
+}
+
+.copy-btn:hover {
+  background-color: #333;
 }
