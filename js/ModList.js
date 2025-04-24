@@ -1,6 +1,6 @@
 
 // const BACKEND_ROOT_URL = "http://localhost:3001"
-const BACKEND_ROOT_URL = "https://hl2-speedrunhub-backend.onrender.com/"
+const BACKEND_ROOT_URL = "https://hl2-speedrunhub-backend.onrender.com"
 import { Mods } from "./class/Mods.js"
 
 const modifications = new Mods(BACKEND_ROOT_URL)

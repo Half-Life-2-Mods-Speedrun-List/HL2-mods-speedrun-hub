@@ -1,5 +1,5 @@
 // const backendUrl = "http://localhost:3001"
-const backendUrl = "https://hl2-speedrunhub-backend.onrender.com/"
+const backendUrl = "https://hl2-speedrunhub-backend.onrender.com"
 
 document.getElementById("createMod").addEventListener("submit", async function(event) {
   event.preventDefault(); 

@@ -2,7 +2,7 @@
 
 document.addEventListener("DOMContentLoaded", function() {
       // const backendUrl = "http://localhost:3001"
-      const backendUrl = "https://hl2-speedrunhub-backend.onrender.com/"
+      const backendUrl = "https://hl2-speedrunhub-backend.onrender.com"
 
       if (localStorage.getItem("isLogged")) {
         const logoutButton = document.createElement('button');
