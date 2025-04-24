@@ -11,7 +11,6 @@ const verifyToken = (req, res, next) => {
     }
 
     if (!accessToken) {
-        console.log("error")
         return res.status(401).json({ message: "Access token is missing"})
     } 
     try {

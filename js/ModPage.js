@@ -622,7 +622,8 @@ const renderCategory = async (category) => {
                     enjoyment: userVote.enjoyment != null ? reverseTierMap[userVote.enjoyment] : undefined
                 }
             } else {
-                throw new Error("Vote fetch failed");
+                const errorBody = await response.json() 
+                throw new Error(`Vote fetch failed" ${errorBody.message}`);
             }
         } catch (error) {
             console.error("Error fetching votes:", error);
