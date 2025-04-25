@@ -8,6 +8,13 @@
 - [Live demo](#Live&nbsp;Demo)
 
 ## Overview
+The purpose of this project is to provide a home for listing useful resources for various Half-Life 2 modifications, primarily focusing on its speedrunning community. Half-Life 2 speedrunning community's resources has had a history of being scattered among multiple websites and spreadsheets, and the goal of this hub is to bring most of it to a single place for ease of access and make it less tedious to navigate through various resources.
+Users of this site can view and create following content:
+  - Dedicated pages for each mod
+  - Resource links for every mod, such as download links and speedrun.com links
+  - Tutorials and strategies to help new runners and preserve otherwise hard-to-find information
+  - World record history for each speedrun category
+  - User-specified ratings to evaluate the enjoyment and difficulty of each category, and to assess how optimized the current world record is
 
 ## Technologies
 
