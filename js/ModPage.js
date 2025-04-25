@@ -855,7 +855,7 @@ const fetchWRHistory = async (categoryId, popUpContent) => {
 }
 
 // function for showing the WR-history as pop-up
-const openWRPopUp = async (categoryContent, categoryId) => {
+const openWRPopUp = async (categoryContent, categoryId, viewWRbtn) => {
     console.log("Opening WR pop-up for category:", categoryId)
 
     const popUp = document.createElement("div")
@@ -863,7 +863,6 @@ const openWRPopUp = async (categoryContent, categoryId) => {
 
     const popUpContent = document.createElement("div")
     popUpContent.classList.add("popUpContent")
-    const viewWR = document.getElementById("wr-button")
 
     try {
         const allCategories = await categories.getCategories(modId)
@@ -885,10 +884,10 @@ const openWRPopUp = async (categoryContent, categoryId) => {
         closeBtn.addEventListener("click", () => {
             categoryContent.removeChild(popUp)
             // activate view WR-history button again after popUp is closed
-            if (viewWR) {
-                viewWR.disabled = false;
-                viewWR.style.opacity = "1";
-                viewWR.style.pointerEvents = "auto";
+            if (viewWRbtn) {
+                viewWRbtn.disabled = false;
+                viewWRbtn.style.opacity = "1";
+                viewWRbtn.style.pointerEvents = "auto";
             }
         })
 
