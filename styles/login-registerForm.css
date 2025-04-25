@@ -17,6 +17,7 @@
     color: rgb(200, 200, 200);
     font-family: "Segoe UI Light", sans-serif;
     font-size: 1.2rem;
+    background-attachment: fixed;
     }
 
 .loginDiv {
