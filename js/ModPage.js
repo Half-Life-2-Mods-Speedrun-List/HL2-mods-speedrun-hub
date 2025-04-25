@@ -680,10 +680,11 @@ const renderCategory = async (category) => {
             star.classList.add("voteStar")
             star.textContent = categoryName === "enjoyment" ? value : "★";
             star.dataset.value = value;
+
+            let votedIndex = values.indexOf(votedValue)
+                selectedValue = votedIndex
             // show already given votes
             if (votedValue !== undefined) {
-                let votedIndex = values.indexOf(votedValue)
-                selectedValue = votedIndex
                 if (categoryName === "enjoyment") {
                     votedIndex = values.indexOf(votedValue);
                     star.style.color = index === votedIndex ? "rgb(255, 145, 0)" : "#ccc";
@@ -693,7 +694,6 @@ const renderCategory = async (category) => {
             }
 
             // Hover-effect
-            if (votedValue !== undefined) {
                 star.addEventListener("mouseenter", () => {
                     if (categoryName === "enjoyment") {
                         star.style.color = "rgb(255, 165, 0)"
@@ -731,10 +731,9 @@ const renderCategory = async (category) => {
                     sendVote(categoryName, values[index]);
 
                 });
-            }
-
-            starsContainer.appendChild(star);
-        });
+                starsContainer.appendChild(star);
+            } 
+        )
 
         voteBox.appendChild(starsContainer);
         votesContainer.appendChild(voteBox);
