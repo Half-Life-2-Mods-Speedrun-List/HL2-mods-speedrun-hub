@@ -3,11 +3,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    width: 100vw;
     margin: 0;
     min-height: 100vh;
-    padding-top: 5rem;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../imgs/hl3_bg.jpg');
+    padding-top: 8rem;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.95)), url('../imgs/hl3_bg.jpg');
     background-size: cover;       
     background-repeat: no-repeat;
     color: rgb(200, 200, 200);
@@ -18,31 +18,33 @@ body {
     padding: 0;
     height: 100vh;
 }
-
 #wr-form {
     color: rgb(200, 200, 200);
-    background-color: rgb(20, 20, 20);
+    background: linear-gradient(rgba(20, 20, 20, 0.9), rgba(0, 0, 0, 0.6));
     display: flex;
     flex-direction: column;
-    padding: 8rem 7rem 5rem 7rem;
+    padding: 4rem 7rem 4rem 7rem;
     gap: 1rem;
-    border: 2px solid #333;
+    width: 15rem;
+    border: 2px solid #3333338c;
     border-radius: 10px;
     align-items: center;
-    
+    text-align: center;
 }
 #wr-form > h2 {
-    margin-top: -2rem;
+    margin-left: -0.5rem;
+    margin-bottom: 1.5rem;;
 }
 
 #runnerName, #recordTime, #recordDate {
     width: 15rem;
     padding: 5px;
     border-radius: 10px;
+    font-family: inherit;
 }
 #saveWr {
     margin-top: 3rem;
-    background-color: orange;
+    background: linear-gradient(to bottom, orange, darkorange);
     color: rgb(0, 0, 0);
     font-size: 1rem;
     border: none;
@@ -52,16 +54,28 @@ body {
 
 #backToModPage {
     margin-top: 1rem;
-    background-color: orange;
+    background: linear-gradient(to bottom, orange, darkorange);
     color: rgb(0, 0, 0);
     font-size: 1rem;
     border: none;
     border-radius: 10px;
     padding: 5px 15px;
     cursor: pointer;
-    font-weight: bold;
 }
 
 #saveWr:hover, #backToModPage:hover {
-        background-color: rgb(255, 145, 0);
+    background: linear-gradient(darkorange);
+}
+
+@media only screen and (max-width: 550px) {
+    #wr-form {
+      width: auto;
+      padding: 4rem 3rem 3rem 3rem;
     }
+    #runnerName, #recordTime, #recordDate {
+        width: 10rem;
+    }
+   
+    
+  }
+  

@@ -1,4 +1,6 @@
 
+body {margin: 0;}
+
 .loginForm {
     display: flex;
     flex-direction: column;
@@ -17,7 +19,6 @@
     color: rgb(200, 200, 200);
     font-family: "Segoe UI Light", sans-serif;
     font-size: 1.2rem;
-    background-attachment: fixed;
     }
 
 .loginDiv {
@@ -47,17 +48,17 @@
       
 .loginDiv > button {
     margin-top: 3rem;
-    background-color: orange;
+    background: linear-gradient(to bottom, orange, darkorange);
     color: rgb(0, 0, 0);
     border: none;
     border-radius: 10px;
-    padding: 5px 15px;
+    padding: 10px 15px;
     cursor: pointer;
     margin-bottom: 1rem;
     font-size: 1.2rem;
     }
 .loginDiv > button:hover {
-    background-color: rgb(255, 145, 0);
+    background: linear-gradient(darkorange);
     }
 #Orange {color:orange;}
 a { text-decoration: none; color : inherit; border: 0px; -moz-outline-style: none;}
@@ -65,16 +66,28 @@ a:active, a:hover { text-decoration: underline;text-decoration-thickness:2px;bor
 a:focus { outline: none;-moz-outline-style: none;}
       
 /* Make loginForm and its content larger for mobile */
-    @media only screen and (max-width: 1280px) {
+
+      @media only screen and (max-width: 1000px) {
         .loginForm {
-          width: auto;
+          width: 100%;
+          font-size: 3rem;
         }
-        p, label, div, .loginDiv > button {
-          font-size: 1.1em;
+        .loginDiv > button {
+            margin-top: 2em;
+            font-size: 2.5rem;
+          }
+        .loginDiv {
+            font-size: 1em;
+            width: 10em;
+            gap: 2rem;
         }
         .loginDiv > input {
-            font-size: 1rem;
+            width: 10em;
+            padding: 5px;
+            border-radius: 10px;
+            font-size: 0.8em;
         }
-        
+
       }
+     
       

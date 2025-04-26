@@ -15,7 +15,6 @@ const renderMod = (mod) => {
     h4.title = mod.getText()
     if (modsWithCategories.has(mod.getId())) {
         h4.style.color = "orange"
-        h4.style.cursor = "pointer"
     }
     h4.addEventListener("click",() => changePage(mod.getId()))
     div.appendChild(h4)
@@ -68,6 +67,8 @@ const createSearchBar = () => {
     const searchBar = document.createElement("input")
 
     searchBar.setAttribute("type", "text")
+    searchBar.style = "cursor: pointer"
+    searchBar.classList.add("searchbar")
     searchBar.setAttribute("placeholder", "Search for mods")
     searchBar.addEventListener("input", (e) => {
         filterMods(e.target.value)
@@ -75,15 +76,6 @@ const createSearchBar = () => {
     const navigationTable = document.querySelector(".box")
 
     navigationTable.appendChild(searchBar)
-
-    searchBar.style.padding = "0px";
-    searchBar.style.color = "white";
-    searchBar.style.fontSize = "1rem";
-    searchBar.style.border = "none";  
-    searchBar.style.backgroundColor = "transparent"; 
-    searchBar.style.position = "absolute"
-    searchBar.style.top = "10.5rem";
-    searchBar.style.left = "5rem";  
 
 
 }

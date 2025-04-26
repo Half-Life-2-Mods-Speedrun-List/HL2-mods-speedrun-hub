@@ -1,0 +1,201 @@
+
+  body  {
+    background: linear-gradient(to bottom, rgb(53, 53, 53) 0%, rgb(28, 28, 28) 6%);
+    background-repeat: no-repeat;
+    height: 100vh;
+    font-family: "Segoe UI Light";
+    margin:0 4rem 0 4rem;
+    color: rgb(235,235,235);
+    width: 100vw;
+    height: 100vh;
+  }
+
+  h2 {
+    margin-bottom:2.5rem;
+    font-size:5.4rem;
+    text-align: left;
+    font-weight:400;}
+
+
+#Orange {color:orange;}
+
+a { text-decoration: none; color : inherit; border: 0px; -moz-outline-style: none;}
+a:active, a:hover { text-decoration: underline;text-decoration-thickness:2px;border: 0px; -moz-outline-style: none;}
+a:focus { outline: none;-moz-outline-style: none;}
+
+.navbar > td, th, a {
+  font-size: 2.5rem;
+  text-align: center;
+  color: orange;
+  padding: 1rem;
+}
+
+
+  h4 a {
+    color:orange;
+  }
+
+  .box {
+    border: none;
+    width: 100vw;
+    }
+    .boxes {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-content: left;
+        border:none;}
+.searchbar {
+    padding: 0px;
+    color: white;
+    font-size: 1rem;
+    border: none;  
+    background-color: transparent; 
+    position: absolute;
+    margin-top: -4rem;
+    margin-left: 5rem; }
+
+.gridlist {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(22%, 1fr));
+    width: 100%;
+}
+      .gridlist > h4 {
+        font-size: 1.5rem;
+        color: #ddd;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        text-align: center;
+        border-radius: 5px;
+        box-shadow: 0px 7px 30px rgba(0, 0, 0, 0.452);
+        cursor: pointer;
+        margin:0.6rem;
+        padding: 0.7rem 1rem 0.7rem 1rem;
+        align-self: center;
+        border:1px solid #333;
+      }
+      .gridlist > h4:hover {
+        transform: scale(1.06);
+        background: #181818; 
+        padding: 0.7rem;
+        margin: 1.5rem;
+        transition: all 0.3s ease;
+      }
+
+      .navbar {
+        display: flex;
+        align-items: center;
+        margin-left: -4rem;
+        justify-content: space-between;
+        border-bottom: 2px solid #333;
+        border-top: 2px solid #333;
+        width: 100vw;
+        padding: 1rem;
+        box-shadow: 7px 7px 20px 25px rgba(0, 0, 0, 0.15);
+      }
+    
+      .navbar > tbody {
+        margin: auto;
+        position: relative;
+        text-align: center;
+      }
+
+      .createModDiv {
+        width: fit-content;
+        margin: 2rem;
+        padding: 2rem 5rem 2rem 3rem;
+        border: 2px solid #333;
+        border-radius: 10px;
+        background: #222;
+        box-shadow: 7px 7px 20px 15px rgba(0, 0, 0, 0.15);
+        
+      }
+      
+      .createModDiv > p {
+        margin-top: 0.5rem;
+        font-size: 2.2rem;
+      }
+
+      .createModDiv > input {
+        border-radius: 10px;
+        padding: 0.7rem; 
+        color: rgb(0, 0, 0); 
+        border: 1px solid #444; 
+        width: 100%; 
+        font-size: 1rem;
+        margin-top: 1rem;
+    }
+    .labelForModName {
+        font-size: 1.5rem;
+    }
+    
+    .createButton {
+        margin-top: 3rem;
+        background: linear-gradient(to bottom, orange, darkorange);
+        color: rgb(0, 0, 0);
+        border: none;
+        border-radius: 10px;
+        padding: 10px 15px;
+        cursor: pointer;
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+    }
+    .createButton:hover {
+        background: linear-gradient(darkorange);
+        }
+
+    @media only screen and (max-width: 1250px) {
+    
+        .navbar {
+          padding: 0.5rem;
+        }
+        .navbar > td, th, a {
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: center;
+            padding: 0.5rem;
+        }
+      
+        h2 {
+          font-size: 2.5rem; 
+          margin-top: 5rem;
+        }
+      
+        .gridlist {
+          grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+          display: flex;
+          flex-direction: column;
+          align-items: left;
+          margin-left: -4rem;
+        }
+      
+        .gridlist > h4 {
+          font-size: 1.2rem; 
+          padding: 0.4rem; 
+        }
+      
+        .createModDiv, .labelForModName {
+            font-size: 1.2rem;
+            width: 50vw;
+            margin: 0rem;
+          }
+        .createModDiv > p {
+            font-size: 1.6rem;
+        }
+        .createModDiv > input, .createButton {
+            font-size: 1rem;
+        }
+        .navbar > td, th, a {
+            font-size: 1.2rem;
+            gap: 0.5rem;
+            text-align: center;
+            color: rgb(215,215,215);
+          }
+          .searchbar {
+            font-size: 1rem;
+            position: relative;
+            margin-left: -2rem;
+            margin-top: 1rem;
+          }
+      }

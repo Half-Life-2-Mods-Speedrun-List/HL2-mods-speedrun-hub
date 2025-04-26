@@ -130,7 +130,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .add-cat-btn, .add-resource-btn, .close-btn, #addWr {
-    background-color: orange;
+    background: linear-gradient(to bottom, orange, darkorange);
     color: rgb(0, 0, 0);
     font-size: 1rem;
     border: none;
@@ -140,11 +140,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #wr-button:hover, .add-cat-btn:hover, .close-btn:hover, #addWr:hover {
-        background-color: rgb(255, 145, 0);
+    background: linear-gradient(darkorange);
     }
 
 #wr-button {
-    background-color: orange;
+    background: linear-gradient(to bottom, orange, darkorange);
     color: rgb(0, 0, 0);
     font-size: 1.2rem;
     border: none;
