@@ -4,8 +4,9 @@
 - [Overview](#Overview)
 - [Technologies](#Technologies)
 - [Team members](#Team&nbsp;members)
+- [Requirements](#Requirements)
 - [Installation](#Installation)
-- [Live demo](#Live&nbsp;Demo)
+- [Demo](#Demo)
 
 ## Overview
 The purpose of this project is to provide a home for listing useful resources for various Half-Life 2 modifications, primarily focusing on its speedrunning community. Half-Life 2 speedrunning community's resources has had a history of being scattered among multiple websites and spreadsheets, and the goal of this hub is to bring most of it to a single place for ease of access and make it less tedious to navigate through various resources.
@@ -17,25 +18,35 @@ Users of this site can view and create following content:
   - User-specified ratings to evaluate the enjoyment and difficulty of each category, and to assess how optimized the current world record is
 
 ## Technologies
+Backend: Node.js, Express.js
+
+Frontend: Javascript, HTML, CSS
 
 ## Team&nbsp;Members
+- [Anniina Leikas](https://github.com/Anniina-55)
+- [Väinö Mäkinen](https://github.com/LyrenAlt)
+- [Erik Markula](https://github.com/emarkula24)
 
+## Requirements
+  ```sh
+  node.js v18 or later
+  ```
 ## Install & Run
-  - Clone the repository
-  - Navigate to the server folder and install dependencies.
+  1. Clone the repository
+  2. Navigate to the server folder and install dependencies.
 ```
 $ ~/server npm install
 ```
-- Set up the environment variables required for database configuration.
-- Run the database container
+3. Set up the environment variables required for database configuration.
+4. Run the database container
 ```
 $ ~/server docker-compose up -d
 ```
-- Run the backend server
+5. Run the backend server
 ```
 $ ~/server npm run devStart
 ```
-- Serve the static frontend files to a browser by using [http-server](https://github.com/http-party/http-server) or [Live server Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=yandeu.five-server)
+6. Serve the static frontend files to a browser by using [http-server](https://github.com/http-party/http-server) or [Live server Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=yandeu.five-server)
 
-## Live Demo
+## Demo
 https://hl2-mods-speedrun-hub.onrender.com/
