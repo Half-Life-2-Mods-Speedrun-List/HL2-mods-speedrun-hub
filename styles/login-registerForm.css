@@ -1,6 +1,10 @@
 
-body {margin: 0;}
-
+html, body {
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
 .loginForm {
     display: flex;
     flex-direction: column;
@@ -14,8 +18,8 @@ body {margin: 0;}
         linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7) 60%, rgba(0, 0, 0, 1) 100%),
         url('../imgs/hl2-bg4.jpeg');
     background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center -20rem;
+    background-size: 100% 100%;
+    background-position: center -20rem; /* crop black area from the top of this background image (hl2-bg4.jpeg)*/
     color: rgb(200, 200, 200);
     font-family: "Segoe UI Light", sans-serif;
     font-size: 1.2rem;
