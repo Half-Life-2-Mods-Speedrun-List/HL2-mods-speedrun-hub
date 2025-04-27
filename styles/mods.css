@@ -1,23 +1,64 @@
-.container {
-  background: linear-gradient(rgb(51, 51, 51) 0%, rgb(28,28,28) 15%);
+html {
+  height: 100%;
 }
 body  {
-  background-color:rgb(28,28,28);
+  background: linear-gradient(to bottom, rgb(53, 53, 53) 0%, rgb(28, 28, 28) 6%);
+  background-repeat: no-repeat;
+  background-size: 100% auto;
   font-family: "Segoe UI Light";
-  margin:0px;
+  margin:0 5rem 0 5rem;
   color: rgb(235,235,235);
+  width: 100vw;
+  min-height: 100vh;
 }
-
 #HL2ModsLogo {
   min-height:100vh;
   background-repeat: no-repeat;
   background-position: right bottom;
   background-image:url(hl2mods.png);
 }
+.title {
+  margin-bottom:2.5rem;
+  font-size:5.4rem;
+  text-align: left;
+  font-weight:400;
+  text-shadow: 0rem 1rem 0.5rem rgb(0, 0, 0);}
 
-footer {
+.navbar {
+  display: flex;
+  align-items: center;
+  margin-left: -5rem;
+  justify-content: space-between;
+  border-bottom: 2px solid #333;
+  border-top: 2px solid #333;
+  width: 100vw;
+  padding: 1rem;
+  box-shadow: 7px 7px 20px 25px rgba(0, 0, 0, 0.15);
+  text-shadow: 0rem 1rem 0.5rem rgb(0, 0, 0);
 }
 
+.navbar > tbody {
+  margin: auto;
+  position: relative;
+  text-align: center;
+}
+#github-link {
+  text-decoration: none; color : orange; border: 0px; -moz-outline-style: none;
+  font-size: 1.3rem;
+  margin-left: -0.5rem;
+}
+#github-link:hover { text-decoration: underline; text-decoration-thickness:2px; border: 0px; -moz-outline-style: none;}
+a { text-decoration: none; color : inherit; border: 0px; -moz-outline-style: none;}
+a:active, a:hover { text-decoration: underline; text-decoration-thickness:2px; border: 0px; -moz-outline-style: none;}
+a:focus { outline: none;-moz-outline-style: none;}
+a:hover {transform: scale(1.07); transition: 0.2s ease;}
+
+.navbar > td, th, a {
+  font-size: 2.5rem;
+  text-align: center;
+  color: orange;
+  padding: 1rem;
+}
 div {
   border-bottom:solid 0px rgb(63,63,63);
 }
@@ -92,7 +133,7 @@ h5 {
 
 #Orange {color:orange;}
 #TextSize1 {font-size:3rem;}
-#TextSize2 {font-size:1.2rem;margin-left:1rem;}
+#TextSize2 {font-size:1.3rem;margin-left:1rem; margin-bottom: 1rem;}
 #TextSize3 {font-size:0.8rem;text-align: left;}
 
 a { text-decoration: none; color : inherit; border: 0px; -moz-outline-style: none;}
@@ -227,3 +268,4 @@ border: none;
 .copy-btn:hover {
   background-color: #333;
 }
+

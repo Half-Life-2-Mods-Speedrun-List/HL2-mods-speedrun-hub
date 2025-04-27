@@ -1,8 +1,13 @@
+
 body  {
-  background-color:rgb(28,28,28);
+  background: linear-gradient(to bottom, rgb(53, 53, 53) 0%, rgb(28, 28, 28) 6%);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   font-family: "Segoe UI Light";
-  margin:0px;
+  margin:0;
   color: rgb(235,235,235);
+  width: 100vw;
+  min-height: 100vh;
 }
 
 #HL2ModsLogo {
@@ -11,8 +16,6 @@ body  {
   background-position: right bottom;
   background-image:url(hl2mods.png);
 }
-
-
 
 div {
   border-bottom:solid 0px rgb(63,63,63);

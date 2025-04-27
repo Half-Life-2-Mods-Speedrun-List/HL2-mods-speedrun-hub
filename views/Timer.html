@@ -10,16 +10,15 @@
 </head>
 <body>
 
-    <div style="background: linear-gradient(rgb(40,40,40) 0%, rgb(28,28,28) 10%);background-repeat: no-repeat;background-position: right bottom;">
+    <div>
 
         <hr>
         
-        <h2 style="margin-top:2rem;margin-bottom:2.5rem;font-size:5.4rem;text-align:left;font-weight:400">Half-Life 2 Mods</h2>
+        <h2 class="title">Half-Life 2 Mods</h2>
         
-        <hr class="line">
         
-          <div class="box">
-            <table class="xentable">
+          
+            <table class="navbar">
               <tr>
                 <td><a href="/views/ModList.html" class="fa-sharp fa-solid fa-house" style="color: #ffffff; text-decoration: none;" aria-label="Home"></a></td>
                 <td style="width:2rem;"></td>
@@ -30,25 +29,25 @@
                 <td style="padding:0px;color:orange;font-size:2rem;"font-size:2rem;><a href="/views/Login.html">Login</td>
               </tr>
             </table>
-            </div class="box">
+           
         
-        <hr class="line">
 
-    <div style="margin:20%;margin-top:0rem;margin-bottom:2rem;">
-        <h5 id="TextSize1"> Timer </h5>
-        <p>It is essential to have <b>loading times removed</b> from the game/mod you are playing:</p>
-        <p id="TextSize2">1. Download the latest SourceSplit from <a href="https://github.com/thisis2838/SourceSplit/releases/" id="Orange">2838's GitHub</a>
-        <p id="TextSize2">2. Replace your LiveSplit.SourceSplit.dll with the one from the link above in your LiveSplit's /Components folder.
-        <p id="TextSize2">3. Right-click LiveSplit and press Edit Splits
-        <p id="TextSize2">4. Change the game name to <b>Half-Life 2</b> or <b>Half-Life 2 Mods</b> (Some games and mods work with their own respective name)
-        <p id="TextSize2">5. SourceSplit options should appear above the splits. Press Activate
-        <p id="TextSize2">6. Press Settings. Go all the way down and checkmark "Let SourceSplit Decide" for correct timing method
-        <p id="TextSize2">7. Go to Miscellaneous tab and change "Ticks to add to IGT per finished load" value from 0 to 1
-        <p id="TextSize2">8. Press Ok in the SourceSplit window and Splits Editor
-        <p id="TextSize2">9. Right-click LiveSplit, hover over Compare Against and select Game Time. If the Game Time doesn’t work, it’s because of your Layout Settings. In your layout, you have to compare against either “Current timing method” or Game time
-        <p id="TextSize2">10. Save your layout, save your splits. This way you don’t have to setup everything for the second time, only some of the steps when you are going to run another game or mod. It is recommended to duplicate splits from another HL2 game/mod to a new one so it’s easy to skip steps 4-8.
-        <p id="TextSize2">11. When you relaunch your LiveSplit, do it from the LiveSplit’s executable, not through the splits/layout file. This way it saves all the settings, such as which splits you had last time, which layout you used and it saves the setting from step 9.
-        
+    <div style="display: flex; flex-direction: column; align-items: center; margin-top:3rem;margin-bottom:2rem;">
+        <h5 id="TextSize1" style="margin-bottom:3rem;"> Timer </h5>
+        <p style="font-size: 1.5rem;">It is essential to have <b>loading times removed</b> from the game/mod you are playing:</p>
+        <ol style="display:flex; flex-direction:column; align-items: start; max-width: 70rem; margin-left: 16rem;">
+        <li id="TextSize2">Download the latest SourceSplit from <a href="https://github.com/thisis2838/SourceSplit/releases/" id="github-link">2838's GitHub</a></li>
+        <li id="TextSize2">Replace your LiveSplit.SourceSplit.dll with the one from the link above in your LiveSplit's /Components folder.</li>
+        <li id="TextSize2">Right-click LiveSplit and press Edit Splits</li>
+        <li id="TextSize2">Change the game name to <b>Half-Life 2</b> or <b>Half-Life 2 Mods</b> (Some games and mods work with their own respective name)</li>
+        <li id="TextSize2">SourceSplit options should appear above the splits. Press Activate</li>
+        <li id="TextSize2">Press Settings. Go all the way down and checkmark "Let SourceSplit Decide" for correct timing method</li>
+        <li id="TextSize2">Go to Miscellaneous tab and change "Ticks to add to IGT per finished load" value from 0 to 1</li>
+        <li id="TextSize2">Press Ok in the SourceSplit window and Splits Editor</li>
+        <li id="TextSize2">Right-click LiveSplit, hover over Compare Against and select Game Time. If the Game Time doesn’t work, it’s because of your Layout Settings. In your layout, you have to compare against either “Current timing method” or Game time</li>
+        <li id="TextSize2">Save your layout, save your splits. This way you don’t have to setup everything for the second time, only some of the steps when you are going to run another game or mod. It is recommended to duplicate splits from another HL2 game/mod to a new one so it’s easy to skip steps 4-8.</li>
+        <li id="TextSize2">When you relaunch your LiveSplit, do it from the LiveSplit’s executable, not through the splits/layout file. This way it saves all the settings, such as which splits you had last time, which layout you used and it saves the setting from step 9.</li>
+        </ol>
         </div>
 <script type="module" src="../js/Logout.js"></script>
 </body>
