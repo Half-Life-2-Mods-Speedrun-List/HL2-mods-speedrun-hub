@@ -2,14 +2,11 @@ html {
   height: 100%;
 }
 body  {
-  background: linear-gradient(to bottom, rgb(53, 53, 53) 0%, rgb(28, 28, 28) 6%);
-  background-repeat: no-repeat;
+  background-color: rgb(28,28,28);
   background-size: 100% auto;
   font-family: "Segoe UI Light";
   margin:0 5rem 0 5rem;
   color: rgb(235,235,235);
-  width: 100vw;
-  min-height: 100vh;
 }
 #HL2ModsLogo {
   min-height:100vh;
