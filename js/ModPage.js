@@ -124,7 +124,7 @@ const loadGuides = async () => {
             videoBoxContainer.classList.add("video-box-container");
             guideElement.appendChild(videoBoxContainer);
             const videoBox = document.createElement("div");
-            videoBox.classList.add("video-box");
+            videoBox.classList.add("guide-video-box");
             videoBoxContainer.appendChild(videoBox);
 
             // Add "Add Video" elements
@@ -788,6 +788,9 @@ const getCategories = async (modId) => {
             const noCategoriesMsg = document.createElement("p");
             noCategoriesMsg.textContent = "No categories available yet.";
             noCategoriesMsg.style.margin = "2rem"
+            noCategoriesMsg.style.fontSize ="2rem"
+            noCategoriesMsg.style.marginLeft = "4rem"
+            noCategoriesMsg.style.paddingTop = "4rem"
             div.appendChild(noCategoriesMsg);
         } else {
             // Order categories by ID to prevent wrong order
@@ -844,7 +847,7 @@ const fetchWRHistory = async (categoryId, popUpContent) => {
                 const formattedDate = new Date(record.record_date).toLocaleDateString('fi-FI');
                 resultItem.innerHTML =
                     `<strong>${record.record_time}</strong> by <strong>${record.runner_name}</strong><br>
-                Record date: ${formattedDate}`
+                    Record date: ${formattedDate}`
                 resultList.appendChild(resultItem)
             })
             popUpContent.appendChild(resultList)
@@ -975,7 +978,7 @@ addCategoryForm.addEventListener("submit", async (event) => {
                     category_id: categoryData.category.id,
                     category_name: categoryData.category.category_name
                 }
-                console.log("Tiedot lisättävästä kategoriasta", addedCategory)
+                console.log("Information about the added category", addedCategory)
                 renderCategory(categoryData.category)
                 setTimeout(() => {
                     scrollToCategory(addedCategory.category_id)
