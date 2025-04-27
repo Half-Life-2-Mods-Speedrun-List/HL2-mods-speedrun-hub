@@ -273,78 +273,7 @@ h2 {
     object-fit: contain;
 }
 
-  /* MEDIA QUERIES */
 
-  @media only screen and (max-width: 1500px) {
-    
-    body {margin: 2rem;}
-    .popUp {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.664); /* dark background */
-        backdrop-filter: blur(5px); /* blur */
-        display: flex;
-        justify-content: center;
-        align-items: top;
-        padding: 2rem;
-        z-index: 1000; /* ensures popUp is on top of everything*/
-    }
-    .popUpContent {
-        background: linear-gradient(rgba(165, 89, 1, 0.678) 50%, rgba(0, 0, 0, 0.486)100%);
-        border-radius: 10px;
-        padding: 3rem;
-        margin-top: 10rem;
-        width: 90%;
-        max-width: 30rem;
-    }
-    .video-box {
-        width: 50rem;
-        height: 30rem;
-    }
-    .video-iframe {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    #wr-button {
-        font-size: 1.2rem;
-        position: absolute;
-        margin-right: 0;
-        margin-top: 37rem;
-    }
-    .navbar {
-        margin-left: -2rem;
-    }
-
-}
-@media only screen and (max-width: 1928px) {
-    body {margin: 2rem;}
-    .popUp {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.664); /* dark background */
-        backdrop-filter: blur(5px); /* blur */
-        display: flex;
-        justify-content: center;
-        align-items: top;
-        z-index: 1000; /* ensures popUp is on top of everything*/
-    }
-
-    .popUpContent {
-        background: linear-gradient(rgba(177, 95, 2, 0.582) 50%, rgba(0, 0, 0, 0.486)100%);;
-        border-radius: 10px;
-        padding: 3rem;
-        margin-top: 10rem;
-        width: 90%;
-        max-width: 30rem;
-    }
-}
 .resources-flex {
     position: absolute;
     right: 0;
@@ -478,4 +407,99 @@ h2 {
     text-align: right;
 }
 
+  /* MEDIA QUERIES */
+
+  @media only screen and (max-width: 1500px) {
+    
+    body {margin: 2rem;}
+    .popUp {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.733); /* dark background */
+        backdrop-filter: blur(5px); /* blur */
+        display: flex;
+        justify-content: center;
+        align-items: top;
+        padding: 2rem;
+        z-index: 1000; /* ensures popUp is on top of everything*/
+    }
+    .popUpContent {
+        background: linear-gradient(rgba(165, 89, 1, 0.678) 50%, rgba(0, 0, 0, 0.486)100%);
+        border-radius: 10px;
+        padding: 3rem;
+        margin-top: 10rem;
+        width: 90%;
+        max-width: 30rem;
+    }
+    .video-box {
+        width: 50rem;
+        height: 30rem;
+    }
+    .video-iframe {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    #wr-button {
+        font-size: 1.2rem;
+        position: absolute;
+        margin-right: 0;
+        margin-top: 37rem;
+    }
+    .navbar {
+        margin-left: -2rem;
+    }
+
+}
+@media only screen and (max-width: 1928px) {
+    body {margin: 2rem;}
+    .popUp {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.664); /* dark background */
+        backdrop-filter: blur(5px); /* blur */
+        display: flex;
+        justify-content: center;
+        align-items: top;
+        z-index: 1000; /* ensures popUp is on top of everything*/
+    }
+
+    .popUpContent {
+        background: linear-gradient(rgba(177, 95, 2, 0.582) 50%, rgba(0, 0, 0, 0.486)100%);;
+        border-radius: 10px;
+        padding: 3rem;
+        margin-top: 10rem;
+        width: 90%;
+        max-width: 30rem;
+    }
+}
+
+@media only screen and (min-width: 2600px) {
+    .popUp {
+        background-image:linear-gradient(rgba(209, 112, 2, 0.507) 50%, rgba(0, 0, 0, 0.486)100%);
+        /*,
+        url("/imgs/hl2_mods_bg.jpg")*/
+        background-size: cover;
+        background-position: center;
+        background-color: #222;
+        display: flex;
+        min-width: 30rem;
+        min-height: 35rem;
+        justify-content: center;
+        position: fixed;
+        align-items: flex-start;
+        align-self: flex-end;
+        right: 50rem !important;
+        top: 25.1rem;
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0rem 2rem 2rem rgba(0, 0, 0, 0.788);
+    }
+}
 
