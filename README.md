@@ -52,3 +52,4 @@ $ ~/server npm run devStart
 https://hl2-mods-speedrun-hub.onrender.com/
 
 The site opens on the main landing page. The part of the project that this GitHub repository is responsible of can be reached by clicking the "Half-Life 2 Mods Hub" link.
+Because the demo is running on a free instance of Render, it takes time to start up if there has not been a request in 15 minutes. Wait patiently if no content loads.
