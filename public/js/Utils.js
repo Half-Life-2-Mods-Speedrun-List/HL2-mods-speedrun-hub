@@ -1,3 +1,4 @@
+import { frontendUrl } from "./config";
 
 const timeout = (context) => {
     const successDiv = document.createElement("div")
@@ -14,7 +15,7 @@ const timeout = (context) => {
           document.body.appendChild(successDiv)
 
           setTimeout(() => {
-            window.location.href = "/views/ModList.html"; 
+            window.location.href = frontendUrl + "/views/ModList.html"; 
           }, 1000)
           
   }

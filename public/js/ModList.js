@@ -1,7 +1,5 @@
-// const backendUrl = "http://localhost:3001"
-const backendUrl = "https://hl2-speedrunhub-backend.onrender.com"
-const frontendUrl = "https://hl2-mods-speedrun-hub.onrender.com"
 import { Mods } from "./class/Mods.js"
+import { frontendUrl, backendUrl } from "./config.js"
 
 const modifications = new Mods(backendUrl)
 const div = document.createElement("div")

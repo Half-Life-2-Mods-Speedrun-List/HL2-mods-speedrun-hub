@@ -1,6 +1,5 @@
+import { backendUrl } from "./config.js";
 import { timeout } from "./Utils.js"
-// const backendUrl = "http://localhost:3001"
-const backendUrl = "https://hl2-speedrunhub-backend.onrender.com"
 
 document.getElementById("registerForm").addEventListener("submit", async function(event) {
   event.preventDefault(); 
