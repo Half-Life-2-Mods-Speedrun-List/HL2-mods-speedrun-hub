@@ -1,4 +1,4 @@
-import { backendUrl } from "./config";
+import { backendUrl } from "./config.js";
 
 
 document.addEventListener("DOMContentLoaded", function() {

@@ -1,4 +1,4 @@
-import { backendUrl, frontendUrl } from "./config";
+import { backendUrl, frontendUrl } from "./config.js";
 
 document.getElementById("createMod").addEventListener("submit", async function(event) {
   event.preventDefault(); 
