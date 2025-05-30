@@ -1,4 +1,4 @@
-import { frontendUrl } from "./config";
+import { frontendUrl } from "./config.js";
 
 const timeout = (context) => {
     const successDiv = document.createElement("div")

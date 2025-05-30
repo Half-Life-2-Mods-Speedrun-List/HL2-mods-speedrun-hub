@@ -1,4 +1,4 @@
-import { backendUrl } from "./config";
+import { backendUrl } from "./config.js";
 
 document.getElementById("wr-form").addEventListener("submit", async (event) => {
     event.preventDefault()
