@@ -37,7 +37,7 @@ Frontend: Javascript, HTML, CSS
 ```
 $ ~/server npm install
 ```
-3. Set up the environment variables required for database configuration.
+3. Set up the environment variables required for database configuration by copying `.env.example` to `.env` and setting the values.
 4. Run the database container
 ```
 $ ~/server docker-compose up -d
@@ -46,7 +46,6 @@ $ ~/server docker-compose up -d
 ```
 $ ~/server npm run devStart
 ```
-6. Serve the static frontend files to a browser by using [http-server](https://github.com/http-party/http-server) or [Live server Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=yandeu.five-server)
 
 ## Demo
 https://hl2-mods-speedrun-hub.onrender.com/
