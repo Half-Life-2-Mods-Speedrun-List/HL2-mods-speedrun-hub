@@ -14,10 +14,10 @@ const generateToken = (user)=>{
 userRouter.post("/login", async (req, res) => {
     
     try {
-        console.log("user")
+//        console.log("user")
         const { username, password, email } = req.body
 
-        console.log(username, password)
+//        console.log(username, "*password*")
         if (!username || !password) {
             return res.status(400).json({ error: "Email and password are required." });
         }
