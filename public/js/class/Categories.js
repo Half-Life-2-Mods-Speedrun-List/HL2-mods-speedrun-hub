@@ -5,7 +5,7 @@ class Categories {
     #backend_url = ""
 
     constructor(url, endpoint = "/categories") {
-        this.#backend_url = new URL (endpoint, url).href
+        this.#backend_url = url + endpoint;
     }
     getCategories = async (modId) => {
         const url = `${this.#backend_url}/${modId}`;
