@@ -8,7 +8,7 @@ class Mods {
     #guides = []
 
     constructor(url, endpoint = "/mods") {
-        this.#backend_url = new URL (endpoint, url).href
+        this.#backend_url = url + endpoint;
     }
 
     getMods = async () => {
@@ -39,7 +39,7 @@ class Mods {
 
 
     getModsWithCategories = async () => {
-        const endpoint = new URL("/categories", this.#backend_url).href;
+        const endpoint = this.#backend_url + "/categories";
         try {
             const response = await fetch(endpoint)
             const json = await response.json()
@@ -58,7 +58,7 @@ class Mods {
 
     // add category to mod
     createCategory = async (modId, categoryName) => {
-        const endpoint = new URL(`/categories/${modId}`, this.#backend_url).href;
+        const endpoint = this.#backend_url + `/categories/${modId}`;
         const data = { category_name: categoryName };
 
     try {
@@ -84,7 +84,7 @@ class Mods {
 
     // Add WR video to a mod
     createVideo = async (categoryId, videoUrl) => {
-        const endpoint = new URL(`/categories/${categoryId}/wr-video`, this.#backend_url).href;
+        const endpoint = this.#backend_url + `/categories/${categoryId}/wr-video`;
         const data = { wr_video: videoUrl };
 
         console.log("Sending data to backend:", { endpoint, data });
@@ -111,7 +111,7 @@ class Mods {
     }; 
 
     createNewGuide = async (modId, type) => {
-        const endpoint = new URL(`/mods/${modId}/create-guide`, this.#backend_url).href;
+        const endpoint = this.#backend_url + `/${modId}/create-guide`;
         const data = { type: type };
     
         try {
@@ -142,7 +142,7 @@ class Mods {
 
 // Fetch guides for a specific mod
 getGuides = async (modId, view) => {
-    const endpoint = new URL(`/mods/${modId}/display-guide?view=${view}`, this.#backend_url).href;
+    const endpoint = this.#backend_url + `/${modId}/display-guide?view=${view}`;
     try {
         console.log("Fetching guides for modId:", modId, "with view:", view);
         console.log("Fetching from URL:", endpoint);
@@ -178,7 +178,7 @@ getGuides = async (modId, view) => {
 };
 
     createGuideVideo = async (modId, videoUrl, guideId, type) => {
-        const endpoint = new URL(`/mods/${modId}/update-guide`, this.#backend_url).href;
+        const endpoint = this.#backend_url + `/${modId}/update-guide`;
         const data = { video: videoUrl, guide_id: guideId, type: type };
 
         try {
@@ -204,7 +204,7 @@ getGuides = async (modId, view) => {
     };
 
     updateGuideDescription = async (modId, guideId, newDescription, type) => {
-        const endpoint = new URL(`/mods/${modId}/update-guide`, this.#backend_url).href;
+        const endpoint = this.#backend_url + `/${modId}/update-guide`;
         const data = { guide_id: guideId, description: newDescription, type: type };
     
         try {
