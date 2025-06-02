@@ -1,3 +1,5 @@
+import { backendUrl } from "../config.js";
+
 
 import { Mod } from "./Mod.js"
 
@@ -84,7 +86,7 @@ class Mods {
 
     // Add WR video to a mod
     createVideo = async (categoryId, videoUrl) => {
-        const endpoint = this.#backend_url + `/categories/${categoryId}/wr-video`;
+        const endpoint = backendUrl + `/categories/${categoryId}/wr-video`;
         const data = { wr_video: videoUrl };
 
         console.log("Sending data to backend:", { endpoint, data });
