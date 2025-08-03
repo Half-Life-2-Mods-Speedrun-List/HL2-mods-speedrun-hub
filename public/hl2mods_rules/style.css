@@ -1,8 +1,11 @@
 body  {
-  background-color:rgb(28,28,28);
+  margin: 0;
+  background: linear-gradient(rgb(40,40,40) 0%, rgb(28,28,28) 10%);
+  background-repeat: no-repeat;
+  background-position: right bottom;
   font-family: "Segoe UI Light";
-  margin:0px;
   color: rgb(235,235,235);
+  min-height: 100vh;
 }
 
 #HL2ModsLogo {
@@ -11,20 +14,10 @@ body  {
   background-position: right bottom;
   background-image:url(hl2mods.png);
 }
-
-footer {
-}
-
-div {
-  border-bottom:solid 0px rgb(63,63,63);
-}
 hr {
-  margin-top:-1.7rem;
-  margin-left:0.5rem;
   padding:0px;
-  width:21rem;
-  border-color:rgb(215,215,215);
-  border-width:1px;
+  margin: 0px;
+  border: none;
 }
 h1 {
   font-style: italic;
@@ -91,9 +84,9 @@ h5 {
 #TextSize2 {font-size:1.2rem;margin-left:1rem;}
 #TextSize3 {font-size:0.8rem;text-align: left;}
 
-a { text-decoration: none; color : inherit; border: 0px; -moz-outline-style: none;}
-a:active, a:hover { text-decoration: underline;text-decoration-thickness:2px;border: 0px; -moz-outline-style: none;}
-a:focus { outline: none;-moz-outline-style: none;}
+a { text-decoration: none; color : inherit; border: 0px; outline-style: none; -moz-outline-style: none;}
+a:active, a:hover { text-decoration: underline;text-decoration-thickness:2px;border: 0px; outline-style: none; -moz-outline-style: none;}
+a:focus { outline: none; outline-style: none; -moz-outline-style: none;}
 
 td, th {
   font-size: 2.3rem;
@@ -115,7 +108,19 @@ td, th {
 }
 
 .box {
-border: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.box > a {
+  width: 100%;
+  color:orange;
+  font-size:2rem;
+  padding:0px;
+  text-align: center;
 }
 
 .infobox {
@@ -176,4 +181,51 @@ border: none;
 .line {
   border-bottom: 1px solid #333;
   width:auto;
+}
+
+.selected {
+  height: 4rem;
+  align-content: center;
+}
+
+.main-select {
+  background: linear-gradient(rgb(40,40,40) 0%, rgb(28,28,28) 50%, rgb(40,40,40) 100%);
+  height: 4rem;
+  align-content: center;
+  transition: background 0.2s;
+  position: relative;
+  z-index: 2;
+}
+
+.main-select::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(#1d1d1d 0%, #1d1d1d 100%);
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.main-select:hover:not(.selected)::after {
+  opacity: 1;
+}
+
+.main-select.selected {
+  background: linear-gradient(#1a1a1a 0%, #1a1a1a 100%);
+}
+
+.main-select.selected::after {
+  opacity: 0; /* overlay not needed for selected, since background is set */
+}
+
+.main-select span {
+  position: relative;
+  z-index: 2;
+}
+
+.box a {
+  text-decoration: none;
+  display: block;
 }

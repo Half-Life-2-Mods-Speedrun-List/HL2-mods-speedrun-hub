@@ -14,6 +14,16 @@ async function onHashChange() {
     hash = main.firstElementChild.hash;
     location.replace(location.href + hash);
   }
+  // Highlight selected menu
+  document.querySelectorAll('.main-select').forEach(div => {
+    const a = div.parentElement;
+    if (a && a.getAttribute('href') === hash) {
+      div.classList.add('selected');
+    } else {
+      div.classList.remove('selected');
+    }
+    div.classList.add('main-select');
+  });
   const page = `${hash.substring(1)}.html`;
   const text = await loadOrfetch(page);
   main.innerHTML = text;
